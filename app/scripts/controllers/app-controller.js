@@ -2,8 +2,8 @@
 couchDbUserManagementApp.controller('AppCtrl', ['$scope', '$http', '$localStorage', 'database', function($scope, $http, $localStorage, database){
   'use strict';
 
-  $scope.couchDbUrl = $localStorage.couchDbUrl || '';
-  $scope.username = $localStorage.username || '';
+  $scope.couchDbUrl = '/_couchdb';
+  $scope.username = '';
 
   database.setBaseUrl($scope.couchDbUrl);
 
