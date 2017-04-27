@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head><style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style><style type="text/css">.uib-time input{width:50px;}</style><style type="text/css">[uib-tooltip-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-bottom > .tooltip-arrow,[uib-popover-popup].popover.top-left > .arrow,[uib-popover-popup].popover.top-right > .arrow,[uib-popover-popup].popover.bottom-left > .arrow,[uib-popover-popup].popover.bottom-right > .arrow,[uib-popover-popup].popover.left-top > .arrow,[uib-popover-popup].popover.left-bottom > .arrow,[uib-popover-popup].popover.right-top > .arrow,[uib-popover-popup].popover.right-bottom > .arrow,[uib-popover-html-popup].popover.top-left > .arrow,[uib-popover-html-popup].popover.top-right > .arrow,[uib-popover-html-popup].popover.bottom-left > .arrow,[uib-popover-html-popup].popover.bottom-right > .arrow,[uib-popover-html-popup].popover.left-top > .arrow,[uib-popover-html-popup].popover.left-bottom > .arrow,[uib-popover-html-popup].popover.right-top > .arrow,[uib-popover-html-popup].popover.right-bottom > .arrow,[uib-popover-template-popup].popover.top-left > .arrow,[uib-popover-template-popup].popover.top-right > .arrow,[uib-popover-template-popup].popover.bottom-left > .arrow,[uib-popover-template-popup].popover.bottom-right > .arrow,[uib-popover-template-popup].popover.left-top > .arrow,[uib-popover-template-popup].popover.left-bottom > .arrow,[uib-popover-template-popup].popover.right-top > .arrow,[uib-popover-template-popup].popover.right-bottom > .arrow{top:auto;bottom:auto;left:auto;right:auto;margin:0;}[uib-popover-popup].popover,[uib-popover-html-popup].popover,[uib-popover-template-popup].popover{display:block !important;}</style><style type="text/css">.uib-datepicker .uib-title{width:100%;}.uib-day button,.uib-month button,.uib-year button{min-width:100%;}.uib-datepicker-popup.dropdown-menu{display:block;float:none;margin:0;}.uib-button-bar{padding:10px 9px 2px;}.uib-left,.uib-right{width:100%}</style><style type="text/css">.uib-position-measure{display:block !important;visibility:hidden !important;position:absolute !important;top:-9999px !important;left:-9999px !important;}.uib-position-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll;}</style><style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+  <meta charset="utf-8">
+  <title>LMIS UMS</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!--link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,400i" rel="stylesheet"-->
+    <!-- build:css app/app.min.css -->
+    <link href="app.css" rel="stylesheet">
+    <!-- endbuild -->
+
+</head>
+
+
+<body >
+
+  <div ui-view="ng-admin" class="">
+    <div id="wrapper" class="">
+      <nav id="header-nav" class="navbar navbar-default navbar-static-top" role="navigation">
+        <span compile="::appController.header">
+          <div class="navbar-header " >
+            <button type="button" class="navbar-toggle" ng-click="isCollapsed = !isCollapsed">
+              <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+            </button>
+            <div class="col-md-2 admin-logo-bg">
+              <a class=" stock-logo" href="/" ng-click="appController.displayHome()"><img src="img/logo.png" class="img-responsive stock-logo"></a>
+            </div>
+            <div class="col-md-6 admin-text">
+                <a class="link" href="/admin">User Management </a>
+            </div>
+            <div class="col-md-4">
+  <div class="navbar-right">
+   <a class="link" href="/"><i class="fa fa-angle-right"></i>LOMIS | Stock</a>
+    <div uib-dropdown="" class="dropdown user">
+      <a uib-dropdown-toggle="" class="dropdown-toggle" id="dropdownMenuUser" aria-haspopup="true" aria-expanded="false">
+        <span class="header-username "></span><span class="profile-pic"><i class="fa fa-user"></i></span><i class="fa fa-angle-down"></i>
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuUser" role="menu">
+        <li><a href="#" ng-click="logout()">logout</a></li>
+      </ul>
+    </div>
+  </div>
+    </div>
+        </div>
+        </span>
+          <div class="navbar-default sidebar " role="navigation" compile="menu.template()">
+            <div class="sidebar-nav navbar-collapse  collapse" uib-collapse="$parent.isCollapsed" aria-expanded="false" aria-hidden="true" style="height: 0px;">
+              <ul class="nav" id="side-menu">
+
+                <li class="entities-repeat "  data-menu-id="26" >
+                  <a  href="#!/users/list" ng-click="activateLink(menu)" ng-class="::{'active': menu.isActive(path)}" class=" ">
+                    <span compile="::menu.icon()">
+                      <span class="fa fa-users fa-fw "></span>
+                    </span> List Users
+                  </a>
+                </li>
+                <li class="entities-repeat "  data-menu-id="26" >
+                      <a  href="#!/users/create" ng-click="activateLink(menu)" ng-class="::{'active': menu.isActive(path)}" class=" ">
+                    <span compile="::menu.icon()">
+                      <span class="fa fa-user-plus fa-fw "></span>
+                    </span> Add User
+                      </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+      </nav>
+
+
+     <div id = "page-wrapper" >
+       <div ng-view></div>
+     </div>
+    </div>
+  </div>
+
+
+  <!-- build:js app/app.min.js -->
+      <script src="bower_components/jquery/dist/jquery.js"></script>
+      <script src="bower_components/angular/angular.js"></script>
+      <script src="bower_components/tv4/tv4.js"></script>
+      <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+      <script src="bower_components/objectpath/lib/ObjectPath.js"></script>
+      <script src="bower_components/lodash/lodash.js"></script>
+      <script src="bower_components/angular-route/angular-route.min.js"></script>
+      <script src="bower_components/lodash/dist/lodash.min.js"></script>
+      <script src="bower_components/humane-js/humane.min.js"></script>
+
+      <script src="app.js"></script>
+  <script src="user/user.js"></script>
+
+
+
+  <script src="user/user.controller.js"></script>
+
+      <script src="user/user.service.js"></script>
+      <script src="role/role.js"></script>
+      <script src="role/role.controller.js"></script>
+      <script src="role/role.filter.js"></script>
+      <script src="role/role.service.js"></script>
+      <Script src="components/ng-simple-table/ng-simple-table.js"></Script>
+      <script src="components/alert/alert.service.js"></script>
+
+  <!--endbuild -->
+
+
+</body>
+
+
+
+
+</html>
