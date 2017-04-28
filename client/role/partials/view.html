@@ -1,0 +1,104 @@
+
+<div class="row list-header">
+    <div class = "col-lg-12">
+        <div class = ' page-header'>
+
+            <div class="ma-list-button">
+                <a class="btn btn-default pull-right " ng-class="size ? 'btn-' + size : ''" ui-sref="list(stateParams)" href="#!/users/list">
+                    <span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;<span class="hidden-xs ng-scope" translate="LIST">List</span>
+                </a>
+            </div>
+            <h1>
+                <span class="">Assgned Roles&nbsp;<i>{{user.name}}</i></span>
+            </h1>
+        </div>
+    </div>
+</div>
+<div class = "grid">
+    <div class="row" id="create-view" ng-class="::'ng-admin-entity-' + formController.entity.name()">
+        <form class="col-lg-12 form-horizontal ng-pristine ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength ng-valid-required"
+              name="formController.form"
+              ng-submit="createUser()">
+
+
+            <div>
+                <div id="username" class="form-field form-group has-feedback">
+                    <label for="name" class="col-sm-2 control-label">Username</label>
+
+                    <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
+                        <input type="text" ng-model="user.name" id="name" name="name" class="form-control" ng-required="v.required" ng-minlength="0" ng-maxlength="60" disabled>
+                        <span ng-show="fieldHasValidation()" class="glyphicon form-control-feedback ng-hide glyphicon-ok" ng-class="fieldIsValid() ? 'glyphicon-ok' : 'glyphicon-remove'"></span>
+                    </div>
+                </div>
+
+                <div id="usertype" class="form-field form-group has-feedback">
+                    <label for="name" class="col-sm-2 control-label">User Type</label>
+
+                    <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
+                        <select  ng-model="newUser.userType" id="name" name="name" class="form-control"
+                                 ng-required="v.required"
+                                 ng-options = "type as type for type in userTypes" disabled
+                        ></select>
+                        <span ng-show="fieldHasValidation()" class="glyphicon form-control-feedback ng-hide glyphicon-ok" ng-class="fieldIsValid() ? 'glyphicon-ok' : 'glyphicon-remove'"></span>
+                    </div>
+                </div>
+
+                <div id="usertype" class="form-field form-group has-feedback">
+                    <label for="name" class="col-sm-2 control-label">Access Level (STATE)</label>
+
+                    <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
+                        <select  ng-model="newUser.state" id="name" name="name" class="form-control"
+                                 ng-required="v.required"
+                                 ng-options = "state as state for state in states" disabled
+                        ></select>
+                        <span ng-show="fieldHasValidation()" class="glyphicon form-control-feedback ng-hide glyphicon-ok" ng-class="fieldIsValid() ? 'glyphicon-ok' : 'glyphicon-remove'"></span>
+                    </div>
+                </div>
+
+                <div id="usertype" class="form-field form-group has-feedback">
+                    <label for="name" class="col-sm-2 control-label">Access Level (ZONE)</label>
+
+                    <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
+                        <select  ng-model="newUser.zone" id="name" name="name" class="form-control"
+                                 ng-required="v.required" ng-minlength="0" ng-maxlength="60"
+                                 ng-options = "zone.name as zone.name for zone in zones" disabled
+                        ></select>
+                        <span ng-show="fieldHasValidation()" class="glyphicon form-control-feedback ng-hide glyphicon-ok" ng-class="fieldIsValid() ? 'glyphicon-ok' : 'glyphicon-remove'"></span>
+                    </div>
+                </div>
+
+                <div id="usertype" class="form-field form-group has-feedback">
+                    <label for="name" class="col-sm-2 control-label">Access Level (FACILIY)</label>
+
+                    <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
+                        <select  ng-model="newUser.facility" id="name" name="name" class="form-control"
+                                 ng-required="v.required"
+                                 ng-options ="facility.id as facility.name for facility in facilities" disabled
+                        ></select>
+                        <span ng-show="fieldHasValidation()" class="glyphicon form-control-feedback ng-hide glyphicon-ok" ng-class="fieldIsValid() ? 'glyphicon-ok' : 'glyphicon-remove'"></span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">
+                        <span class=""></span>&nbsp;
+                        <span class="hidden-xs ng-scope" translate="EDIT ROLE">Edit Role</span>
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+        </div>
+    </div>
+</div>
+
+
+
+
+
