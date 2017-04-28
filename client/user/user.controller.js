@@ -6,66 +6,71 @@
 angular.module('app.user')
   .controller('UserCtrl', ['$rootScope', '$scope', '$location', 'userService', 'users', 'selectedUser', 'alertService', function($rootScope, $scope, $location, userService, users, selectedUser, alertService){
 
+    var vm =  this;
 
-    $scope.users = users;
-    $scope.selectedUser =  selectedUser;
-    $scope.selection = [];
+    vm.users = users;
+    vm.selectedUser =  selectedUser;
+    vm.selection = [];
 
-    $scope.simpleTableConfig = {
+    vm.simpleTableConfig = {
       allowFilter: false,
       allowSelect: true,
       allowSort:  true,
       rowActions: ['assign role', 'edit', 'show', 'delete'],
       rowActionClasses: ['glyphicon glyphicon-user', 'glyphicon glyphicon-pencil', 'glyphicon glyphicon-eye-open', 'glyphicon glyphicon-trash'],
-      rowActionCallback: $scope.rowActionCallback,
       tableHeader: ['name', 'user_type', 'status']
     };
 
 
 
 
-    $scope.rowActionCallback = function (actionIndex, rowIndex) {
+    vm.rowActionCallback = function (actionIndex, rowIndex) {
         var path = '';
         switch(actionIndex){
           case 0:
-            path = 'users/' + $scope.users[rowIndex][userService.getSingleRecordKey()] + "/role/edit";
+            path = 'users/' + vm.users[rowIndex][userService.getSingleRecordKey()] + "/role/edit";
             $location.path(path);
             break;
           case 1:
-            path = 'users/edit/' + $scope.users[rowIndex][userService.getSingleRecordKey()];
+            path = 'users/edit/' + vm.users[rowIndex][userService.getSingleRecordKey()];
             $location.path(path);
             break;
           case 2:
-            path = 'users/view/' + $scope.users[rowIndex][userService.getSingleRecordKey()];
+            path = 'users/view/' + vm.users[rowIndex][userService.getSingleRecordKey()];
             $location.path(path);
             break;
           case 3:
-            path = 'users/delete/' + $scope.users[rowIndex][userService.getSingleRecordKey()];
+            path = 'users/delete/' + vm.users[rowIndex][userService.getSingleRecordKey()];
             $location.path(path);
             break;
         }
     };
 
-    $scope.submitNewUserForm =  function () {
+    vm.submitNewUserForm =  function () {
 
-        if (! _.isEmpty($scope.newUserForm.$error)){ console.log($scope.newUserForm); return; }
-        userService.create(_.pick($scope.newUserForm, ["name", "password", "email"])).then(function(){
-            alertService.showSuccessMessage($scope.newUserForm.name + ' successfully created');
-            var path =  'users/view/' + $scope.newUserForm.name;
+        if (! _.isEmpty(vm.newUserForm.$error)){ return; }
+        userService.create(_.pick(vm.newUserForm, ["name", "password", "email"])).then(function(){
+            alertService.showSuccessMessage(vm.newUserForm.name + ' successfully created');
+            var path =  'users/view/' + vm.newUserForm.name;
             $location.path(path);
         }).catch(function(err){
-          alertService.showErrorMessage('Entry was not created' + err);
+          if (err.data.name === 'ValidationError'){
+            vm.newUserForm['$serverError'] = vm.newUserForm.name;
+            return;
+          }
+          console.log(err);
+          alertService.showErrorMessage('Entry was not created');
         });
     };
 
 
-    $scope.submitUpdateUserForm = function () {
+    vm.submitUpdateUserForm = function () {
 
-      if (! _.isEmpty($scope.updateUserForm.$error)){ return; }
-      userService.update(_.pick($scope.updateUserForm, ['name','password', 'email'])).then(function(response){
+      if (! _.isEmpty(vm.updateUserForm.$error)){ return; }
+      userService.update(_.pick(vm.updateUserForm, ['name','password', 'email'])).then(function(response){
         //do comparison
         alertService.showSuccessMessage("Changes successfully saved");
-        var path =  'users/view/' + $scope.updateUserForm.name;
+        var path =  'users/view/' + vm.updateUserForm.name;
         $location.path(path);
       }).catch(function(err) {
         alertService.showErrorMessage('Entry was not updated');
@@ -74,7 +79,7 @@ angular.module('app.user')
 
     };
 
-    $scope.deleteOne =  function(name){
+    vm.deleteOne =  function(name){
       userService.delete(name).then(function(response){
         alertService.showSuccessMessage(name + ' successfully deleted');
         $location.path('users/list');
@@ -84,12 +89,12 @@ angular.module('app.user')
     };
 
 
-    $scope.bulkDelete = function () {
+    vm.bulkDelete = function () {
 
     };
 
-    $scope.getSelectionCount = function () {
-      return $scope.selection.filter(function(elem){ return elem; }).length;
+    vm.getSelectionCount = function () {
+      return vm.selection.filter(function(elem){ return elem; }).length;
     };
 
 

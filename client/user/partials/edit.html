@@ -1,4 +1,3 @@
-
 <div class="row list-header">
     <div class = "col-lg-12">
         <div class = ' page-header'>
@@ -9,7 +8,7 @@
                 </a>
             </div>
             <h1>
-                <span class="">Edit <i>{{selectedUser.name}}</i></span>
+                <span class="">Edit <i>{{ctrl.selectedUser.name}}</i></span>
             </h1>
         </div>
     </div>
@@ -19,20 +18,15 @@
 
         <form class="col-lg-12 form-horizontal"
               name="updateUserForm"
-              ng-submit="submitUpdateUserForm()"
+              ng-submit="ctrl.submitUpdateUserForm()"
               novalidate>
 
 
             <div>
                 <div  class="form-field form-group has-feedback">
                     <label for="username" class="col-sm-2 control-label">Username</label>
-                    <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7" ng-init="updateUserForm.name =  selectedUser.name">
-                        <input type="text" ng-model="updateUserForm.name" id="username" class="form-control" ng-required="true" ng-minlength="1" ng-maxlength="60" disabled>
-                        <!--span
-                                class="glyphicon glyphicon-remove form-control-feedback"
-                                ng-class="updateUserForm.name ? 'glyphicon-ok' : 'glyphicon-remove'"
-                        ></span-->
-
+                    <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7" ng-init="ctrl.updateUserForm.name =  ctrl.selectedUser.name">
+                        <input type="text" ng-model="ctrl.updateUserForm.name" id="username" class="form-control" ng-required="true" ng-minlength="1" ng-maxlength="60" disabled>
 
                     </div>
                     </div>
@@ -42,11 +36,7 @@
                     <label for="password" class="col-sm-2 control-label ng-binding">Password</label>
 
                     <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7" >
-                        <input type="password"  ng-model="updateUserForm.password" id="password" class="form-control" ng-minlength="0" ng-maxlength="60">
-                        <!--span
-                                class="glyphicon glyphicon-remove form-control-feedback"
-                                ng-class="updateUserForm.password ? 'glyphicon-ok' : 'glyphicon-remove'"
-                        ></span-->
+                        <input type="password"  ng-model="ctrl.updateUserForm.password" id="password" class="form-control" ng-minlength="0" ng-maxlength="60">
                     </div>
                 </div>
 
@@ -54,11 +44,7 @@
                     <label for="email" class="col-sm-2 control-label ng-binding">Email Address</label>
 
                     <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7" ng-init="updateUserForm.email =  selectedUser.email">
-                        <input type="email"  ng-model="updateUserForm.email" id="email"  class="form-control" ng-required="false" ng-minlength="0" ng-maxlength="60">
-                        <!--span
-                                class="glyphicon glyphicon-remove form-control-feedback"
-                                ng-class="updateUserForm.email ? 'glyphicon-ok' : 'glyphicon-remove'"
-                        ></span-->
+                        <input type="email"  ng-model="ctrl.updateUserForm.email" id="email"  class="form-control" ng-required="false" ng-minlength="0" ng-maxlength="60">
                     </div>
                 </div>
 

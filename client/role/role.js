@@ -7,6 +7,7 @@ angular.module('app.role', ['ngRoute', 'app.user'])
     $routeProvider.when('/users/:id/role/edit', {
       templateUrl: 'role/partials/edit.html',
       controller: 'RoleCtrl',
+      controllerAs: 'ctrl',
       resolve: {
         user :['userService', '$route', function(userService, $route){
            return userService.getOne($route.current.params.id).then(function (resp){  return resp; }).catch(function (err) {console.log(err); return null;});

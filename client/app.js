@@ -7,12 +7,11 @@ angular.module('myApp', [
 
   'app.user',
   'app.role',
+  'config',
   'ngRoute'
 
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
-
- // $locationProvider.html5Mode(true);
-  //$routeProvider.otherwise({redirectTo: '/users/list'});
+  $routeProvider.otherwise({redirectTo: '/users/list'});
 }]);

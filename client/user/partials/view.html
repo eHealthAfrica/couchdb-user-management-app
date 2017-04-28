@@ -15,7 +15,7 @@
 
 
             <span  class="view_actions pull-right">
-                <a class="btn btn-default" ng-class="size ? 'btn-' + size : ''" ng-href="#!/users/delete/{{selectedUser.name}}">
+                <a class="btn btn-default" ng-class="size ? 'btn-' + size : ''" ng-href="#!/users/delete/{{ctrl.selectedUser.name}}">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;
                     <span class="hidden-xs" translate="DELETE">Delete</span>
                 </a></ma-edit-button>
@@ -33,14 +33,14 @@
             <span class = "pull-right">&nbsp;&nbsp;</span>
 
             <span  class="view_actions pull-right">
-                <a class="btn btn-default" ng-class="size ? 'btn-' + size : ''" ng-href="#!/users/edit/{{selectedUser.name}}">
+                <a class="btn btn-default" ng-class="size ? 'btn-' + size : ''" ng-href="#!/users/edit/{{ctrl.selectedUser.name}}">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;
                     <span class="hidden-xs" translate="EDIT">Edit</span>
                 </a></ma-edit-button>
             </span>
 
             <h1>
-                <span class="">{{selectedUser.name}}</span>
+                <span class="">{{ctrl.selectedUser.name}}</span>
             </h1>
         </div>
     </div>
@@ -48,8 +48,7 @@
 <div class = "grid">
     <div class="row" id="create-view" ng-class="::'ng-admin-entity-' + formController.entity.name()">
         <form class="col-lg-12 form-horizontal ng-pristine ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength ng-valid-required"
-              name="formController.form"
-              ng-submit="createUser()">
+              name="formController.form">
 
 
             <div>
@@ -59,7 +58,7 @@
                     <label class="col-sm-2 control-label ng-binding">Username</label>
                     <div class="show-value col-sm-10 col-md-8 col-lg-7">
                         <div class="ng-admin-type-string">
-                            <span class="ng-binding" ng-bind = "selectedUser.name"></span>
+                            <span class="ng-binding" ng-bind = "ctrl.selectedUser.name"></span>
                         </div>
                     </div>
                 </div>
@@ -68,7 +67,7 @@
                     <label class="col-sm-2 control-label ng-binding">Email Address</label>
                     <div class="show-value col-sm-10 col-md-8 col-lg-7">
                         <div class="ng-admin-type-string">
-                            <span class="ng-binding" ng-bind = "selectedUser.email"></span>
+                            <span class="ng-binding" ng-bind = "ctrl.selectedUser.email"></span>
                         </div>
                     </div>
                 </div>
@@ -78,7 +77,7 @@
                     <label class="col-sm-2 control-label ng-binding">Active</label>
                     <div class="show-value col-sm-10 col-md-8 col-lg-7">
                         <div class="ng-admin-type-string">
-                            <span  class = "glyphicon" ng-class="{'glyphicon-ok': !!selectedUser.active, 'glyphicon-remove': !selectedUser.active }"></span>
+                            <span  class = "glyphicon" ng-class="{'glyphicon-ok': !! ctrl.selectedUser.active, 'glyphicon-remove': ! ctrl.selectedUser.active }"></span>
                         </div>
                     </div>
                 </div>

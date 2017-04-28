@@ -19,7 +19,7 @@
 
         <form class="col-lg-12 form-horizontal"
               name="newUserForm"
-              ng-submit="submitNewUserForm()"
+              ng-submit="ctrl.submitNewUserForm()"
               novalidate>
 
 
@@ -27,13 +27,16 @@
                 <div  class="form-field form-group has-feedback">
                     <label for="username" class="col-sm-2 control-label">Username</label>
                     <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
-                        <input type="text" ng-model="newUserForm.name" id="username" class="form-control" ng-required="true" ng-minlength="1" ng-maxlength="60">
-                        <span ng-show = "newUserForm.name || ( newUserForm.$error && newUserForm.$submitted)"
+                        <input type="text" ng-model="ctrl.newUserForm.name" id="username" class="form-control" ng-required="true" ng-minlength="1" ng-maxlength="60">
+                        <span ng-show = "ctrl.newUserForm.name || ( ctrl.newUserForm.$error && ctrl.newUserForm.$submitted)"
                               class="glyphicon glyphicon-remove form-control-feedback"
-                              ng-class="newUserForm.name ? 'glyphicon-ok' : 'glyphicon-remove'"
+                              ng-class="ctrl.newUserForm.name ? 'glyphicon-ok' : 'glyphicon-remove'"
                         ></span>
                         <br>
-                        <span class ="text-danger"><small>An account already exists with the name {{newUserForm.name}}</small></span>
+                        <span class ="text-danger"
+                              ng-show="ctrl.newUserForm.$serverError && ( ctrl.newUserForm.name === ctrl.newUserForm.$serverError )"
+                        >
+                            <small>An account already exists with the name {{strl.newUserForm.$serverError}}</small></span>
 
 
                     </div>
@@ -43,11 +46,11 @@
                     <label for="password" class="col-sm-2 control-label ng-binding">Password</label>
 
                     <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
-                        <input type="password"  ng-model="newUserForm.password" id="password" class="form-control" ng-required="true" ng-minlength="0" ng-maxlength="60">
+                        <input type="password"  ng-model="ctrl.newUserForm.password" id="password" class="form-control" ng-required="true" ng-minlength="0" ng-maxlength="60">
                         <span
-                                ng-show="newUserForm.password || ( newUserForm.$error && newUserForm.$submitted)"
+                                ng-show="ctrl.newUserForm.password || ( ctrl.newUserForm.$error && ctrl.newUserForm.$submitted)"
                                 class="glyphicon glyphicon-remove form-control-feedback"
-                                ng-class="newUserForm.password ? 'glyphicon-ok' : 'glyphicon-remove'"
+                                ng-class="ctrl.newUserForm.password ? 'glyphicon-ok' : 'glyphicon-remove'"
                         ></span>
                     </div>
                 </div>
@@ -56,11 +59,11 @@
                     <label for="email" class="col-sm-2 control-label ng-binding">Email Address</label>
 
                     <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
-                        <input type="email"  ng-model="newUserForm.email" id="email"  class="form-control" ng-required="false" ng-minlength="0" ng-maxlength="60">
+                        <input type="email"  ng-model="ctrl.newUserForm.email" id="email"  class="form-control" ng-required="false" ng-minlength="0" ng-maxlength="60">
                         <span
-                                ng-show="newUserForm.email"
+                                ng-show="ctrl.newUserForm.email"
                                 class="glyphicon glyphicon-remove form-control-feedback"
-                                ng-class="newUserForm.email ? 'glyphicon-ok' : 'glyphicon-remove'"
+                                ng-class="ctrl.newUserForm.email ? 'glyphicon-ok' : 'glyphicon-remove'"
                         ></span>
                     </div>
                 </div>

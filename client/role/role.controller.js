@@ -4,52 +4,54 @@
 'use strict';
 
 angular.module('app.role')
-  .controller('RoleCtrl', ['$scope', '$location', 'userService','alertService', 'user', 'adminLevels', 'locations', 'facilities', 'programs', 'facilityPrograms',  function($scope, $location, userService, alertService, user, adminLevels, locations, facilities, programs, facilityPrograms){
+  .controller('RoleCtrl', ['$scope', '$location', 'userService','alertService', 'user', 'adminLevels', 'locations', 'facilities', 'programs', 'facilityPrograms', 'SETTINGS',  function($scope, $location, userService, alertService, user, adminLevels, locations, facilities, programs, facilityPrograms, SETTINGS){
 
-    $scope.user =  user;
-    $scope.userTypes =  ['Dashboard', 'Mobile'];
-    $scope.adminLevels =  adminLevels;
-    $scope.locations =  locations;
-    $scope.facilities =  facilities;
-    $scope.programs = programs;
-    $scope.facilityPrograms = facilityPrograms;
+    var vm = this;
+
+    vm.user =  user;
+    vm.userTypes =  SETTINGS.userTypes;
+    vm.adminLevels =  adminLevels;
+    vm.locations =  locations;
+    vm.facilities =  facilities;
+    vm.programs = programs;
+    vm.facilityPrograms = facilityPrograms;
 
 
 
-    $scope.submitUpdateUserRoleForm = function () {
+    vm.submitUpdateUserRoleForm = function () {
 
-      if ($scope.updateUserRoleForm.$error && !_.isEmpty($scope.updateUserRoleForm.$error)){
+      if (vm.updateUserRoleForm.$error && !_.isEmpty(vm.updateUserRoleForm.$error)){
         return;
       }
 
 
-      $scope.updateUserRoleForm.lomis_stock = {};
+      vm.updateUserRoleForm.lomis_stock = {};
 
-      if ($scope.updateUserRoleForm.type === 'Dashboard') {
-        $scope.updateUserRoleForm.lomis_stock.mobile = {};
+      if (vm.updateUserRoleForm.type === vm.userTypes[0]) {
+        vm.updateUserRoleForm.lomis_stock.mobile = {};
         var adminLevelIndex = -1;
-        for(var i in $scope.adminLevels){ if ($scope.adminLevels[i]._id === $scope.updateUserRoleForm.access.level){adminLevelIndex = i; break;}}
+        for(var i in vm.adminLevels){ if (vm.adminLevels[i]._id === vm.updateUserRoleForm.access.level){adminLevelIndex = i; break;}}
 
-        $scope.updateUserRoleForm.lomis_stock.dashboard = {access: {items:[], level: $scope.updateUserRoleForm.access.level}};
+        vm.updateUserRoleForm.lomis_stock.dashboard = {access: {items:[], level: vm.updateUserRoleForm.access.level}};
         var item = {};
-        item[$scope.updateUserRoleForm.access.level] = [];
-        item[$scope.updateUserRoleForm.access.level].push($scope.updateUserRoleForm.locations[adminLevelIndex + ""]);
-        $scope.updateUserRoleForm.lomis_stock.dashboard.access.items.push(item);
+        item[vm.updateUserRoleForm.access.level] = [];
+        item[vm.updateUserRoleForm.access.level].push(vm.updateUserRoleForm.locations[adminLevelIndex + ""]);
+        vm.updateUserRoleForm.lomis_stock.dashboard.access.items.push(item);
 
 
       } else {
-        $scope.updateUserRoleForm.lomis_stock.dashboard = {};
-        if ($scope.updateUserRoleForm.facility){
-          $scope.updateUserRoleForm.lomis_stock.mobile = {};
-          $scope.updateUserRoleForm.lomis_stock.mobile.facilities = [];
+        vm.updateUserRoleForm.lomis_stock.dashboard = {};
+        if (vm.updateUserRoleForm.facility){
+          vm.updateUserRoleForm.lomis_stock.mobile = {};
+          vm.updateUserRoleForm.lomis_stock.mobile.facilities = [];
           var entry = {};
-          entry[$scope.updateUserRoleForm.facility] = [$scope.updateUserRoleForm.program];
-          $scope.updateUserRoleForm.lomis_stock.mobile.facilities.push( entry);
+          entry[vm.updateUserRoleForm.facility] = [vm.updateUserRoleForm.program];
+          vm.updateUserRoleForm.lomis_stock.mobile.facilities.push( entry);
         }
       }
-      userService.update({name : $scope.user.name, _id: $scope.user._id, lomis_stock: $scope.updateUserRoleForm.lomis_stock}).then(function(response){
+      userService.update({name : vm.user.name, _id: vm.user._id, lomis_stock:vm.updateUserRoleForm.lomis_stock}).then(function(response){
         alertService.showSuccessMessage("Changes successfully saved");
-        var path =  'users/view/' + $scope.user.name;
+        var path =  'users/view/' + vm.user.name;
         $location.path(path);
       }).catch(function(err) {
         alertService.showErrorMessage('Entry was not updated' + err);
@@ -61,17 +63,20 @@ angular.module('app.role')
     };
 
 
-    $scope.getUserType = function () {
-      if (user && user.lomis_stock.mobile && user.lomis_stock.dashboard){
-        return _.isEmpty(user.lomis_stock.mobile) ? 'Dashboard' : 'Mobile';
+    vm.getUserType = function () {
+      if (user && user.lomis_stock){
+        var possibleUserTypes =  Object.keys(user.lomis_stock);
+        var userType = '';
+        for (var i in possibleUserTypes){
+          userType +=  _.isEmpty(user.lomis_stock[possibleUserTypes[i]]) ? ' ' + possibleUserTypes[i] : '';
+        }
+        return userType.trim();
       }
       return '';
     };
 
 
-    $scope.getLocation = function (index) {
-      //so what to do?
-      //level =  index;
+    vm.getLocation = function (index) {
 
     };
 

@@ -9,6 +9,7 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
     $routeProvider.when('/users/list', {
       templateUrl: 'user/partials/list.html',
       controller: 'UserCtrl',
+      controllerAs: 'ctrl',
       resolve: {
         users: ['userService', function (userService) {
           return userService.getAll().then(function (resp) {
@@ -26,6 +27,7 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
     }).when('/users/create', {
       templateUrl: 'user/partials/create.html',
       controller: 'UserCtrl',
+      controllerAs: 'ctrl',
       resolve:{
         users: function(){ return [];},
         selectedUser: function(){ return null;}
@@ -33,6 +35,7 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
     }).when('/users/edit/:id', {
       templateUrl: 'user/partials/edit.html',
       controller: 'UserCtrl',
+      controllerAs: 'ctrl',
       resolve:{
         users: function(){ return [];},
         selectedUser:['userService', '$route', function(userService, $route){
@@ -42,6 +45,7 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
     }).when('/users/view/:id', {
       templateUrl: 'user/partials/view.html',
       controller: 'UserCtrl',
+      controllerAs: 'ctrl',
       resolve:{
         users: function(){ return [];},
         selectedUser:['userService','$route',function(userService, $route){
@@ -51,6 +55,7 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
     }).when('/users/delete/:id', {
       templateUrl: 'user/partials/delete.html',
       controller: 'UserCtrl',
+      controllerAs: 'ctrl',
       resolve:{
         users: function(){ return [];},
         selectedUser: ['userService', '$route', function(userService, $route){

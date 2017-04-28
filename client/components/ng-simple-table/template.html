@@ -1,13 +1,13 @@
-<div> 
+<div>
     <div ng-show="allowFilter">
         <br>
         &nbsp;&nbsp;<input type="text" ng-change="filter()"  ng-class="{{filterFieldClass}}" ng-model="searchString" placeholder="{{filterFieldPlaceholder}}"/>
     </div>
-    <table ng-class="tableClass"> 
+    <table ng-class="tableClass">
         <thead >
             <th width = "5%" ng-show="allowSelect">
                 <input type = "checkbox" ng-model="selectAll" ng-change = "toggleSelectAll()" />
-            </th> 
+            </th>
             <th ng-repeat = "head in tableHeader" class = "{{headerClass}}">
                 {{head.replace('_', ' ') | uppercase}} &nbsp;&nbsp;
                 <a ng-show = "{{allowSort}}" ng-click = "sortBy($index, 1)" class = "fa fa-angle-down"></a>&nbsp;&nbsp;
@@ -24,22 +24,8 @@
                         <span ng-show="{{rowActionClasses.length > 0}}"span aria-hiden="true" class="{{rowActionClasses[$index]}}" ></span>&nbsp;
                         <span >{{action | uppercase}}</span>
                     </a>
-
-
-
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
-
-<!--
-
-                    <span  ng-repeat = "action in rowActions" >
-                    <a href ng-click = "rowActionCallback({actionIndex: $index, rowIndex: $parent.$index})">
-                        <span ng-show="{{rowActionClasses.length > 0}}"span aria-hiden="true" class="{{rowActionClasses[$index]}}"></span>
-                        {{action.toUpperCase()}}
-                    </a>&nbsp;&nbsp;
-                    </span>
-
--->
