@@ -3,23 +3,23 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        clean: ["dist", '.tmp'],
+        clean: ["app/dist", '.tmp'],
 
         copy: {
             main: {
                 expand: true,
-                cwd: '',
-                src:['app/**'],
-                dest: 'dist/'
+              cwd: 'app/client/',
+              src:['**'],
+              dest: 'app/dist/'
             }
         },
 
         useminPrepare: {
-            html: 'app/index.html'
+            html: 'app/client/index.html'
         },
 
         usemin: {
-            html: ['dist/app/index.html']
+            html: ['app/dist/index.html']
         },
 
         uglify: {
@@ -42,7 +42,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('adjustBuiltLinks', 'Performing Final Cleanups', function() {
 
-        var indexDist='dist/app/index.html';
+        var indexDist='app/dist/index.html';
 
         grunt.log.writeln('Performing Final Cleanups');
 

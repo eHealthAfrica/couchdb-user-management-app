@@ -5,8 +5,8 @@ var bodyParser = require('body-parser');
 var http = require('http');
 
 var cradle = require('cradle');
-var config =  require('./config/index');
-var ums_app = require('./app');
+var config =  require('./../app/config/index');
+var ums_app = require('../app/server/app');
 
 
 var app = express();

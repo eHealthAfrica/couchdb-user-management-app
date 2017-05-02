@@ -1,6 +1,6 @@
 'use strict';
 
-var User = require('./user.model');
+var User = require('./user.model.js');
 
 /**
  * Get all users
