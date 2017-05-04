@@ -4,7 +4,7 @@
         <div class = ' page-header'>
 
             <div class="ma-list-button ">
-                <a class="btn btn-default pull-right ma-list-button " ng-class="size ? 'btn-' + size : ''" ui-sref="list(stateParams)" href="#!/users/list">
+                <a class="btn btn-default pull-right ma-list-button "  href="#!/users/list">
                     <span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;<span class="hidden-xs ng-scope" translate="LIST">List</span>
                 </a>
             </div>
@@ -15,7 +15,7 @@
     </div>
 </div>
 <div class = "grid">
-    <div class="row" id="create-view" ng-class="::'ng-admin-entity-' + formController.entity.name()">
+    <div class="row" id="create-view" >
 
         <form class="col-lg-12 form-horizontal"
               name="newUserForm"
@@ -58,7 +58,7 @@
                 <div class="form-field form-group has-feedback">
                     <label for="email" class="col-sm-2 control-label ng-binding">Email Address</label>
 
-                    <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
+                    <div class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
                         <input type="email"  ng-model="ctrl.newUserForm.email" id="email"  class="form-control" ng-required="false" ng-minlength="0" ng-maxlength="60">
                         <span
                                 ng-show="ctrl.newUserForm.email"

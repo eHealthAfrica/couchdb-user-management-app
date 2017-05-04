@@ -14,7 +14,7 @@ The [LMIS-Dashboard](https://github.com/eHealthAfrica/LMIS-Dashboard) project is
 You will then need to modify the file `server/routes.js` by adding the following lines:
 
 ```
-var ums_app =  require(path.join(config.root, 'node_modules/couchdb-user-management-app/app'));
+var ums_app =  require(path.join(config.root, 'node_modules/couchdb-user-management-app'));
 app.use('/ums', ums_app([couchConfig]));
 ```
 
@@ -33,16 +33,14 @@ The couch config object is expected to be in the format stated below
 
 #### Install and Serve
 
-Clone and install as usual:
+Add the following line to your package.json  dependency
 
-```bash
-git clone git@github.com:eHealthAfrica/couchdb-user-management-app.git
-or (only while branch has not been merged)
-git clone -b V.2 git@github.com:eHealthAfrica/couchdb-user-management-app.git
-cd couchdb-ums
-npm install 
-bower install
 ```
+couchdb-user-management-app": "eHealthAfrica/couchdb-user-management-app#[BRANCH_NAME]
+```
+
+
+
 
 
 ### Testing

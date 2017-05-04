@@ -43,7 +43,7 @@
                 <div class="form-field form-group has-feedback">
                     <label for="email" class="col-sm-2 control-label ng-binding">Email Address</label>
 
-                    <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7" ng-init="updateUserForm.email =  selectedUser.email">
+                    <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7" ng-init="ctrl.updateUserForm.email =  ctrl.selectedUser.email">
                         <input type="email"  ng-model="ctrl.updateUserForm.email" id="email"  class="form-control" ng-required="false" ng-minlength="0" ng-maxlength="60">
                     </div>
                 </div>

@@ -3,7 +3,7 @@
     <div class = ' page-header'>
 
       <div class="ma-list-button">
-        <a class="btn btn-default pull-right " ng-class="size ? 'btn-' + size : ''" ui-sref="list(stateParams)" href="#!/users/list">
+        <a class="btn btn-default pull-right "  href="#!/users/list">
           <span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;<span class="hidden-xs ng-scope" translate="LIST">List</span>
         </a>
       </div>
@@ -24,7 +24,7 @@
       <div>
         <div id="username" class="form-field form-group has-feedback">
           <label for="name" class="col-sm-2 control-label">Username</label>
-          <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
+          <div  class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
             <input type="text" ng-model="ctrl.user.name" id="name" class="form-control"  disabled>
           </div>
         </div>
@@ -41,7 +41,7 @@
           </div>
         </div>
 
-        <div  class="form-field form-group has-feedback" ng-if="ctrl.updateUserRoleForm.type === 'Dashboard'">
+        <div  class="form-field form-group has-feedback" ng-if="ctrl.updateUserRoleForm.type === 'dashboard'">
           <label for="accessLevel" class="col-sm-2 control-label">Access Level</label>
           <div class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7"
                ng-init="ctrl.updateUserRoleForm.access.level =  ctrl.user.lomis_stock.dashboard.access.level"
@@ -55,7 +55,7 @@
 
         <div ng-repeat = "adminLevel in ctrl.adminLevels | getWithAncestors : ctrl.updateUserRoleForm.access.level"
              class="form-field form-group has-feedback"
-             ng-if="ctrl.updateUserRoleForm.type == 'Dashboard' && ctrl.updateUserRoleForm.access.level">
+             ng-if="ctrl.updateUserRoleForm.type == 'dashboard' && ctrl.updateUserRoleForm.access.level">
           <label for="name" class="col-sm-2 control-label">{{adminLevel.name}}</label>
           <div class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7"
                ng-init="ctrl.updateUserRoleForm.locations[$index] =  ctrl.getLocation($index)"
@@ -64,11 +64,10 @@
                     ng-model="ctrl.updateUserRoleForm.locations[$index]"  class="form-control"
                     ng-options="location._id as location.name for location in ctrl.locations | filter :{adminLevel: (  adminLevel._id)}"
                     ng-required="true"
-            <!--ng-options ="location.name as location.name for location in locationsInAdminLevel[$index]"-->
             ></select>
 
             <select ng-if="$index > 0"
-                    ng-model="updateUserRoleForm.locations[$index]"  class="form-control"
+                    ng-model="ctrl.updateUserRoleForm.locations[$index]"  class="form-control"
                     ng-options="location._id as location.name for location in ctrl.locations | getChildrenLocation : ctrl.updateUserRoleForm.locations[$index - 1] : $index - 1"
                     ng-required="true"
             <!--ng-options ="location.name as location.name for location in locationsInAdminLevel[$index]"-->
@@ -79,7 +78,7 @@
 
 
 
-        <div  class="form-field form-group has-feedback" ng-if="ctrl.updateUserRoleForm.type === 'Mobile'">
+        <div  class="form-field form-group has-feedback" ng-if="ctrl.updateUserRoleForm.type === 'mobile'">
           <label for="facility" class="col-sm-2 control-label">FACILIY</label>
 
           <div class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
@@ -91,7 +90,7 @@
           </div>
         </div>
 
-        <div id="usertype" class="form-field form-group has-feedback" ng-if="ctrl.updateUserRoleForm.type === 'Mobile'">
+        <div id="usertype" class="form-field form-group has-feedback" ng-if="ctrl.updateUserRoleForm.type === 'mobile'">
           <label for="name" class="col-sm-2 control-label">PROGRAM</label>
 
           <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
