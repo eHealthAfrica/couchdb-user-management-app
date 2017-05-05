@@ -1,12 +1,12 @@
 
-    <div class="row list-header" >
-        <div class = "col-lg-12">
-            <div class = ' page-header'>
-                <a class="btn btn-default pull-right" ng-class="size ? 'btn-' + size : ''" href="#!/users/create">
-                    <span class="fa fa-fw fa-user-plus" aria-hidden="true"></span>&nbsp;<span class="hidden-xs ng-scope" translate="CREATE">Create</span>
-                </a>
-                <span class="pull-right" >&nbsp;&nbsp;</span>
-                <span class="pull-right">
+<div class="row list-header" >
+  <div class = "col-lg-12">
+    <div class = ' page-header'>
+      <a class="btn btn-default pull-right" ng-class="size ? 'btn-' + size : ''" href="#!/users/create">
+        <span class="fa fa-fw fa-user-plus" aria-hidden="true"></span>&nbsp;<span class="hidden-xs ng-scope" translate="CREATE">Create</span>
+      </a>
+      <span class="pull-right" >&nbsp;&nbsp;</span>
+      <span class="pull-right">
                     <span class="btn-group dropdown" uib-dropdown="">
                         <button type="button" ng-if="ctrl.getSelectionCount()" class="btn btn-default dropdown-toggle" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
                             <span  class="ng-scope">{{ctrl.getSelectionCount()}} Selected</span>&nbsp;<span class="caret"></span>
@@ -24,50 +24,51 @@
                     </span>
                 </span>
 
-                <span ng-if="export" class="ng-scope pull-right">
+      <span ng-if="export" class="ng-scope pull-right">
                     <a class="btn btn-default" ng-click="exportToCsv()">
                         <span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;
                         <span class="hidden-xs ng-scope" translate="EXPORT">Export</span>
                     </a>
                 </span>
 
-                <h1>
-                    <span class="">Users</span>
-                </h1>
-            </div>
-        </div>
+      <h1>
+        <span class="">Users</span>
+      </h1>
     </div>
-    <div class = "grid">
-        <div class = "row list-view ng-admin-entity-uom-category">
-                <div ngsimpletable
-                     allow-filter = 'ctrl.simpleTableConfig.allowFilter'
-                     allow-select = 'ctrl.simpleTableConfig.allowSelect'
-                     allow-sort = 'ctrl.simpleTableConfig.allowSort'
-                     filter-field-class = 'form-control '
-                     filter-field-placeholder = '  filter'
-                     header-class = 'ng-admin-column-name ng-admin-type-string'
-                     row-actions = 'ctrl.simpleTableConfig.rowActions'
-                     row-action-callback = 'ctrl.rowActionCallback(actionIndex, rowIndex)'
-                     row-action-class = 'ng-admin-column-actions'
-                     row-action-classes = 'ctrl.simpleTableConfig.rowActionClasses'
-                     row-class = 'ng-admin-column-name ng-admin-type-string'
-                     row-selection = 'ctrl.selection'
-                     table-class = 'grid table table-condensed table-hover table-stripped'
-                     table-data = 'ctrl.users'
-                     table-header = 'ctrl.simpleTableConfig.tableHeader'
+  </div>
+</div>
+<div class = "grid">
+  <div class = "row list-view ng-admin-entity-uom-category">
+    <div ngsimpletable
+         allow-filter = 'ctrl.simpleTableConfig.allowFilter'
+         allow-select = 'ctrl.simpleTableConfig.allowSelect'
+         allow-sort = 'ctrl.simpleTableConfig.allowSort'
+         filter-field-class = 'form-control '
+         filter-field-placeholder = '  filter'
+         header-class = 'ng-admin-column-name ng-admin-type-string'
+         row-actions = 'ctrl.simpleTableConfig.rowActions'
+         row-action-callback = 'ctrl.rowActionCallback(actionIndex, rowIndex)'
+         row-action-class = 'ng-admin-column-actions'
+         row-action-classes = 'ctrl.simpleTableConfig.rowActionClasses'
+         row-class = 'ng-admin-column-name ng-admin-type-string'
+         row-selection = 'ctrl.selection'
+         table-class = 'grid table table-condensed table-hover table-stripped'
+         table-data = 'ctrl.users'
+         table-header = 'ctrl.simpleTableConfig.tableHeader'
 
-                ></div>
-            </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <nav class="pagination-bar">
-                    <div class="total">
-                        <!--strong>1</strong> - <strong>5</strong> of <strong>5</strong-->
-                    </div>
-                </nav>
-            </div>
-        </div>
+    ></div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div ngsimplepagination
+           total =     'ctrl.simplePaginationConfig.total'
+           page-size = 'ctrl.simplePaginationConfig.pageSize'
+           offset =    'ctrl.simplePaginationConfig.offset'
+           on-page-requested = 'ctrl.onPageRequested(limit, skip)'
+      ></div>
     </div>
+  </div>
+</div>
 
 
 

@@ -24,17 +24,22 @@ angular.module('app.user')
       return _this.singleRecordKey;
     };
 
-    this.getAll =  function () {
-      var promise = $http.get(  _this.baseUrl, {  withCredentials: true });
+    this.getPage = function (skip, limit) {
+      var promise = $http({
+        method: 'GET',
+        url: _this.baseUrl,
+        params: {skip: skip, limit: limit},
+        withCredentials: true
+      });
       return promise.then(function (response) {
+        console.log("Response Gotten>>", response);
         return response.data;
-        }, function(err) {
+      }, function(err) {
         return err;
       });
     };
 
     this.getOne =  function (name) {
-     // id =  'org.couchdb.user:'+ name;
       var promise = $http({
         url: _this.baseUrl + '/'+  name,
         withCredentials: true
