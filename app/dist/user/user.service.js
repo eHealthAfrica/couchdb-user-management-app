@@ -32,7 +32,6 @@ angular.module('app.user')
         withCredentials: true
       });
       return promise.then(function (response) {
-        console.log("Response Gotten>>", response);
         return response.data;
       }, function(err) {
         return err;

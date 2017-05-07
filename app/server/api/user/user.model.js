@@ -128,7 +128,7 @@ function update (name, data, cb) {
 function fetchPaged (skip, limit, cb) {
   var d = q.defer();
   allPromise = d.promise;
-  db.view('couchdb_ums/plain',{ skip: skip, limit: limit}, function(err, rows){
+  db.view('couchdb-user-management-app/pager',{ skip: skip, limit: limit}, function(err, rows){
     if (err) {
       d.reject(err);
     } else {
