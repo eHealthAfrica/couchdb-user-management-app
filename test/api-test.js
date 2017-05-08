@@ -16,19 +16,11 @@ chai.use(chaiHttp);
 
 var testAccountName = 'chai_latte_with_cinnamon'.replace(/\s/g, '-');
 var secondTestAccountName = 'vanilla_latte_without_cinnamon';
+var thirdTestAccountName = 'caramelatte';
+var fourthTestAccountName = 'americano';
 
 
 describe('/api/users', function() {
-  it('should list ALL users on /api/users GET', function(done) {
-    chai.request(server)
-      .get('/api/users')
-      .end(function(err, res){
-        res.should.have.status(200);
-        res.should.be.json;
-        res.body.should.be.a('array');
-        done();
-      });
-  });
 
   it('should add a SINGLE user on /api/users POST', function(done) {
     chai.request(server)
@@ -47,6 +39,25 @@ describe('/api/users', function() {
       });
 
   });
+
+
+
+
+  it('should list selected users on /api/users GET', function(done) {
+    chai.request(server)
+      .get('/api/users?skip=0&limit=6')
+      .end(function(err, res){
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('total_rows');
+        res.body.should.have.property('offset');
+        res.body.should.have.property('rows');
+        res.body.rows.should.be.a('array');
+        done();
+      });
+  });
+
 
   it('should return an error message when trying to create a user that already exists on /api/users POST', function(done) {
     chai.request(server)

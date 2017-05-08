@@ -24,16 +24,15 @@ exports.db = db;
 exports.id = id;
 exports.create = create;
 exports.remove = remove;
-exports.all = all;
 exports.findById = findById;
 exports.findByName = findByName;
 exports.update =  update;
+exports.fetchPaged =  fetchPaged;
 
-function id(name) {
+function id (name) {
   return 'org.couchdb.user:' + name;
 }
-
-function exists(name, cb) {
+function exists (name, cb) {
   findByName(name, function(err, user) {
     if (err) {
       if (err.error === 'not_found') {
@@ -47,7 +46,7 @@ function exists(name, cb) {
   });
 }
 
-function create(data, cb) {
+function create (data, cb) {
   var error = new errors.ValidationError();
 
   data = data || {};
@@ -80,7 +79,7 @@ function create(data, cb) {
       type: 'user',
       roles: data.roles || [],
       email: data.email || ''
-     // access: data.access || {}
+      // access: data.access || {}
     };
 
     db.save(id(name), user, function(err, res) {
@@ -96,8 +95,7 @@ function create(data, cb) {
     });
   });
 }
-
-function remove(name, cb) {
+function remove (name, cb) {
   exists(name, function(err, exists, user) {
     if (err) {
       return cb(err);
@@ -109,56 +107,7 @@ function remove(name, cb) {
     db.remove(user._id, user._rev, cb);
   });
 }
-
-function all(cb) {
-  if (!allPromise) {
-    var d = q.defer();
-    allPromise = d.promise;
-
-    db.all({include_docs: true}, function(err, rows) {
-      if (err) {
-        d.reject(err);
-      } else {
-        d.resolve(
-          utility
-            .removeDesignDocs(rows.toArray())
-            .map(function (row) {
-              return row;
-            })
-        );
-      }
-    });
-  }
-
-  allPromise
-    .then(function(rows) {
-      cb(null, rows);
-    })
-    .catch(function(err) {
-      allPromise = null;
-      cb(err);
-    })
-}
-
-function findById(id, cb, auth) {
-  db.get(id, function(err, user) {
-   if (err) {
-
-      return cb(err);
-    }
-
-    cb(null, user);
-  });
-}
-
-function findByName(name, cb, auth) {
-  findById(id(name), cb, auth);
-}
-
-
-
-
-function update(name, data, cb) {
+function update (name, data, cb) {
   exists(name, function(err, exists, user) {
     if (err) {
       return cb(err);
@@ -169,6 +118,49 @@ function update(name, data, cb) {
     db.merge(user._id, data , cb);
   });
 }
+
+
+
+
+
+
+
+function fetchPaged (skip, limit, cb) {
+  var d = q.defer();
+  allPromise = d.promise;
+  db.view('couchdb-user-management-app/pager',{ skip: skip, limit: limit}, function(err, rows){
+    if (err) {
+      d.reject(err);
+    } else {
+      d.resolve(rows);
+    }
+  });
+
+
+  allPromise
+    .then(function(rows) {
+      cb(null, rows);
+    })
+    .catch(function(err) {
+      allPromise = null;
+      cb(err);
+    });
+}
+
+function findById (id, cb, auth) {
+  db.get(id, function(err, user) {
+    if (err) {
+
+      return cb(err);
+    }
+
+    cb(null, user);
+  });
+}
+function findByName (name, cb, auth) {
+  findById(id(name), cb, auth);
+}
+
 
 
 

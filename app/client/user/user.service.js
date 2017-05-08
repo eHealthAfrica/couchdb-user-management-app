@@ -6,11 +6,8 @@ angular.module('app.user')
   .service('userService', ['$http', '$q', function ($http, $q) {
 
     var _this =  this;
-
     this.baseUrl = 'api/users';
     this.singleRecordKey = 'name';
-
-
 
     this.setBaseUrl =  function (url) {
       _this.baseUrl = url.replace(/\/$/, '');
@@ -24,17 +21,21 @@ angular.module('app.user')
       return _this.singleRecordKey;
     };
 
-    this.getAll =  function () {
-      var promise = $http.get(  _this.baseUrl, {  withCredentials: true });
+    this.getPage = function (skip, limit) {
+      var promise = $http({
+        method: 'GET',
+        url: _this.baseUrl,
+        params: {skip: skip, limit: limit},
+        withCredentials: true
+      });
       return promise.then(function (response) {
         return response.data;
-        }, function(err) {
+      }, function(err) {
         return err;
       });
     };
 
     this.getOne =  function (name) {
-     // id =  'org.couchdb.user:'+ name;
       var promise = $http({
         url: _this.baseUrl + '/'+  name,
         withCredentials: true
@@ -79,9 +80,5 @@ angular.module('app.user')
         return response;
       });
     };
-
-
-
-
   }]);
 
