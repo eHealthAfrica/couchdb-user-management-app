@@ -1,22 +1,16 @@
 /* global angular */
 'use strict';
 
-angular.module('ng.simple.pagination', []).directive('ngsimplepagination', function(){
-
+angular.module('ng.simple.pagination', []).directive('ngsimplepagination', function () {
   return {
-
     scope : {
-
       total: '=',
       pageSize: '=',
       offset: '=',
       onPageRequested: '&'
-
-
     },
 
-    link: function(scope, element, attrs){
-
+    link: function (scope, element, attrs) {
       scope.currentPage = 0;
       scope.pageCount = 0;
       scope.pageResized =  false;
@@ -28,18 +22,16 @@ angular.module('ng.simple.pagination', []).directive('ngsimplepagination', funct
         scope.pageStart = (scope.currentPage * scope.pageSize + 1);
         scope.pageEnd = (scope.currentPage * scope.pageSize ) +  scope.pageSize;
 
-
-        if (scope.pageStart >  scope.total){ scope.pageStart =  scope.total;}
-        if (scope.pageEnd >  scope.total){scope.pageEnd =  scope.total;}
-
+        if (scope.pageStart >  scope.total) { scope.pageStart =  scope.total;}
+        if (scope.pageEnd >  scope.total) {scope.pageEnd =  scope.total;}
 
         if (newVal === oldVal) {
-          scope.currentPage =  Math.floor( scope.offset / scope.pageSize);
-          scope.pageCount =  Math.ceil (scope.total / scope.pageSize);
-          if (scope.pageResized){
-            scope.pageResized =  false;
-            scope.onPageRequested({ limit: scope.pageSize, skip: (newVal * scope.offset)});
-          }
+            scope.currentPage =  Math.floor( scope.offset / scope.pageSize);
+            scope.pageCount =  Math.ceil (scope.total / scope.pageSize);
+            if (scope.pageResized) {
+              scope.pageResized =  false;
+              scope.onPageRequested({ limit: scope.pageSize, skip: (newVal * scope.offset)});
+            }
         }else {
           scope.onPageRequested({ limit: scope.pageSize, skip: (newVal * scope.pageSize)});
         }
@@ -58,17 +50,10 @@ angular.module('ng.simple.pagination', []).directive('ngsimplepagination', funct
       scope.navigateTo = function (page) {
         scope.currentPage = page;
       };
-
-
-
     },
 
     restrict: 'AEC',
     replace: true,
     templateUrl: 'components/ng-simple-pagination/template.html'
-
-
   };
-
-
 });

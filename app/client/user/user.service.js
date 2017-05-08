@@ -6,11 +6,8 @@ angular.module('app.user')
   .service('userService', ['$http', '$q', function ($http, $q) {
 
     var _this =  this;
-
     this.baseUrl = 'api/users';
     this.singleRecordKey = 'name';
-
-
 
     this.setBaseUrl =  function (url) {
       _this.baseUrl = url.replace(/\/$/, '');
@@ -83,9 +80,5 @@ angular.module('app.user')
         return response;
       });
     };
-
-
-
-
   }]);
 
