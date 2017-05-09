@@ -2,9 +2,17 @@
   <label class="col-sm-2 control-label ng-binding">Role</label>
   <div class="show-value col-sm-10 col-md-8 col-lg-7">
     <div class="ng-admin-type-string">
-      <label class="label label-success" ng-bind="Ctrl.getRole()"></label>
-      <label class="label label-warning" ng-bind="Ctrl.getAdminLevel()"></label>
-      <label class="label label-info" ng-bind="Ctrl.getLocations()"></label>
+      <label class = "label label-default"
+             ng-if="Ctrl.hasNoRole()">Unassigned</label>
+      <label class="label label-success"
+             ng-if="! Ctrl.hasNoRole ()"
+             ng-bind="Ctrl.getRole()"></label>
+      <label class="label label-warning"
+             ng-if="! Ctrl.hasNoRole ()"
+             ng-bind="Ctrl.getAdminLevel()"></label>
+      <label class="label label-info"
+             ng-if="! Ctrl.hasNoRole ()"
+             ng-bind="Ctrl.getLocations()"></label>
     </div>
   </div>
 </div>

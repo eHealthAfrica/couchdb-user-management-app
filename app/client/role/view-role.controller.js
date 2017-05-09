@@ -7,7 +7,7 @@ angular.module('app.role')
   .controller('ViewRoleCtrl', ['$scope', 'adminLevelService', 'facilityService', 'locationService', function($scope, adminLevelService, facilityService, locationService){
 
     var vm = this;
-    vm.user =  null;
+    vm.user =  $scope.$parent.ctrl.user;
     vm.adminLevels = [];
     vm.locations = [];
     vm.facilities = [];
@@ -39,8 +39,12 @@ angular.module('app.role')
         });
     };
 
+    vm.hasNoRole =  function () {
+      return ! vm.user.lomis_stock;
+    };
+
     vm.getRole = function () {
-      vm.user =  $scope.$parent.ctrl.user;
+
       if (_.isEmpty(vm.user.lomis_stock.mobile) && _.isEmpty(vm.user.lomis_stock.dashboard)) { return 'None'; }
       else if (_.isEmpty(vm.user.lomis_stock.mobile)) { return 'Dashboard'; }
       else { return 'Mobile'; }
@@ -56,7 +60,7 @@ angular.module('app.role')
         }
       }
       return "Unknown Access Level";
-    }
+    };
 
     vm.getLocations = function () {
       if ( vm.getRole() === 'Mobile' ) {
