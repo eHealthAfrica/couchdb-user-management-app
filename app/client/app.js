@@ -12,9 +12,7 @@ angular.module('myApp', [
 ])
   .factory('authInterceptor', [ '$rootScope', '$q', '$cookies', '$window' ,function($rootScope, $q, $cookies, $window) {
     return {
-
       //TODO modify to be more generic
-
       request: function(config) {
         config.headers = config.headers || {};
         if ($cookies.get('token')) {
@@ -25,12 +23,11 @@ angular.module('myApp', [
         return config;
       },
 
-
       responseError: function(response) {
         if (response.status === 401) {
           $rootScope.$emit('unauthorized');
           $cookies.remove('token');
-          // $window.location.href = '/login';
+          $window.location.href = '/login';
           return $q.reject(response);
         } else {
           return $q.reject(response);
@@ -38,7 +35,6 @@ angular.module('myApp', [
       }
     };
   }])
-
   .config(['$locationProvider', '$routeProvider','$httpProvider', function($locationProvider, $routeProvider, $httpProvider) {
     $locationProvider.hashPrefix('!');
     $httpProvider.interceptors.push('authInterceptor');
