@@ -17,11 +17,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 var couchConfig =  config.couch;
 var dbURL = 'http://' + couchConfig.auth.username + ':' +  couchConfig.auth.password + "@" + couchConfig.host.replace('http://', '') + ':' + couchConfig.port;
 
-console.log("Before Entering");
+
 bootstrap(dbURL, '../couchdb', function(error, response) {
-  console.log("Afrter Exiting" +  error +  "//" + response);
-  console.log(response);
-  if (error){  console.log(error); console.log(response); }
+  if (error){  console.log(error); }
 });
 app.use('/', ums_app(couchConfig));
 
