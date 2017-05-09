@@ -12,7 +12,7 @@ angular.module('app.user')
     'PAGE_SIZE',
     function ($scope, $location, alertService, userService, users, PAGE_SIZE) {
       var vm = this;
-      vm.users = _.map(users.rows, 'value');;
+      vm.users = _.map(users.rows, 'value');
       vm.selection = [];
 
       vm.simpleTableConfig = {
