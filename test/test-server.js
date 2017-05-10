@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 var couchConfig =  config.couch;
 var dbURL = 'http://' + couchConfig.auth.username + ':' +  couchConfig.auth.password + "@" + couchConfig.host.replace('http://', '') + ':' + couchConfig.port;
 
+
 bootstrap(dbURL, '../couchdb', function(error, response) {
   if (error){  console.log(error); }
 });

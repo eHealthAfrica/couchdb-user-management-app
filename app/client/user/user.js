@@ -3,7 +3,7 @@
 /* jshint node: true */
 'use strict';
 
-angular.module('app.user', ['ngRoute', 'ng.simple.table', 'ng.simple.pagination']);
+angular.module('app.user', ['ngRoute', 'ng.simple.table', 'ng.simple.pagination' ,'app.role']);
 
 angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
   $routeProvider
