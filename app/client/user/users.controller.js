@@ -21,7 +21,8 @@ angular.module('app.user')
         allowSort:  true,
         rowActions: ['assign role', 'edit', 'show', 'delete'],
         rowActionClasses: ['glyphicon glyphicon-user', 'glyphicon glyphicon-pencil', 'glyphicon glyphicon-eye-open', 'glyphicon glyphicon-trash'],
-        tableHeader: ['name', 'user_type', 'status']
+        tableHeader: ['name', 'user_type', 'status'],
+        toggleFields: [{ name: 'status', positive: 'active'}]
       };
 
       vm.simplePaginationConfig = {
@@ -60,8 +61,29 @@ angular.module('app.user')
         }
       };
 
+      vm.toggleFieldCalllback = function (fieldIndex , rowIndex) {
+        switch (fieldIndex) {
+          case 0 :
+            toggleUserStatus(rowIndex);
+            userService.update(vm.users[rowIndex])
+              .catch (function (err) {
+                toggleUserStatus(rowIndex);
+              });
+            break;
+        }
+      };
+
       vm.getSelectionCount = function () {
         return vm.selection.filter(function(elem){ return elem; }).length;
       };
+
+      function toggleUserStatus (rowIndex) {
+        if ( ! vm.users[rowIndex].status || vm.users[rowIndex].status === 'inactive') {
+          vm.users[rowIndex].status = 'active';
+        }
+        else {
+          vm.users[rowIndex].status = 'inactive';
+        }
+      }
     }
   ]);
