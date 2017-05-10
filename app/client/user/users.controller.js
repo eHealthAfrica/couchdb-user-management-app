@@ -8,11 +8,14 @@ angular.module('app.user')
     '$location',
     'alertService',
     'userService',
+    '$filter',
     'users',
     'PAGE_SIZE',
-    function ($scope, $location, alertService, userService, users, PAGE_SIZE) {
+    function ($scope, $location, alertService, userService, $filter, users, PAGE_SIZE) {
       var vm = this;
-      vm.users = _.map(users.rows, 'value');
+      vm.users = _.forEach(_.map(users.rows, 'value'), function (elem) {
+        elem.user_type = $filter('getUserType')(elem);
+      });
       vm.selection = [];
 
       vm.simpleTableConfig = {
@@ -33,7 +36,9 @@ angular.module('app.user')
 
       vm.onPageRequested = function (skip, limit) {
         userService.getPage(skip, limit).then(function (resp) {
-          vm.users =  _.map(resp.rows, 'value');
+          vm.users = _.forEach(_.map(resp.rows, 'value'), function (elem) {
+            elem.user_type = $filter('getUserType')(elem);
+          });
           vm.simplePaginationConfig.total = resp.total_rows;
           vm.simplePaginationConfig.offset =  resp.offset;
         }).catch(function (err) { console.log(err); return []; });
