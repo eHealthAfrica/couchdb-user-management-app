@@ -16,7 +16,6 @@ angular.module('app.role')
       adminLevelService.getAll()
         .then (function (response) {
           vm.adminLevels = response;
-          console.log(response);
         })
         .catch(function (error) {
           console.log(error);
@@ -34,7 +33,7 @@ angular.module('app.role')
         .then (function (response) {
           vm.locations =  response;
         })
-        .catch (function (response) {
+        .catch (function (error) {
           console.log(error);
         });
     };
