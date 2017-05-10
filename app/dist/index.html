@@ -9,9 +9,7 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,400i" rel="stylesheet">
-    <!-- build:css app.min.css -->
-    <link href="app.css" rel="stylesheet">
-    <!-- endbuild -->
+    <link rel="stylesheet" href="app.min.css"/>
 </head>
 <body >
   <div ui-view="ng-admin" class="">
@@ -70,38 +68,7 @@
      </div>
     </div>
   </div>
-  <!-- build:js vendor.min.js -->
-      <script src="bower_components/jquery/dist/jquery.js"></script>
-      <script src="bower_components/angular/angular.js"></script>
-      <script src="bower_components/tv4/tv4.js"></script>
-      <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-      <script src="bower_components/objectpath/lib/ObjectPath.js"></script>
-      <script src="bower_components/lodash/lodash.js"></script>
-      <script src="bower_components/angular-route/angular-route.min.js"></script>
-      <script src="bower_components/lodash/dist/lodash.min.js"></script>
-      <script src="bower_components/humane-js/humane.min.js"></script>
-      <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
-  <!--endbuild-->
-  <!-- build:js app.min.js -->
-      <script src="app.js"></script>
-     <script src="config/config.service.js"></script>
-      <script src="config/config.values.js"></script>
-
-      <script src="user/user.js"></script>
-      <script src="user/user.controller.js"></script>
-      <script src="user/users.controller.js"></script>
-      <script src="user/user.service.js"></script>
-      <script src="user/new-user.controller.js"></script>
-
-      <script src="role/role.js"></script>
-      <script src="role/view-role.controller.js"></script>
-      <script src="role/role.controller.js"></script>
-      <script src="role/role.filter.js"></script>
-      <script src="role/role.service.js"></script>
-
-      <script src="components/ng-simple-table/ng-simple-table.js"></script>
-      <script src="components/ng-simple-pagination/ng-simple-pagination.js"></script>
-      <script src="components/alert/alert.service.js"></script>
-  <!--endbuild -->
+  <script src="vendor.min.js"></script>
+  <script src="app.min.js"></script>
 </body>
 </html>

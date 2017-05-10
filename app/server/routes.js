@@ -2,8 +2,9 @@ var express =  require('express');
 
 module.exports = function(app) {
 
-  app.use('/api/users', require('./api/user'));
-  app.use('/', express.static(__dirname + '/client'));
+  app.use('/api/users', require('./api/user/index'));
+  app.use('/', express.static(__dirname + '/../dist/'));
+
 
   app.use(function(err, req, res, next) {
     switch (err.name) {
@@ -21,3 +22,4 @@ module.exports = function(app) {
   });
 
 }
+

@@ -18,6 +18,7 @@
     "font-awesome": "^4.7.0",
     "nprogress": "^0.2.0",
     "textAngular": "^1.5.16",
-    "tv4": "^1.2.7"
+    "tv4": "^1.2.7",
+    "angular-cookies": "^1.6.4"
   }
 }
