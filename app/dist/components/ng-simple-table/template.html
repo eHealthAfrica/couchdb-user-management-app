@@ -1,31 +1,44 @@
 <div>
-    <div ng-show="allowFilter">
-        <br>
-        &nbsp;&nbsp;<input type="text" ng-change="filter()"  ng-class="{{filterFieldClass}}" ng-model="searchString" placeholder="{{filterFieldPlaceholder}}"/>
-    </div>
-    <table ng-class="tableClass">
-        <thead >
-            <th width = "5%" ng-show="allowSelect">
-                <input type = "checkbox" ng-model="selectAll" ng-change = "toggleSelectAll()" />
-            </th>
-            <th ng-repeat = "head in tableHeader" class = "{{headerClass}}">
-                {{head.replace('_', ' ') | uppercase}} &nbsp;&nbsp;
-                <a ng-show = "{{allowSort}}" ng-click = "sortBy($index, 1)" class = "fa fa-angle-down"></a>&nbsp;&nbsp;
-                <a ng-show = "{{allowSort}}" ng-click = "sortBy($index, -1)" class = "fa fa-angle-up"></a>
-            </th>
-            <th ng-show = "{{rowActions.length > 0}}" class = "{{headerClass}}" >ACTION</th>
-        </thead>
-        <tbody>
-            <tr ng-repeat=" row in tableData" class = "{{rowClass}}">
-                <td width = "5%" ng-show="allowSelect"><input type = "checkbox"  ng-change="rowSelectionChanged()" ng-model="rowSelection[$index]" /></td>
-                <td ng-repeat="col in tableHeader" class = "{{rowClass}}">{{row[col].toString()}}</td>
-                <td ng-show = "{{rowActions.length > 0}}" class = "{{rowActionClass}}">
-                    <a href class = 'btn btn-default btn-xs' ng-repeat = "action in rowActions" ng-click = "rowActionCallback({actionIndex: $index, rowIndex: $parent.$index})">
-                        <span ng-show="{{rowActionClasses.length > 0}}"span aria-hiden="true" class="{{rowActionClasses[$index]}}" ></span>&nbsp;
-                        <span >{{action | uppercase}}</span>
-                    </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+  <div ng-show="allowFilter">
+    <br>
+    &nbsp;&nbsp;<input type="text" ng-change="filter()"  ng-class="{{filterFieldClass}}" ng-model="searchString" placeholder="{{filterFieldPlaceholder}}"/>
+  </div>
+  <table ng-class="tableClass">
+    <thead >
+    <th width = "5%" ng-show="allowSelect">
+      <input type = "checkbox" ng-model="selectAll" ng-change = "toggleSelectAll()" />
+    </th>
+    <th ng-repeat = "head in tableHeader" class = "{{headerClass}}">
+      {{head.replace('_', ' ') | uppercase}} &nbsp;&nbsp;
+      <a ng-show = "{{allowSort}}" ng-click = "sortBy($index, 1)" class = "fa fa-angle-down"></a>&nbsp;&nbsp;
+      <a ng-show = "{{allowSort}}" ng-click = "sortBy($index, -1)" class = "fa fa-angle-up"></a>
+    </th>
+    <th ng-show = "{{rowActions.length > 0}}" class = "{{headerClass}}" >ACTION</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat=" row in tableData" class = "{{rowClass}}">
+      <td width = "5%" ng-show="allowSelect"><input type = "checkbox"  ng-change="rowSelectionChanged()" ng-model="rowSelection[$index]" /></td>
+
+      <td ng-repeat="col in tableHeader" class = "{{rowClass}}">
+        <span ng-if = "toggleFieldsName.indexOf(col) < 0">{{row[col].toString()}}</span>
+        <span ng-if = "toggleFieldsName.indexOf(col) >= 0"
+              ng-init = "colIndex = toggleFieldsName.indexOf(col)">
+          <a href ng-click="toggleFieldCallback({fieldIndex: colIndex, rowIndex: $parent.$parent.$index})">
+            <span  class = "glyphicon"
+                   ng-class=" row[col] === toggleFields[colIndex].positive ? 'glyphicon-ok': 'glyphicon-remove' "></span>
+          </a>
+        </span>
+      </td>
+      <td ng-show = "{{rowActions.length > 0}}" class = "{{rowActionClass}}">
+        <a href
+           class = 'btn btn-default btn-xs'
+           ng-repeat = "action in rowActions"
+           ng-click = "rowActionCallback({actionIndex: $index, rowIndex: $parent.$index})">
+          <span ng-show="{{rowActionClasses.length > 0}}"span aria-hiden="true" class="{{rowActionClasses[$index]}}" ></span>&nbsp;
+          <span >{{action | uppercase}}</span>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>

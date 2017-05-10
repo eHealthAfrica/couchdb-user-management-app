@@ -1,10 +1,8 @@
-
 angular.module('ng.simple.table', []).directive('ngsimpletable', function(){
 
   return {
 
     scope : {
-
       allowFilter: '=',
       allowSelect: '=',
       allowSort: '=',
@@ -19,18 +17,18 @@ angular.module('ng.simple.table', []).directive('ngsimpletable', function(){
       rowSelection: '=',
       tableClass: '@',
       tableData: '=',
-      tableHeader: '='
-
+      tableHeader: '=',
+      toggleFields: '=',
+      toggleFieldCallback: '&'
     },
 
     link: function(scope, element, attrs){
-
 
       scope.rowSelection = resetRowSelection();
       scope.searchString = '';
       scope.selectAll = false;
       scope.tableDataCopy = scope.tableData;
-
+      scope.toggleFieldsName =  _.map(scope.toggleFields, 'name');
 
       scope.$watch('tableData', function(newVal, oldVal){
         scope.rowSelection =  resetRowSelection();
@@ -92,20 +90,12 @@ angular.module('ng.simple.table', []).directive('ngsimpletable', function(){
         scope.rowSelection = scope.rowSelection.map(function () {
           return scope.selectAll;
         });
-
       };
-
-
-
-
     },
 
     restrict: 'AEC',
     replace: true,
     templateUrl: 'components/ng-simple-table/template.html'
 
-
   };
-
-
 });

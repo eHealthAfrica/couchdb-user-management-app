@@ -8,11 +8,14 @@ angular.module('app.user')
     '$location',
     'alertService',
     'userService',
+    '$filter',
     'users',
     'PAGE_SIZE',
-    function ($scope, $location, alertService, userService, users, PAGE_SIZE) {
+    function ($scope, $location, alertService, userService, $filter, users, PAGE_SIZE) {
       var vm = this;
-      vm.users = _.map(users.rows, 'value');
+      vm.users = _.forEach(_.map(users.rows, 'value'), function (elem) {
+        elem.user_type = $filter('getUserType')(elem);
+      });
       vm.selection = [];
 
       vm.simpleTableConfig = {
@@ -21,7 +24,8 @@ angular.module('app.user')
         allowSort:  true,
         rowActions: ['assign role', 'edit', 'show', 'delete'],
         rowActionClasses: ['glyphicon glyphicon-user', 'glyphicon glyphicon-pencil', 'glyphicon glyphicon-eye-open', 'glyphicon glyphicon-trash'],
-        tableHeader: ['name', 'user_type', 'status']
+        tableHeader: ['name', 'user_type', 'status'],
+        toggleFields: [{ name: 'status', positive: 'active'}]
       };
 
       vm.simplePaginationConfig = {
@@ -32,7 +36,9 @@ angular.module('app.user')
 
       vm.onPageRequested = function (skip, limit) {
         userService.getPage(skip, limit).then(function (resp) {
-          vm.users =  _.map(resp.rows, 'value');
+          vm.users = _.forEach(_.map(resp.rows, 'value'), function (elem) {
+            elem.user_type = $filter('getUserType')(elem);
+          });
           vm.simplePaginationConfig.total = resp.total_rows;
           vm.simplePaginationConfig.offset =  resp.offset;
         }).catch(function (err) { console.log(err); return []; });
@@ -60,8 +66,29 @@ angular.module('app.user')
         }
       };
 
+      vm.toggleFieldCalllback = function (fieldIndex , rowIndex) {
+        switch (fieldIndex) {
+          case 0 :
+            toggleUserStatus(rowIndex);
+            userService.update(vm.users[rowIndex])
+              .catch (function (err) {
+                toggleUserStatus(rowIndex);
+              });
+            break;
+        }
+      };
+
       vm.getSelectionCount = function () {
         return vm.selection.filter(function(elem){ return elem; }).length;
       };
+
+      function toggleUserStatus (rowIndex) {
+        if ( ! vm.users[rowIndex].status || vm.users[rowIndex].status === 'inactive') {
+          vm.users[rowIndex].status = 'active';
+        }
+        else {
+          vm.users[rowIndex].status = 'inactive';
+        }
+      }
     }
   ]);
