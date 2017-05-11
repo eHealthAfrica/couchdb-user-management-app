@@ -44,6 +44,10 @@ angular.module('app.user')
         }).catch(function (err) { console.log(err); return []; });
       };
 
+      vm.onListSortInitiated = function (sortBy, sortDirection) {
+        //TODO query api
+      };
+
       vm.rowActionCallback = function (actionIndex, rowIndex) {
         var path = '';
         switch(actionIndex){

@@ -15,6 +15,7 @@ angular.module('ng.simple.table', []).directive('ngsimpletable', function(){
       rowActionClasses: '=',
       rowClass: '@',
       rowSelection: '=',
+      sortCallback: '&',
       tableClass: '@',
       tableData: '=',
       tableHeader: '=',
@@ -76,14 +77,20 @@ angular.module('ng.simple.table', []).directive('ngsimpletable', function(){
         scope.rowSelection = resetRowSelection();
       };
 
-      scope.rowSelectionChanged =  function () {
-
-      };
-
-      scope.sortBy =  function (headerIndex, direction) {
-
-        if (direction === 1){ scope.tableData = sortList(scope.tableData, scope.tableHeader[headerIndex]); }
-        else{ scope.tableData = sortList(scope.tableData, scope.tableHeader[headerIndex]).reverse(); }
+      scope.sort = function (colIndex) {
+        if (scope.sortBy && scope.sortBy === scope.tableHeader[colIndex]) {
+          if (scope.sortDirection && scope.sortDirection === 'asc') {
+            scope.sortDirection = 'desc';
+          }
+          else {
+            scope.sortDirection = 'asc';
+          }
+        }
+        else {
+          scope.sortBy = scope.tableHeader[colIndex];
+          scope.sortDirection = 'asc';
+        }
+        scope.sortCallback({sortBy: scope.sortBy, sortDirection: scope.sortDirection});
       };
 
       scope.toggleSelectAll = function () {
