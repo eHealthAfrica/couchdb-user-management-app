@@ -11,5 +11,5 @@ angular.module('app.config')
       redirectUrl: '/'
     }
   })
-  .value('PAGE_SIZE', 10)
+  .value('PAGE_SIZE', 30)
 ;
