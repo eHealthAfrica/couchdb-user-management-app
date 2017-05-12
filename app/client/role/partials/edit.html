@@ -19,8 +19,6 @@
           name="updateUserRoleForm"
           ng-submit="ctrl.submitUpdateUserRoleForm()"
           novalidate>
-
-
       <div>
         <div id="username" class="form-field form-group has-feedback">
           <label for="name" class="col-sm-2 control-label">Username</label>
@@ -34,9 +32,12 @@
           <div class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7"
                ng-init="ctrl.updateUserRoleForm.type=ctrl.getUserType()"
           >
-            <select  ng-model="ctrl.updateUserRoleForm.type" id="type"  class="form-control"
+            <select  id="type"
+                     class="form-control"
+                     ng-model="ctrl.updateUserRoleForm.type"
                      ng-required="true"
                      ng-options = "type as type for type in ctrl.userTypes"
+
             ></select>
           </div>
         </div>
@@ -46,9 +47,12 @@
           <div class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7"
                ng-init="ctrl.updateUserRoleForm.access.level =  ctrl.user.lomis_stock.dashboard.access.level"
           >
-            <select  ng-model="ctrl.updateUserRoleForm.access.level" id="accessLevel" class="form-control"
+            <select  id="accessLevel"
+                     class="form-control"
+                     ng-model="ctrl.updateUserRoleForm.access.level"
                      ng-required="true"
                      ng-options ="adminLevel._id as adminLevel.name for adminLevel in ctrl.adminLevels"
+                     ng-change="ctrl.getAssignedLocation()"
             ></select>
           </div>
         </div>
@@ -58,7 +62,6 @@
              ng-if="ctrl.updateUserRoleForm.type == 'dashboard' && ctrl.updateUserRoleForm.access.level">
           <label for="name" class="col-sm-2 control-label">{{adminLevel.name}}</label>
           <div class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7"
-               ng-init="ctrl.updateUserRoleForm.locations[$index] =  ctrl.getLocation($index)"
           >
             <select ng-if="$index === 0"
                     ng-model="ctrl.updateUserRoleForm.locations[$index]"  class="form-control"
@@ -75,9 +78,6 @@
 
           </div>
         </div>
-
-
-
         <div  class="form-field form-group has-feedback" ng-if="ctrl.updateUserRoleForm.type === 'mobile'">
           <label for="facility" class="col-sm-2 control-label">FACILIY</label>
 
@@ -86,10 +86,10 @@
               ng-model="ctrl.updateUserRoleForm.facility" id="facility" class="form-control"
               ng-options ="facility._id as facility.name for facility in ctrl.facilities"
               ng-required="true"
+              ng-change="ctrl.getAssignedLocation()"
             ></select>
           </div>
         </div>
-
         <div id="usertype" class="form-field form-group has-feedback" ng-if="ctrl.updateUserRoleForm.type === 'mobile'">
           <label for="name" class="col-sm-2 control-label">PROGRAM</label>
 
@@ -99,9 +99,7 @@
                      ng-options ="program._id as program.name for program in ctrl.programs | getProgramsInFacility : ctrl.facilityPrograms : ctrl.updateUserRoleForm.facility"
             ></select>
           </div>
-          </div-->
-
-
+          </div>
         </div>
 
         <div class="form-group">
@@ -112,7 +110,6 @@
             </button>
           </div>
         </div>
-
     </form>
   </div>
   <div class="row">
