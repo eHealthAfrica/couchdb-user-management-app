@@ -16,7 +16,7 @@ angular.module('app.role')
     vm.programs = programs;
     vm.facilityPrograms = facilityPrograms;
 
-    $scope.$watch('vm.updateUserRoleForm.access.level', function (nv, ov) {
+    $scope.$watch('vm.updateUserRoleForm.access.level', function (newValue, oldValue) {
       vm.getAssignedLocation();
     });
 
