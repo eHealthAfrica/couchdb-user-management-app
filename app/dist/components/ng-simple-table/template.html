@@ -9,15 +9,17 @@
       <input type = "checkbox" ng-model="selectAll" ng-change = "toggleSelectAll()" />
     </th>
     <th ng-repeat = "head in tableHeader" class = "{{headerClass}}">
-      {{head.replace('_', ' ') | uppercase}} &nbsp;&nbsp;
-      <a ng-show = "{{allowSort}}" ng-click = "sortBy($index, 1)" class = "fa fa-angle-down"></a>&nbsp;&nbsp;
-      <a ng-show = "{{allowSort}}" ng-click = "sortBy($index, -1)" class = "fa fa-angle-up"></a>
+      <a ng-href ng-click="sort($index)">
+        <i class = "fa fa-angle-up" ng-if = "(sortBy === head) && (sortDirection === 'desc')"></i>
+        <i class = "fa fa-angle-down" ng-if = "(sortBy === head) && (sortDirection === 'asc')"></i>
+        &nbsp; {{head.replace('_', ' ') | uppercase}} &nbsp;&nbsp;
+      </a>
     </th>
     <th ng-show = "{{rowActions.length > 0}}" class = "{{headerClass}}" >ACTION</th>
     </thead>
     <tbody>
     <tr ng-repeat=" row in tableData" class = "{{rowClass}}">
-      <td width = "5%" ng-show="allowSelect"><input type = "checkbox"  ng-change="rowSelectionChanged()" ng-model="rowSelection[$index]" /></td>
+      <td width = "5%" ng-show="allowSelect"><input type = "checkbox"  ng-model="rowSelection[$index]" /></td>
 
       <td ng-repeat="col in tableHeader" class = "{{rowClass}}">
         <span ng-if = "toggleFieldsName.indexOf(col) < 0">{{row[col].toString()}}</span>
