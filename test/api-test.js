@@ -45,7 +45,7 @@ describe('/api/users', function() {
 
   it('should list selected users on /api/users GET', function(done) {
     chai.request(server)
-      .get('/api/users?skip=0&limit=6')
+      .get('/api/users?skip=0&limit=6&sortBy=id&sortDirection=asc')
       .end(function(err, res){
         res.should.have.status(200);
         res.should.be.json;

@@ -38,7 +38,7 @@ function fetchOne (req, res, next) {
 }
 
 function fetchPaged (req, res, next) {
-  User.fetchPaged(parseInt(req.query.skip), parseInt(req.query.limit), function (err, users) {
+  User.fetchPaged(parseInt(req.query.skip), parseInt(req.query.limit), req.query.sortBy, req.query.sortDirection, function (err, users) {
     if (err) {
       return next(err);
     }

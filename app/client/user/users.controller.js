@@ -12,10 +12,13 @@ angular.module('app.user')
     'users',
     'PAGE_SIZE',
     function ($scope, $location, alertService, userService, $filter, users, PAGE_SIZE) {
-      var vm = this;
+
+    var vm = this;
+
       vm.users = _.forEach(_.map(users.rows, 'value'), function (elem) {
         elem.user_type = $filter('getUserType')(elem);
       });
+
       vm.selection = [];
 
       vm.simpleTableConfig = {
@@ -34,8 +37,13 @@ angular.module('app.user')
         pageSize: PAGE_SIZE
       };
 
+      vm.sortOptions = {
+        by: null,
+        direction: null
+      }
+
       vm.onPageRequested = function (skip, limit) {
-        userService.getPage(skip, limit).then(function (resp) {
+        userService.getPage(skip, limit, vm.sortOptions.by, vm.sortOptions.direction).then(function (resp) {
           vm.users = _.forEach(_.map(resp.rows, 'value'), function (elem) {
             elem.user_type = $filter('getUserType')(elem);
           });
@@ -45,7 +53,9 @@ angular.module('app.user')
       };
 
       vm.onListSortInitiated = function (sortBy, sortDirection) {
-        //TODO query api
+        vm.sortOptions.by = sortBy;
+        vm.sortOptions.direction =  sortDirection;
+        vm.onPageRequested(0, vm.simplePaginationConfig.pageSize);
       };
 
       vm.rowActionCallback = function (actionIndex, rowIndex) {

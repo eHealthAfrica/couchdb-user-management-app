@@ -125,10 +125,14 @@ function update (name, data, cb) {
 
 
 
-function fetchPaged (skip, limit, cb) {
+function fetchPaged (skip, limit, sortBy, sortDirection, cb) {
+
+  var descending = sortDirection === 'asc' ? false : true;
+  if (sortBy.trim().toLowerCase() === 'name') { sortBy =  'id'; }
+
   var d = q.defer();
   allPromise = d.promise;
-  db.view('couchdb-user-management-app/pager',{ skip: skip, limit: limit}, function(err, rows){
+  db.view('couchdb-user-management-app/by_' +  sortBy ,{ skip: skip, limit: limit, descending: descending}, function(err, rows){
     if (err) {
       d.reject(err);
     } else {

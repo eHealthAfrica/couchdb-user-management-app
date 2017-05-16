@@ -21,11 +21,15 @@ angular.module('app.user')
       return _this.singleRecordKey;
     };
 
-    this.getPage = function (skip, limit) {
+    this.getPage = function (skip, limit, sortBy, sortDirection) {
+
+      if (! sortBy) { sortBy = 'id'; }
+      if (! sortDirection) { sortDirection = 'asc'; }
+
       var promise = $http({
         method: 'GET',
         url: _this.baseUrl,
-        params: {skip: skip, limit: limit},
+        params: {skip: skip, limit: limit, sortBy: sortBy, sortDirection:  sortDirection},
         withCredentials: true
       });
       return promise.then(function (response) {
