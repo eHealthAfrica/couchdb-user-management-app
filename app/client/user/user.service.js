@@ -23,8 +23,8 @@ angular.module('app.user')
 
     this.getPage = function (skip, limit, sortBy, sortDirection) {
 
-      if (sortBy === undefined || sortBy === null) { sortBy = 'id'; }
-      if (sortDirection === undefined || sortDirection === null) { sortDirection = 'asc'; }
+      if (! sortBy) { sortBy = 'id'; }
+      if (! sortDirection) { sortDirection = 'asc'; }
 
       var promise = $http({
         method: 'GET',
