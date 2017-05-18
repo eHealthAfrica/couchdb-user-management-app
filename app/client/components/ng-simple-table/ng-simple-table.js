@@ -6,6 +6,7 @@ angular.module('ng.simple.table', []).directive('ngsimpletable', function(){
       allowFilter: '=',
       allowSelect: '=',
       allowSort: '=',
+      arrayFields: '=',
       filterFieldClass: '@',
       filterFieldPlaceholder: '@',
       headerClass: '@',
@@ -58,6 +59,7 @@ angular.module('ng.simple.table', []).directive('ngsimpletable', function(){
         }
         return list.sort(compare);
       }
+
 
       scope.filter =  function(){
 

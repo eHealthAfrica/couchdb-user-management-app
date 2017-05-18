@@ -134,6 +134,7 @@ function fetchPaged (skip, limit, sortBy, sortDirection, cb) {
   allPromise = d.promise;
   db.view('couchdb-user-management-app/by_' +  sortBy ,{ skip: skip, limit: limit, descending: descending}, function(err, rows){
     if (err) {
+      console.log("ERR:" , err);
       d.reject(err);
     } else {
       d.resolve(rows);

@@ -16,6 +16,21 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
           return userService.getPage(0, PAGE_SIZE)
             .then(function (resp) { return resp;  })
             .catch(function (err) { console.log(err); return []; });
+        }],
+        adminLevels :['adminLevelService',  function (adminLevelService) {
+          return adminLevelService.getAll().then( function (data) {   return data;}).catch(function (err) { console.log(err); return [];});
+        }],
+        locations: ['locationService', function (locationService) {
+          return locationService.getAll().then( function (data) {   return data;}).catch(function (err) {console.log(err); return [];});
+        }],
+        facilities: ['facilityService',  function (facilityService) {
+          return facilityService.getAll().then( function (data) {   return data;}).catch(function (err) {console.log(err); return [];});
+        }],
+        programs : ['programService', function (programService) {
+          return programService.getAll().then(function (data) {  return data; }).catch(function (err) {console.log(err); return [];});
+        }],
+        facilityPrograms : ['facilityProgramsService', function (facilityProgramsService) {
+          return facilityProgramsService.getAll().then(function (data) {  return data; }).catch(function (err) {console.log(err); return [];});
         }]
       }
     })
