@@ -40,6 +40,7 @@ angular.module('app.user')
       };
 
       vm.simplePaginationConfig = {
+        currentPage: 0,
         total: users.total_rows,
         offset: users.offset,
         pageSize: PAGE_SIZE
@@ -64,6 +65,9 @@ angular.module('app.user')
       vm.onListSortInitiated = function (sortBy, sortDirection) {
         vm.sortOptions.by = sortBy;
         vm.sortOptions.direction =  sortDirection;
+        vm.simplePaginationConfig.offset = 0;
+        vm.simplePaginationConfig.currentPage = 0;
+
         vm.onPageRequested(0, vm.simplePaginationConfig.pageSize);
       };
 
