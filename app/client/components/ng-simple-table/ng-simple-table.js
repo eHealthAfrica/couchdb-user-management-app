@@ -21,7 +21,8 @@ angular.module('ng.simple.table', []).directive('ngsimpletable', function(){
       tableData: '=',
       tableHeader: '=',
       toggleFields: '=',
-      toggleFieldCallback: '&'
+      toggleFieldCallback: '&',
+      unsortableFields: '='
     },
 
     link: function(scope, element, attrs){

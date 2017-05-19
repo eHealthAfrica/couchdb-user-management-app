@@ -53,9 +53,10 @@
          sort-callback = 'ctrl.onListSortInitiated(sortBy, sortDirection)'
          table-class = 'grid table table-condensed table-hover table-stripped'
          table-data = 'ctrl.users'
-         table-header =  'ctrl.simpleTableConfig.tableHeader'
+         table-header =  'ctrl.simpleTableConfig.header'
          toggle-fields = 'ctrl.simpleTableConfig.toggleFields'
          toggle-field-callback = 'ctrl.toggleFieldCalllback(fieldIndex, rowIndex)'
+         unsortable-fields="ctrl.simpleTableConfig.unsortableFields"
     ></div>
   </div>
   <div class="row">
