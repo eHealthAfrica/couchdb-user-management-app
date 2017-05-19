@@ -4,6 +4,7 @@
 angular.module('ng.simple.pagination', []).directive('ngsimplepagination', function () {
   return {
     scope : {
+      currentPage: '=',
       total: '=',
       pageSize: '=',
       offset: '=',
@@ -11,7 +12,6 @@ angular.module('ng.simple.pagination', []).directive('ngsimplepagination', funct
     },
 
     link: function (scope, element, attrs) {
-      scope.currentPage = 0;
       scope.pageCount = 0;
       scope.pageResized =  false;
       scope.pageStart =  0;

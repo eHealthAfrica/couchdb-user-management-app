@@ -25,6 +25,9 @@ angular.module('app.user')
         });
     };
 
+
+
+
     vm.submitUpdateUserForm = function () {
       if (! _.isEmpty(vm.updateUserForm.$error)){ return; }
       userService.update(_.pick(vm.updateUserForm, ['name','password', 'email']))

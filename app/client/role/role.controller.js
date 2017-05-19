@@ -62,6 +62,12 @@ angular.module('app.role')
       }
 
       if (vm.user.lomis_stock.mobile && ! _.isEmpty(vm.user.lomis_stock.mobile)) {
+        if (vm.updateUserRoleForm.facility) {
+          vm.updateUserRoleForm.program =  null;
+          return;
+        }
+
+
         var facility = vm.user.lomis_stock.mobile.facilities[0];
         vm.updateUserRoleForm.facility =  Object.keys(facility)[0];
         vm.updateUserRoleForm.program=  vm.user.lomis_stock.mobile.facilities[0][vm.updateUserRoleForm.facility][0];
