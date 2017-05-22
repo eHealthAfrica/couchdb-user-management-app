@@ -120,7 +120,6 @@ angular.module('app.user').decorate('usersDependencyService', [
       }
     }
 
-
   $delegate.methods["admin_level"] = function (user) {
     var promise =  adminLevelService.getAll();
      return promise.then(function (response) {
@@ -144,8 +143,6 @@ angular.module('app.user').decorate('usersDependencyService', [
       return getAdminLevel()
     });
   };
-
-
 
   $delegate.methods["location"] =  function (user) {
 
@@ -192,17 +189,12 @@ angular.module('app.user').decorate('usersDependencyService', [
               }
             }
           }
-
           return assignedLocations;
-
-
-
         }
       };
 
       return getLocations();
     })
-   // return $q;
   }
 
 
