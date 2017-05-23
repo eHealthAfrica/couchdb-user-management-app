@@ -23,5 +23,5 @@ angular.module('app.config')
       toggleFields: [{ name: 'status', positive: 'active'}],
       unsortableFields: ['location']
   })
-  .value('PAGE_SIZE', 30)
+  .value('PAGE_SIZE', 5)
 ;

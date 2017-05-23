@@ -35,7 +35,8 @@
   </div>
 </div>
 <div class = "grid">
-  <div class = "row list-view ng-admin-entity-uom-category">
+  <div class = "row list-view ng-admin-entity-uom-category" >
+    <input type = "text" placeholder="search" class = "form-control pull-right" ng-model="ctrl.searchString" ng-change="ctrl.onSearchStringChanged()"/>
     <div ngsimpletable
          allow-filter = 'ctrl.simpleTableConfig.allowFilter'
          allow-select = 'ctrl.simpleTableConfig.allowSelect'
@@ -50,7 +51,7 @@
          row-action-classes = 'ctrl.simpleTableConfig.rowActionClasses'
          row-class = 'ng-admin-column-name ng-admin-type-string'
          row-selection = 'ctrl.selection'
-         sort-callback = 'ctrl.onListSortInitiated(sortBy, sortDirection)'
+         sort-callback = 'ctrl.sort(by, direction)'
          table-class = 'grid table table-condensed table-hover table-stripped'
          table-data = 'ctrl.users'
          table-header =  'ctrl.simpleTableConfig.header'
@@ -65,7 +66,7 @@
            total =     'ctrl.simplePaginationConfig.total'
            page-size = 'ctrl.simplePaginationConfig.pageSize'
            offset =    'ctrl.simplePaginationConfig.offset'
-           on-page-requested = 'ctrl.onPageRequested(skip, limit)'
+           on-page-requested = 'ctrl.requestPage(skip, limit)'
            current-page = 'ctrl.simplePaginationConfig.currentPage'
       ></div>
     </div>

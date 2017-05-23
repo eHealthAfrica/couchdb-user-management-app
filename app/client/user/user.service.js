@@ -49,6 +49,17 @@ angular.module('app.user')
       });
     };
 
+    this.search = function (skip, limit, sortBy, sortDirection, searchString) {
+      var promise =  $http({
+        url: _this.baseUrl + '/search/' + searchString,
+        params: {skip: skip, limit: limit, sortBy: sortBy, sortDirection:  sortDirection},
+        withCredentials: true
+      });
+      return promise.then(function (response) {
+        return response.data;
+      });
+    };
+
     this.create = function (user) {
       user._id =  'org.couchdb.user:'+ user.name;
       var promise = $http({

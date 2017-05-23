@@ -9,28 +9,38 @@ angular.module('app.role')
     var URL = '/api/admin_level';
 
 
-
   this.getAll =  function () {
+
 
     var promise = $http.get(  URL, {  withCredentials: true });
     return promise.then(function (response) {
 
       var sortedAdminLevel = [];
-      for (var i in response.data){ if (response.data[i].parent === null){ sortedAdminLevel.push(response.data[i]);}}
 
-      for (var k = 0; k < response.data.length; k++){
+      for (var i in response.data) {
+        if (response.data[i].parent === null) {
+          sortedAdminLevel.push(response.data[i]);
+        }
+      }
+
+      for (var k = 0; k < response.data.length; k++) {
         var parId =  sortedAdminLevel[sortedAdminLevel.length -1]._id;
-        for (var j in response.data){
-          if (response.data[j].parent === parId){
+        for (var j in response.data) {
+          if (response.data[j].parent === parId) {
             sortedAdminLevel.push(response.data[j]);
           }
         }
       }
+
       return sortedAdminLevel;
     }, function(err) {
-      return err;
+        return err;
     });
   };
+
+  this.get =  function () {
+
+  }
 
 }])
   .service('facilityService', [ '$http', function ($http) {
@@ -103,6 +113,7 @@ angular.module('app.user').decorate('usersDependencyService', [
   'locationService',
   function ($delegate, $q, adminLevelService, facilityService,  locationService) {
 
+  var adminLevel = [];
   var getRole =  function (user) {
       if (
         ! user.lomis_stock ||

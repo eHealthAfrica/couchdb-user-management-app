@@ -31,42 +31,12 @@ exports.findById = findById;
 exports.findByName = findByName;
 exports.update =  update;
 exports.fetchPaged =  fetchPaged;
-exports.search = searchFor;
+exports.search = search;
 
 var users =  null;
 
-function searchFor  (searchString, cb) {
-  if (users === null){
-    console.log("was null.....");
-    all(function (err, rows){
-      console.log("got back", err);
-      if (err !== null) {
-        return cb(err);
-      }
-      users = rows;
-      console.log("Gott bavk", rows.length);
-      console.log("Users", users);
-      search(searchString, cb);
-    });
-  }
-  else {
-    search(searchString, cb);
-  }
-}
 
-
-function search (searchString, cb) {
-console.log("reached here");
-  return cb(null, users.filter(function (user) {
-    return user.name.indexOf(searchString) >= 0;
-  }));
-
-}
-
-
-
-
-function all (cb) {
+function all_old (cb) {
   if (! allPromise) {
     var d =  q.defer();
     allPromise =  d.promise;
@@ -83,7 +53,7 @@ function all (cb) {
 
   allPromise
     .then (function (rows) {
-      console.log(rows);
+      users =  rows;
       cb(null, rows);
     })
     .catch (function (err) {
@@ -92,11 +62,64 @@ function all (cb) {
     })
 }
 
+function all (cb) {
+  if (! allPromise) {
+    var d =  q.defer();
+    allPromise =  d.promise;
+    db.all({include_docs: true}, function (err, rows) {
+      if (err) {
+        d.reject(err);
+      }
+      else {
+        d.resolve(utility.removeDesignDocs(lodash.map(rows.rows, "doc")))
+      }
+    })
+  }
 
+  allPromise
+    .then (function (rows) {
+      users =  rows;
+      cb(null, true);
+    })
+    .catch (function (err) {
+      allPromise = null;
+      cb(err);
+    })
+}
+
+function areUsersLoaded (cb) {
+  if (users === null) {
+    all(cb);
+  }
+  else {
+    cb (null, true);
+  }
+}
+
+
+function search(skip, limit, sortBy, sortDirection,searchString , cb) {
+  areUsersLoaded(function (err, resp) {
+    console.log("in here", err, resp);
+    if (err) { return cb(err); }
+    if (resp) {
+
+      users =  lodash.orderBy(users, [sortBy], [sortDirection]);
+      var filteredUsers =  users.filter(function (user) {
+        return user.name.indexOf(searchString) >= 0;
+      });
+
+      return cb(null, {total_rows: filteredUsers.length, offset: skip, rows: filteredUsers.slice(skip, skip + limit)});
+
+    }
+
+  });
+}
 
 function id (name) {
   return 'org.couchdb.user:' + name;
 }
+
+
 function exists (name, cb) {
   findByName(name, function(err, user) {
     if (err) {
@@ -110,6 +133,11 @@ function exists (name, cb) {
     cb(null, true, user);
   });
 }
+
+
+
+
+
 function create (data, cb) {
   var error = new errors.ValidationError();
 
@@ -155,10 +183,18 @@ function create (data, cb) {
 
       user._id = res.id;
       user._rev = res.rev;
+      if (users !== null) {
+        users.push(user);
+      }
       cb(null,user);
     });
   });
 }
+
+
+
+
+
 function remove (name, cb) {
   exists(name, function(err, exists, user) {
     if (err) {
@@ -182,39 +218,44 @@ function update (name, data, cb) {
     db.merge(user._id, data , cb);
   });
 }
+
+
+
 function fetchPaged (skip, limit, sortBy, sortDirection, cb) {
 
-  var descending = sortDirection === 'asc' ? false : true;
-  if (sortBy.trim().toLowerCase() === 'name') { sortBy =  'id'; }
+  areUsersLoaded(function (err, ready) {
 
-  var d = q.defer();
-  allPromise = d.promise;
-  db.view('couchdb-user-management-app/by_' +  sortBy ,{ skip: skip, limit: limit, descending: descending}, function(err, rows){
     if (err) {
-      d.reject(err);
-    } else {
-      d.resolve(rows);
-    }
-  });
-
-
-  allPromise
-    .then(function(rows) {
-      cb(null, rows);
-    })
-    .catch(function(err) {
-      allPromise = null;
-      cb(err);
-    });
-}
-function findById (id, cb, auth) {
-  db.get(id, function(err, user) {
-    if (err) {
-
       return cb(err);
     }
 
-    cb(null, user);
+    if (ready) {
+      users =  lodash.orderBy(users, [sortBy], [sortDirection]);
+      console.log(users);
+      cb(null, { total_rows: users.length, offset: skip, rows: users.slice(skip, skip +  limit)});
+    }
+  });
+}
+
+
+
+
+
+
+
+function findById (id, cb, auth) {
+  areUsersLoaded(function (err, ready) {
+    if (err) {
+      return cb(err);
+    }
+    if (ready) {
+      for (var i in users) {
+        if (users[i]._id === id) {
+          return cb(null, users[i]);
+        }
+      }
+      return cb({name: 'RecordNotFound', errors: {name: name}});
+    }
   });
 }
 function findByName (name, cb, auth) {

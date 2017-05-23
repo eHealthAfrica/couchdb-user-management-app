@@ -93,7 +93,7 @@ angular.module('ng.simple.table', []).directive('ngsimpletable', function(){
           scope.sortBy = scope.tableHeader[colIndex];
           scope.sortDirection = 'asc';
         }
-        scope.sortCallback({sortBy: scope.sortBy, sortDirection: scope.sortDirection});
+        scope.sortCallback({by: scope.sortBy, direction: scope.sortDirection});
       };
 
       scope.toggleSelectAll = function () {

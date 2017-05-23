@@ -15,26 +15,9 @@ angular.module('app.user')
     'USERS_TABLE_CONFIG',
     function ($scope, $location, alertService, userService,usersDependencyService, $filter, users,  PAGE_SIZE, USERS_TABLE_CONFIG) {
 
-    var vm = this;
-
-
-      vm.users = _.forEach(_.map(users.rows, 'value'), function (elem) {
-        elem.user_type = $filter('getUserType')(elem);
-
-        if (USERS_TABLE_CONFIG.roleDependedntFields) {
-          for (var i in USERS_TABLE_CONFIG.roleDependedntFields) {
-            const field =  USERS_TABLE_CONFIG.roleDependedntFields[i];
-            usersDependencyService.get(field, elem)
-              .then(function (prop) {
-                elem[field] =  prop;
-              })
-          }
-        }
-
-      });
-
+      var vm = this;
+      vm.searchString  = "";
       vm.selection = [];
-
       vm.simpleTableConfig = USERS_TABLE_CONFIG;
 
       vm.simplePaginationConfig = {
@@ -49,36 +32,53 @@ angular.module('app.user')
         direction: null
       }
 
-      //usersDependencyService.get("qq", "Hello!");
+      vm.users = _.forEach(users.rows, function (elem) {
+        elem.user_type = $filter('getUserType')(elem);
+        if (USERS_TABLE_CONFIG.roleDependedntFields) {
+          for (var i in USERS_TABLE_CONFIG.roleDependedntFields) {
+            const field =  USERS_TABLE_CONFIG.roleDependedntFields[i];
+            usersDependencyService.get(field, elem)
+              .then(function (prop) {
+                elem[field] =  prop;
+              })
+          }
+        }
+      });
 
-      vm.onPageRequested = function (skip, limit) {
-        userService.getPage(skip, limit, vm.sortOptions.by, vm.sortOptions.direction).then(function (resp) {
-          vm.users = _.forEach(_.map(resp.rows, 'value'), function (elem) {
-            elem.user_type = $filter('getUserType')(elem);
+      vm.onSearchStringChanged =  function () {
+        vm.searchString =  vm.searchString.trim();
+        if (vm.searchString.length === 0) {
+           // TODO: reload previous page and all that
+        }
 
-            if (USERS_TABLE_CONFIG.roleDependedntFields) {
-              for (var i in USERS_TABLE_CONFIG.roleDependedntFields) {
-                const field =  USERS_TABLE_CONFIG.roleDependedntFields[i];
-                usersDependencyService.get(field, elem)
-                  .then(function (prop) {
-                    elem[field] =  prop;
-                  })
-              }
-            }
+        vm.requestPage(0, PAGE_SIZE);
+      }
 
+      vm.requestPage = function (skip, limit) {
+
+        if (skip === 0) {
+          vm.simplePaginationConfig.offset = 0;
+          vm.simplePaginationConfig.currentPage = 0;
+        }
+
+        var promise = vm.searchString.length === 0 ? userService.getPage(skip, limit, vm.sortOptions.by, vm.sortOptions.direction) : userService.search(skip, limit, vm.sortOptions.by, vm.sortOptions.direction, vm.searchString);
+
+        promise
+          .then(function (users) {
+            displayPage(users);
+          })
+          .catch(function (err) {
+            console.log(err);
+            displayPage([]);
           });
-          vm.simplePaginationConfig.total = resp.total_rows;
-          vm.simplePaginationConfig.offset =  resp.offset;
-        }).catch(function (err) { console.log(err); return []; });
       };
 
-      vm.onListSortInitiated = function (sortBy, sortDirection) {
-        vm.sortOptions.by = sortBy;
-        vm.sortOptions.direction =  sortDirection;
+      vm.sort = function (by, direction) {
+        vm.sortOptions.by = by;
+        vm.sortOptions.direction =  direction;
         vm.simplePaginationConfig.offset = 0;
         vm.simplePaginationConfig.currentPage = 0;
-
-        vm.onPageRequested(0, vm.simplePaginationConfig.pageSize);
+        vm.requestPage(0, vm.simplePaginationConfig.pageSize);
       };
 
       vm.rowActionCallback = function (actionIndex, rowIndex) {
@@ -112,16 +112,29 @@ angular.module('app.user')
                 toggleUserStatus(rowIndex);
               });
             break;
-        }
-      };
+          }
+        };
 
       vm.getSelectionCount = function () {
-        return vm.selection.filter(function(elem){ return elem; }).length;
-      };
+         return vm.selection.filter(function(elem){ return elem; }).length;
+       };
 
-
-
-
+      function displayPage (users) {
+        vm.users = _.forEach(users.rows, function (elem) {
+          elem.user_type = $filter('getUserType')(elem);
+          if (USERS_TABLE_CONFIG.roleDependedntFields) {
+            for (var i in USERS_TABLE_CONFIG.roleDependedntFields) {
+              const field =  USERS_TABLE_CONFIG.roleDependedntFields[i];
+              usersDependencyService.get(field, elem)
+                .then(function (prop) {
+                  elem[field] =  prop;
+                })
+            }
+          }
+        });
+        vm.simplePaginationConfig.total = users.total_rows;
+        vm.simplePaginationConfig.offset =  users.offset;
+      }
 
       function toggleUserStatus (rowIndex) {
         if ( ! vm.users[rowIndex].status || vm.users[rowIndex].status === 'inactive') {
