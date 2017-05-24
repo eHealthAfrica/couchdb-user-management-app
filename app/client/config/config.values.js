@@ -23,5 +23,9 @@ angular.module('app.config')
       toggleFields: [{ name: 'status', positive: 'active'}],
       unsortableFields: ['location']
   })
-  .value('PAGE_SIZE', 5)
+  .value('NAVIGATION', {
+    customNavbarLinks: [{title: 'Goto Desktop', url: '/', iconClass: 'fa fa-angle-right'}],
+    sidebarLinks: [{title: 'Back', url: '/admin', iconClass: 'fa fa-chevron-left fa-fw'}]
+  })
+  .value('PAGE_SIZE', 30)
 ;

@@ -171,7 +171,6 @@ function create (data, cb) {
       type: 'user',
       roles: data.roles || [],
       email: data.email || ''
-      // access: data.access || {}
     };
 
     db.save(id(name), user, function(err, res) {

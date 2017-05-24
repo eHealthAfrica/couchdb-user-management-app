@@ -7,6 +7,7 @@ angular.module('myApp', [
   'app.user',
   'app.role',
   'app.config',
+  'app.navbar',
   'ngRoute',
   'ngCookies'
 ])

@@ -36,7 +36,12 @@
 </div>
 <div class = "grid">
   <div class = "row list-view ng-admin-entity-uom-category" >
-    <input type = "text" placeholder="search" class = "form-control pull-right" ng-model="ctrl.searchString" ng-change="ctrl.onSearchStringChanged()"/>
+    <br>
+    <div class = "row">
+      <div class = "col-md-4">
+        <input type = "text" placeholder="search" class = "form-control pull-right" ng-model="ctrl.searchString" ng-change="ctrl.onSearchStringChanged()"/>
+      </div>
+    </div>
     <div ngsimpletable
          allow-filter = 'ctrl.simpleTableConfig.allowFilter'
          allow-select = 'ctrl.simpleTableConfig.allowSelect'

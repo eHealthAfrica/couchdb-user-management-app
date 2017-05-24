@@ -39,6 +39,7 @@ angular.module('ng.simple.pagination', []).directive('ngsimplepagination', funct
 
       scope.$watch('total', function (newVal, oldVal) {
         scope.pageCount =  Math.ceil( (scope.total / scope.pageSize) - 1);
+        if (scope.pageEnd >  scope.total) {scope.pageEnd =  scope.total;}
       });
 
       scope.$watch('pageSize', function (newVal, oldVal) {
