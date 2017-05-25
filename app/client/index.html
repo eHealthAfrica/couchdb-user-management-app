@@ -16,56 +16,8 @@
 <body >
   <div ui-view="ng-admin" class="">
     <div id="wrapper" class="">
-      <nav id="header-nav" class="navbar navbar-default navbar-static-top" role="navigation">
-        <span compile="::appController.header">
-          <div class="navbar-header " >
-            <button type="button" class="navbar-toggle" ng-click="isCollapsed = !isCollapsed">
-              <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-            </button>
-            <div class="col-md-2 admin-logo-bg">
-              <a class=" stock-logo" href="/" ng-click="appController.displayHome()"><img src="img/logo.png" class="img-responsive stock-logo"></a>
-            </div>
-            <div class="col-md-6 admin-text">
-                <a class="link" href="/admin">User Management </a>
-            </div>
-            <div class="col-md-4">
-  <div class="navbar-right">
-   <a class="link" href="/"><i class="fa fa-angle-right"></i>LOMIS | Stock</a>
-    <div uib-dropdown="" class="dropdown user">
-      <a uib-dropdown-toggle="" class="dropdown-toggle" id="dropdownMenuUser" aria-haspopup="true" aria-expanded="false">
-        <span class="header-username "></span><span class="profile-pic"><i class="fa fa-user"></i></span><i class="fa fa-angle-down"></i>
-      </a>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuUser" role="menu">
-        <li><a href="#" ng-click="logout()">logout</a></li>
-      </ul>
-    </div>
-  </div>
-    </div>
-        </div>
-        </span>
-          <div class="navbar-default sidebar " role="navigation" compile="menu.template()">
-            <div class="sidebar-nav navbar-collapse  collapse" uib-collapse="$parent.isCollapsed" aria-expanded="false" aria-hidden="true" style="height: 0px;">
-              <ul class="nav" id="side-menu">
-
-                <li class="entities-repeat "  data-menu-id="26" >
-                  <a  href="#!/users/list" ng-click="activateLink(menu)" ng-class="::{'active': menu.isActive(path)}" class=" ">
-                    <span compile="::menu.icon()">
-                      <span class="fa fa-users fa-fw "></span>
-                    </span> List Users
-                  </a>
-                </li>
-                <li class="entities-repeat "  data-menu-id="26" >
-                      <a  href="#!/users/create" ng-click="activateLink(menu)" ng-class="::{'active': menu.isActive(path)}" class=" ">
-                    <span compile="::menu.icon()">
-                      <span class="fa fa-user-plus fa-fw "></span>
-                    </span> Add User
-                      </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-      </nav>
-     <div id = "page-wrapper" >
+      <nav ng-include = "'components/navbar/template.html'"></nav>
+      <div id = "page-wrapper" >
        <div ng-view></div>
      </div>
     </div>
@@ -75,6 +27,8 @@
       <script src="vendor.min.js"></script>
       <script src="bower_components/jquery/dist/jquery.js"></script>
       <script src="bower_components/angular/angular.js"></script>
+      <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+      <script src="bower_components/angular-decorate/angular-decorate.js"></script>
       <script src="bower_components/tv4/tv4.js"></script>
       <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
       <script src="bower_components/objectpath/lib/ObjectPath.js"></script>
@@ -94,6 +48,7 @@
       <script src="user/users.controller.js"></script>
       <script src="user/user.service.js"></script>
       <script src="user/new-user.controller.js"></script>
+      <script src="user/user-decorator.service.js"></script>
 
       <script src="role/role.js"></script>
       <script src="role/view-role.controller.js"></script>
@@ -104,6 +59,7 @@
       <script src="components/ng-simple-table/ng-simple-table.js"></script>
       <script src="components/ng-simple-pagination/ng-simple-pagination.js"></script>
       <script src="components/alert/alert.service.js"></script>
+      <script src="components/navbar/navbar.controller.js"></script>
   <!--endbuild -->
 </body>
 </html>

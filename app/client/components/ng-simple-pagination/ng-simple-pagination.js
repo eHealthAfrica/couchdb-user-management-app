@@ -39,11 +39,24 @@ angular.module('ng.simple.pagination', []).directive('ngsimplepagination', funct
 
       scope.$watch('total', function (newVal, oldVal) {
         scope.pageCount =  Math.ceil( (scope.total / scope.pageSize) - 1);
+        if (scope.pageEnd >  scope.total) {scope.pageEnd =  scope.total;}
       });
 
       scope.$watch('pageSize', function (newVal, oldVal) {
         if (newVal !== oldVal) {
           scope.currentPage = 0;
+          scope.pageEnd = newVal;
+
+        }
+
+      });
+
+      scope.$watch('pageEnd', function (newVal, oldVal) {
+        if (newVal == 0  && scope.total === 0) {
+          scope.pageStart = 0
+        }
+        else {
+          scope.pageStart = (scope.currentPage * scope.pageSize + 1);
         }
       });
 

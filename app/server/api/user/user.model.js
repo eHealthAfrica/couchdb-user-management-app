@@ -19,6 +19,9 @@ db.changes().on('change', function() {
   allPromise = null;
 });
 
+
+
+
 // exports
 exports.db = db;
 exports.id = id;
@@ -28,6 +31,27 @@ exports.findById = findById;
 exports.findByName = findByName;
 exports.update =  update;
 exports.fetchPaged =  fetchPaged;
+exports.search = search;
+
+
+function search(skip, limit, sortBy, sortDirection,searchString , cb) {
+
+  var descending = sortDirection === 'asc' ? false : true;
+  if (sortBy.trim().toLowerCase() === 'name') { sortBy =  'id'; }
+
+  db.view('couchdb-user-management-app/by_' +  sortBy ,{ descending: descending}, function(err, rows){
+    if (err) {
+      cb(err);
+    } else {
+      var users =  lodash.map(rows.rows, "value");
+      var filteredUsers =  users.filter( function (user) {
+        return user.name.indexOf(searchString) >= 0;
+      })
+      return cb(null, {total_rows: filteredUsers.length, offset:skip, rows:filteredUsers.slice(skip, skip + limit)});
+    }
+  });
+
+}
 
 function id (name) {
   return 'org.couchdb.user:' + name;
@@ -45,7 +69,6 @@ function exists (name, cb) {
     cb(null, true, user);
   });
 }
-
 function create (data, cb) {
   var error = new errors.ValidationError();
 
@@ -118,13 +141,6 @@ function update (name, data, cb) {
     db.merge(user._id, data , cb);
   });
 }
-
-
-
-
-
-
-
 function fetchPaged (skip, limit, sortBy, sortDirection, cb) {
 
   var descending = sortDirection === 'asc' ? false : true;
@@ -150,7 +166,6 @@ function fetchPaged (skip, limit, sortBy, sortDirection, cb) {
       cb(err);
     });
 }
-
 function findById (id, cb, auth) {
   db.get(id, function(err, user) {
     if (err) {

@@ -9,10 +9,16 @@
       <input type = "checkbox" ng-model="selectAll" ng-change = "toggleSelectAll()" />
     </th>
     <th ng-repeat = "head in tableHeader" class = "{{headerClass}}">
-      <a ng-href ng-click="sort($index)">
-        <i class = "fa fa-angle-up" ng-if = "(sortBy === head) && (sortDirection === 'desc')"></i>
-        <i class = "fa fa-angle-down" ng-if = "(sortBy === head) && (sortDirection === 'asc')"></i>
+      <a ng-if = "unsortableFields && unsortableFields.indexOf(head) >= 0">
         &nbsp; {{head.replace('_', ' ') | uppercase}} &nbsp;&nbsp;
+      </a>
+
+      <a ng-if="!unsortableFields || unsortableFields.indexOf(head) < 0"
+         ng-href
+         ng-click="sort($index)">
+          <i class = "fa fa-angle-up" ng-if = "(sortBy === head) && (sortDirection === 'desc')"></i>
+          <i class = "fa fa-angle-down" ng-if = "(sortBy === head) && (sortDirection === 'asc')"></i>
+        &nbsp;  {{head.replace('_', ' ') | uppercase}} &nbsp;&nbsp;
       </a>
     </th>
     <th ng-show = "{{rowActions.length > 0}}" class = "{{headerClass}}" >ACTION</th>
@@ -22,7 +28,7 @@
       <td width = "5%" ng-show="allowSelect"><input type = "checkbox"  ng-model="rowSelection[$index]" /></td>
 
       <td ng-repeat="col in tableHeader" class = "{{rowClass}}">
-        <span ng-if = "toggleFieldsName.indexOf(col) < 0 && arrayFields.indexOf(col) < 0">{{row[col].toString()}}</span>
+        <span ng-if = "toggleFieldsName.indexOf(col) < 0 && arrayFields.indexOf(col) < 0">{{row[col].toString() | limitColumnWidth : maxColWidth}}</span>
         <span ng-if = "toggleFieldsName.indexOf(col) < 0 && arrayFields.indexOf(col) >= 0">
           <label ng-repeat= "elem in row[col]" class = "label label-default" ng-class="['label-warning', 'label-info'][$index]">{{elem}}</label>
         </span>

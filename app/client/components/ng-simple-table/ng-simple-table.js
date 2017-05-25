@@ -1,6 +1,15 @@
-angular.module('ng.simple.table', []).directive('ngsimpletable', function(){
+angular.module('ng.simple.table', [])
 
-  return {
+  .filter('limitColumnWidth', function () {
+      return function (columnString, limit) {
+        if (columnString.length  >= limit) {
+          return columnString.substring(0, limit - 4) + " ...";
+        }
+        return columnString;
+      }
+  })
+  .directive('ngsimpletable', function () {
+    return {
 
     scope : {
       allowFilter: '=',
@@ -10,6 +19,7 @@ angular.module('ng.simple.table', []).directive('ngsimpletable', function(){
       filterFieldClass: '@',
       filterFieldPlaceholder: '@',
       headerClass: '@',
+      maxColWidth: '=',
       rowActions: '=',
       rowActionCallback: '&',
       rowActionClass : '@',
@@ -21,7 +31,8 @@ angular.module('ng.simple.table', []).directive('ngsimpletable', function(){
       tableData: '=',
       tableHeader: '=',
       toggleFields: '=',
-      toggleFieldCallback: '&'
+      toggleFieldCallback: '&',
+      unsortableFields: '='
     },
 
     link: function(scope, element, attrs){
@@ -31,6 +42,7 @@ angular.module('ng.simple.table', []).directive('ngsimpletable', function(){
       scope.selectAll = false;
       scope.tableDataCopy = scope.tableData;
       scope.toggleFieldsName =  _.map(scope.toggleFields, 'name');
+
 
       scope.$watch('tableData', function(newVal, oldVal){
         scope.rowSelection =  resetRowSelection();
@@ -92,7 +104,7 @@ angular.module('ng.simple.table', []).directive('ngsimpletable', function(){
           scope.sortBy = scope.tableHeader[colIndex];
           scope.sortDirection = 'asc';
         }
-        scope.sortCallback({sortBy: scope.sortBy, sortDirection: scope.sortDirection});
+        scope.sortCallback({by: scope.sortBy, direction: scope.sortDirection});
       };
 
       scope.toggleSelectAll = function () {

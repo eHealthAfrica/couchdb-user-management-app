@@ -9,7 +9,7 @@ exports.fetchPaged = fetchPaged;
 exports.fetchOne = fetchOne;
 exports.update = update;
 exports.remove = remove;
-
+exports.search =  search;
 
 
 
@@ -20,6 +20,23 @@ function create (req, res, next) {
     }
     res.json(user);
   });
+}
+
+
+function search (req, res, next) {
+  User.search(
+    parseInt(req.query.skip),
+    parseInt(req.query.limit),
+    req.query.sortBy,
+    req.query.sortDirection,
+    req.params.searchString,
+    function (err, searchResult) {
+      if (err) {
+        return next(err);
+      }
+      res.json(searchResult);
+    }
+  )
 }
 
 

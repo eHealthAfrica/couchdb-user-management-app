@@ -23,7 +23,7 @@ angular.module('app.user')
 
     this.getPage = function (skip, limit, sortBy, sortDirection) {
 
-      if (! sortBy) { sortBy = 'id'; }
+      if (! sortBy) { sortBy = 'name'; }
       if (! sortDirection) { sortDirection = 'asc'; }
 
       var promise = $http({
@@ -42,6 +42,21 @@ angular.module('app.user')
     this.getOne =  function (name) {
       var promise = $http({
         url: _this.baseUrl + '/'+  name,
+        withCredentials: true
+      });
+      return promise.then(function (response) {
+        return response.data;
+      });
+    };
+
+    this.search = function (skip, limit, sortBy, sortDirection, searchString) {
+
+      if (! sortBy) { sortBy = 'name'; }
+      if (! sortDirection) { sortDirection = 'asc'; }
+
+      var promise =  $http({
+        url: _this.baseUrl + '/search/' + searchString,
+        params: {skip: skip, limit: limit, sortBy: sortBy, sortDirection:  sortDirection},
         withCredentials: true
       });
       return promise.then(function (response) {
