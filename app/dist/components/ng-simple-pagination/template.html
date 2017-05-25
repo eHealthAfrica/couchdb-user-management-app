@@ -12,10 +12,10 @@
       <a href=""  class="ng-binding ng-scope">{{currentPage +  1}}</a>
     </li>
     <li  ng-class="" class="ng-scope">
-      <a href="" ng-if="currentPage < pageCount" ng-click="navigateTo(currentPage +  1)" class="ng-binding ng-scope">{{currentPage +  2}}</a>
+      <a href="" ng-if="currentPage < pageCount - 1" ng-click="navigateTo(currentPage +  1)" class="ng-binding ng-scope">{{currentPage +  2}}</a>
     </li>
     <li>
-      <a href="" ng-if="currentPage < pageCount" ng-click="navigateTo(currentPage +  1)" translate="PREVIOUS" class="ng-scope">Next »</a>
+      <a href="" ng-if="currentPage < pageCount - 1" ng-click="navigateTo(currentPage +  1)" translate="PREVIOUS" class="ng-scope">Next »</a>
     </li>
   </ul>
   <br>
