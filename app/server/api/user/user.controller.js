@@ -2,7 +2,7 @@
 /* global require */
 'use strict';
 
-var User = require('./user.model.inmemory.js');
+var User = require('./user.model.js');
 
 exports.create = create;
 exports.fetchPaged = fetchPaged;

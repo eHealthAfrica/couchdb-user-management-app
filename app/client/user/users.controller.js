@@ -8,12 +8,12 @@ angular.module('app.user')
     '$location',
     'alertService',
     'userService',
-    'usersDependencyService',
+    'userDecoratorService',
     '$filter',
     'users',
     'PAGE_SIZE',
     'USERS_TABLE_CONFIG',
-    function ($scope, $location, alertService, userService,usersDependencyService, $filter, users,  PAGE_SIZE, USERS_TABLE_CONFIG) {
+    function ($scope, $location, alertService, userService,userDecoratorService, $filter, users,  PAGE_SIZE, USERS_TABLE_CONFIG) {
 
       var vm = this;
       vm.searchString  = "";
@@ -32,23 +32,21 @@ angular.module('app.user')
         direction: null
       }
 
-      vm.users = _.forEach(users.rows, function (elem) {
-        elem.user_type = $filter('getUserType')(elem);
-        if (USERS_TABLE_CONFIG.roleDependedntFields) {
-          for (var i in USERS_TABLE_CONFIG.roleDependedntFields) {
-            const field =  USERS_TABLE_CONFIG.roleDependedntFields[i];
-            usersDependencyService.get(field, elem)
-              .then(function (prop) {
-                elem[field] =  prop;
-              })
-          }
+      vm.users =  _.map(users.rows, 'value');
+      $scope.users =  users;
+
+
+      $scope.$watch('users', function (newValue, oldValue) {
+        if (newValue !== undefined && newValue !== null) {
+          displayPage($scope.users);
+          $scope.users = null;
         }
       });
+
 
       vm.onSearchStringChanged =  function () {
         vm.searchString =  vm.searchString.trim();
         if (vm.searchString.length === 0) {
-           // TODO: reload previous page and all that
         }
 
         vm.requestPage(0, PAGE_SIZE);
@@ -120,18 +118,18 @@ angular.module('app.user')
        };
 
       function displayPage (users) {
-        vm.users = _.forEach(users.rows, function (elem) {
-          elem.user_type = $filter('getUserType')(elem);
-          if (USERS_TABLE_CONFIG.roleDependedntFields) {
-            for (var i in USERS_TABLE_CONFIG.roleDependedntFields) {
-              const field =  USERS_TABLE_CONFIG.roleDependedntFields[i];
-              usersDependencyService.get(field, elem)
-                .then(function (prop) {
-                  elem[field] =  prop;
-                })
-            }
-          }
-        });
+
+        if (users && users.rows && users.rows.length > 0 && users.rows[0].value) {
+          vm.users = _.map(users.rows, 'value');
+        }
+        else {
+          vm.users =  users.rows;
+        }
+
+        if (USERS_TABLE_CONFIG.roleDependedntFields) {
+          userDecoratorService.decorate(USERS_TABLE_CONFIG.roleDependedntFields, vm.users)
+
+        }
         vm.simplePaginationConfig.total = users.total_rows;
         vm.simplePaginationConfig.offset =  users.offset;
       }

@@ -16,6 +16,7 @@ angular.module('app.user')
           $location.path(path);
         })
         .catch(function(err){
+          console.log(err);
           if (err.data.name === 'ValidationError'){
             vm.newUserForm.$serverError = vm.newUserForm.name;
             return;

@@ -105,7 +105,7 @@ angular.module('app.role')
 
 
 
-angular.module('app.user').decorate('usersDependencyService', [
+angular.module('app.user').decorate('userDecoratorService', [
   '$delegate',
   '$q',
   'adminLevelService',
@@ -113,100 +113,98 @@ angular.module('app.user').decorate('usersDependencyService', [
   'locationService',
   function ($delegate, $q, adminLevelService, facilityService,  locationService) {
 
-  var adminLevel = [];
-  var getRole =  function (user) {
-      if (
-        ! user.lomis_stock ||
-        ( ! user.lomis_stock.mobile ||
-        ! user.lomis_stock.dashboard) ||
-        ( _.isEmpty(user.lomis_stock.mobile) && _.isEmpty(user.lomis_stock.dashboard))
-      ) {
-        return 'None';
-      }
-      else if (_.isEmpty(user.lomis_stock.mobile)) {
-        return 'Dashboard';
-      }
-      else {
-        return 'Mobile';
-      }
-    }
 
-  $delegate.methods["admin_level"] = function (user) {
-    var promise =  adminLevelService.getAll();
-     return promise.then(function (response) {
-      function getAdminLevel () {
-        switch ( getRole (user) ) {
-          case 'Mobile':
-            return 'Facility';
-          case 'None':
-            return 'Unassigned';
-          case 'Dashboard':
-            var id =  user.lomis_stock.dashboard.access.level;
+    $delegate.decorate =  function (fields, users) {
 
-            for (var i in response) {
-              if (response[i]._id === id) {
-                return response[i].name;
+
+      var promises = $q.all([
+        adminLevelService.getAll(),
+        facilityService.getAll(),
+        locationService.getAll()
+      ]);
+
+      return promises.then( function (responses) {
+        function getRole (user) {
+          if (
+            !user.lomis_stock ||
+            ( !user.lomis_stock.mobile ||
+            !user.lomis_stock.dashboard) ||
+            ( _.isEmpty(user.lomis_stock.mobile) && _.isEmpty(user.lomis_stock.dashboard))
+          ) {
+            return 'None';
+          }
+          else if (_.isEmpty(user.lomis_stock.mobile)) {
+            return 'Dashboard';
+          }
+          else {
+            return 'Mobile';
+          }
+        }
+        function getAdminLevel (user) {
+          switch (getRole(user)) {
+            case 'Mobile':
+              return 'Facility';
+            case 'None':
+              return 'Unassigned';
+            case 'Dashboard':
+              var id = user.lomis_stock.dashboard.access.level;
+
+              for (var i in responses[0]) {
+                if (responses[0][i]._id === id) {
+                  return responses[0][i].name;
+                }
+              }
+              return "Unknown Access Level";
+          }
+        };
+        function getLocation (user) {
+          if (getRole(user) === 'None') { return null;}
+          if (getRole(user) === 'Mobile') {
+            var userFacilities = user.lomis_stock.mobile.facilities;
+            var assignedFacilities = '';
+
+            for (var i in userFacilities) {
+              var facility = Object.keys(userFacilities[i]);
+              if (facility.length > 0) {
+                for (var i in responses[1]) {
+                  if (responses[1][i]._id === facility[1]) {
+                    assignedFacilities += responses[1][i].name + ' ';
+                  }
+                }
+              }
+
+            }
+            return assignedFacilities;
+          }
+          else {
+            var accessLevel = user.lomis_stock.dashboard.access.level;
+            var accessItems = user.lomis_stock.dashboard.access.items;
+            var accessItem = null;
+            for (var i in accessItems) {
+              if (accessItems[i][accessLevel]) {
+                accessItem = accessItems[i][accessLevel];
+                break;
               }
             }
-            return "Unknown Access Level";
-        }
-      };
-      return getAdminLevel()
-    });
-  };
+            var assignedLocations = '';
 
-  $delegate.methods["location"] =  function (user) {
-
-   var promises = $q.all([
-      facilityService.getAll(),
-      locationService.getAll()
-    ])
-    return promises.then( function (responses) {
-      function getLocations () {
-        if (getRole(user) === 'None') { return null;}
-        if ( getRole(user) === 'Mobile' ) {
-          var userFacilities =  user.lomis_stock.mobile.facilities;
-          var assignedFacilities = '';
-
-          for (var i in userFacilities) {
-            var facility =  Object.keys(userFacilities[i]);
-            if (facility.length > 0) {
-              for (var i in responses[0] ) {
-                if (responses[0][i]._id === facility[0]) {
-                  assignedFacilities += responses[1][i].name + ' ';
+            for (var i in accessItem) {
+              for (var j in responses[2]) {
+                if (responses[2][j]._id === accessItem[i]) {
+                  assignedLocations += responses[2][j].name;
                 }
               }
             }
-
+            return assignedLocations;
           }
-          return assignedFacilities;
+        };
+
+        for (var i in users) {
+          users[i]['admin_level'] =  getAdminLevel(users[i]);
+          users[i]['location'] = getLocation(users[i]);
         }
-        else {
-          var accessLevel = user.lomis_stock.dashboard.access.level;
-          var accessItems = user.lomis_stock.dashboard.access.items;
-          var accessItem =  null;
-          for (var i in accessItems) {
-            if ( accessItems[i][accessLevel] ){
-              accessItem =  accessItems[i][accessLevel];
-              break;
-            }
-          }
-          var assignedLocations = '';
-
-          for (var i in accessItem) {
-            for (var j in responses[1]) {
-              if (responses[1][j]._id === accessItem[i]) {
-                assignedLocations +=responses[1][j].name;
-              }
-            }
-          }
-          return assignedLocations;
-        }
-      };
-
-      return getLocations();
-    })
-  }
+      })
+    }
 
 
 

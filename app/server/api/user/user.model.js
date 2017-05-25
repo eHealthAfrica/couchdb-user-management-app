@@ -31,66 +31,27 @@ exports.findById = findById;
 exports.findByName = findByName;
 exports.update =  update;
 exports.fetchPaged =  fetchPaged;
-exports.search = searchFor;
-
-var users =  null;
-
-function searchFor  (searchString, cb) {
-  if (users === null){
-    console.log("was null.....");
-    all(function (err, rows){
-      console.log("got back", err);
-      if (err !== null) {
-        return cb(err);
-      }
-      users = rows;
-      console.log("Gott bavk", rows.length);
-      console.log("Users", users);
-      search(searchString, cb);
-    });
-  }
-  else {
-    search(searchString, cb);
-  }
-}
+exports.search = search;
 
 
-function search (searchString, cb) {
-console.log("reached here");
-  return cb(null, users.filter(function (user) {
-    return user.name.indexOf(searchString) >= 0;
-  }));
+
+
+
+function search(skip, limit, sortBy, sortDirection,searchString , cb) {
+
+  db.all({include_docs : true}, function (err, rows) {
+    if (err) { cb(err); }
+    var users =  utility.removeDesignDocs(lodash.map(rows.rows, "doc"));
+    var filteredUsers =  users.filter( function (user) {
+      return user.name.indexOf(searchString) >= 0;
+    })
+    return cb(null, {total_rows: filteredUsers.length, offset:skip, rows:filteredUsers.slice(skip, skip + limit)});
+
+  });
 
 }
 
 
-
-
-function all (cb) {
-  if (! allPromise) {
-    var d =  q.defer();
-    allPromise =  d.promise;
-
-    db.all({include_docs: true}, function (err, rows) {
-      if (err) {
-        d.reject(err);
-      }
-      else {
-        d.resolve(utility.removeDesignDocs(lodash.map(rows.rows, "doc")))
-      }
-    })
-  }
-
-  allPromise
-    .then (function (rows) {
-      console.log(rows);
-      cb(null, rows);
-    })
-    .catch (function (err) {
-      allPromise = null;
-      cb(err);
-    })
-}
 
 
 

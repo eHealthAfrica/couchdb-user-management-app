@@ -23,7 +23,7 @@ angular.module('app.user')
 
     this.getPage = function (skip, limit, sortBy, sortDirection) {
 
-      if (! sortBy) { sortBy = 'id'; }
+      if (! sortBy) { sortBy = 'name'; }
       if (! sortDirection) { sortDirection = 'asc'; }
 
       var promise = $http({

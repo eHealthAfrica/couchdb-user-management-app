@@ -3222,6 +3222,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
   height: auto; }
 
 input[type=search] {
+  border: 1px solid silver !important;
+  border-radius: 15px !important;
   -webkit-appearance: textfield;
   box-sizing: content-box; }
 
@@ -9623,3 +9625,7 @@ input[type="text"].form-control:focus, input[type="text"].form-control:hover, in
 
 /* HIDE SOME FIELDS*/
 #row-is_deleted, #row-_r
+
+.padding30 {
+  padding: 30px;
+}
