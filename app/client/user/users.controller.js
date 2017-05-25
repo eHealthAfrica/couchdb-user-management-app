@@ -56,7 +56,7 @@ angular.module('app.user')
           vm.simplePaginationConfig.currentPage = 0;
         }
 
-        var promise = vm.searchString.length === 0 ? userService.getPage(skip, limit, vm.sortOptions.by, vm.sortOptions.direction) : userService.search(skip, limit, vm.sortOptions.by, vm.sortOptions.direction, vm.searchString);
+        var promise = vm.searchString.length === 0 ? userService.getPage(skip, PAGE_SIZE, vm.sortOptions.by, vm.sortOptions.direction) : userService.search(skip, PAGE_SIZE, vm.sortOptions.by, vm.sortOptions.direction, vm.searchString);
 
         promise
           .then(function (users) {
@@ -71,7 +71,7 @@ angular.module('app.user')
       vm.sort = function (by, direction) {
         vm.sortOptions.by = by;
         vm.sortOptions.direction =  direction;
-        vm.requestPage(0, vm.simplePaginationConfig.pageSize);
+        vm.requestPage(0, PAGE_SIZE);
       };
 
       vm.rowActionCallback = function (actionIndex, rowIndex) {
@@ -127,9 +127,7 @@ angular.module('app.user')
         }
         vm.simplePaginationConfig.total = users.total_rows;
         vm.simplePaginationConfig.offset =  users.offset;
-        if (vm.users) {
-          vm.simplePaginationConfig.pageSize = vm.users.length;
-        }
+        
       }
 
       function toggleUserStatus (rowIndex) {

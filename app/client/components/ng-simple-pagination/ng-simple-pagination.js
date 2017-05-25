@@ -18,50 +18,39 @@ angular.module('ng.simple.pagination', []).directive('ngsimplepagination', funct
       scope.pageEnd = 0;
 
 
-      scope.$watch('currentPage', function (newVal, oldVal) {
-        scope.pageStart = (scope.currentPage * scope.pageSize + 1);
-        scope.pageEnd = (scope.currentPage * scope.pageSize ) +  scope.pageSize;
+      function changePageTo (pageNumber) {
+        scope.currentPage =  pageNumber ;
+
+        scope.pageStart = (scope.currentPage * scope.pageSize) + 1;
+        scope.pageEnd =  scope.pageStart + scope.pageSize - 1;
 
         if (scope.pageStart >  scope.total) { scope.pageStart =  scope.total;}
-        if (scope.pageEnd >  scope.total) {scope.pageEnd =  scope.total;}
+        if (scope.pageEnd > scope.total) {scope.pageEnd =  scope.total;}
 
-        if (newVal === oldVal) {
-            scope.currentPage =  Math.floor( scope.offset / scope.pageSize);
-            scope.pageCount =  Math.ceil (scope.total / scope.pageSize);
-            if (scope.pageResized) {
-              scope.pageResized =  false;
-              scope.onPageRequested({ limit: scope.pageSize, skip: (newVal * scope.offset)});
-            }
-        }else {
-          scope.onPageRequested({ limit: scope.pageSize, skip: (newVal * scope.pageSize)});
-        }
+        var skip = (pageNumber * scope.pageStart) - 1;
+        if (skip < 0) { skip = 0;}
+
+        scope.onPageRequested({limit: scope.pageStart, skip: skip});
+      }
+
+      function updatePageCount () {
+        scope.pageCount =  Math.ceil(scope.total /  scope.pageSize);
+        scope.pageStart = (scope.currentPage * scope.pageSize) + 1;
+        scope.pageEnd =  scope.pageStart + scope.pageSize - 1;
+        if (scope.pageStart >  scope.total) { scope.pageStart =  scope.total;}
+        if (scope.pageEnd > scope.total) {scope.pageEnd =  scope.total;}
+      }
+
+      scope.$watch('total', function (newValue, oldValue) {
+          updatePageCount();
       });
 
-      scope.$watch('total', function (newVal, oldVal) {
-        scope.pageCount =  Math.ceil( (scope.total / scope.pageSize) - 1);
-        if (scope.pageEnd >  scope.total) {scope.pageEnd =  scope.total;}
-      });
-
-      scope.$watch('pageSize', function (newVal, oldVal) {
-        if (newVal !== oldVal) {
-          scope.currentPage = 0;
-          scope.pageEnd = newVal;
-
-        }
-
-      });
-
-      scope.$watch('pageEnd', function (newVal, oldVal) {
-        if (newVal == 0  && scope.total === 0) {
-          scope.pageStart = 0
-        }
-        else {
-          scope.pageStart = (scope.currentPage * scope.pageSize + 1);
-        }
+      scope.$watch('currentPage', function (newVal, oldVal) {
+        changePageTo(newVal);
       });
 
       scope.navigateTo = function (page) {
-        scope.currentPage = page;
+        changePageTo(page);
       };
     },
 
