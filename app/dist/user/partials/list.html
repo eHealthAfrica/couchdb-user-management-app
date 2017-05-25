@@ -38,8 +38,13 @@
   <div class = "row list-view ng-admin-entity-uom-category" >
     <br>
     <div class = "row">
-      <div class = "col-md-4">
-        <input type = "search" placeholder="search" class = "form-control searchbox pull-right" ng-model="ctrl.searchString" ng-change="ctrl.onSearchStringChanged()" />
+      <div class = "row col-md-3">
+        <div class = "col-md-1">
+          <span></span>
+        </div>
+        <div class="col-md-10">
+          <input type = "search" placeholder="search" class = "form-control searchbox pull-right" ng-model="ctrl.searchString" ng-change="ctrl.onSearchStringChanged()" />
+        </div>
       </div>
     </div>
     <div ngsimpletable
