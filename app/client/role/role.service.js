@@ -38,10 +38,6 @@ angular.module('app.role')
     });
   };
 
-  this.get =  function () {
-
-  }
-
 }])
   .service('facilityService', [ '$http', function ($http) {
 
@@ -115,8 +111,6 @@ angular.module('app.user').decorate('userDecoratorService', [
 
 
     $delegate.decorate =  function (fields, users) {
-
-
       var promises = $q.all([
         adminLevelService.getAll(),
         facilityService.getAll(),
@@ -205,8 +199,5 @@ angular.module('app.user').decorate('userDecoratorService', [
         }
       })
     }
-
-
-
   return $delegate;
 }]);

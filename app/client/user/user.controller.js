@@ -32,7 +32,6 @@ angular.module('app.user')
       if (! _.isEmpty(vm.updateUserForm.$error)){ return; }
       userService.update(_.pick(vm.updateUserForm, ['name','password', 'email']))
         .then(function(response){
-          console.log(response);
           alertService.showSuccessMessage("Changes successfully saved");
           var path =  'users/view/' + vm.updateUserForm.name;
           $location.path(path);
