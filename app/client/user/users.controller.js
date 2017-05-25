@@ -46,9 +46,6 @@ angular.module('app.user')
 
       vm.onSearchStringChanged =  function () {
         vm.searchString =  vm.searchString.trim();
-        if (vm.searchString.length === 0) {
-        }
-
         vm.requestPage(0, PAGE_SIZE);
       }
 
@@ -74,8 +71,6 @@ angular.module('app.user')
       vm.sort = function (by, direction) {
         vm.sortOptions.by = by;
         vm.sortOptions.direction =  direction;
-        vm.simplePaginationConfig.offset = 0;
-        vm.simplePaginationConfig.currentPage = 0;
         vm.requestPage(0, vm.simplePaginationConfig.pageSize);
       };
 
@@ -132,6 +127,9 @@ angular.module('app.user')
         }
         vm.simplePaginationConfig.total = users.total_rows;
         vm.simplePaginationConfig.offset =  users.offset;
+        if (vm.users) {
+          vm.simplePaginationConfig.pageSize = vm.users.length;
+        }
       }
 
       function toggleUserStatus (rowIndex) {
