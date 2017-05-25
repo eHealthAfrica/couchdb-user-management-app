@@ -34,26 +34,24 @@ exports.fetchPaged =  fetchPaged;
 exports.search = search;
 
 
-
-
-
 function search(skip, limit, sortBy, sortDirection,searchString , cb) {
 
-  db.all({include_docs : true}, function (err, rows) {
-    if (err) { cb(err); }
-    var users =  utility.removeDesignDocs(lodash.map(rows.rows, "doc"));
-    var filteredUsers =  users.filter( function (user) {
-      return user.name.indexOf(searchString) >= 0;
-    })
-    return cb(null, {total_rows: filteredUsers.length, offset:skip, rows:filteredUsers.slice(skip, skip + limit)});
+  var descending = sortDirection === 'asc' ? false : true;
+  if (sortBy.trim().toLowerCase() === 'name') { sortBy =  'id'; }
 
+  db.view('couchdb-user-management-app/by_' +  sortBy ,{ descending: descending}, function(err, rows){
+    if (err) {
+      cb(err);
+    } else {
+      var users =  lodash.map(rows.rows, "value");
+      var filteredUsers =  users.filter( function (user) {
+        return user.name.indexOf(searchString) >= 0;
+      })
+      return cb(null, {total_rows: filteredUsers.length, offset:skip, rows:filteredUsers.slice(skip, skip + limit)});
+    }
   });
 
 }
-
-
-
-
 
 function id (name) {
   return 'org.couchdb.user:' + name;

@@ -50,6 +50,10 @@ angular.module('app.user')
     };
 
     this.search = function (skip, limit, sortBy, sortDirection, searchString) {
+
+      if (! sortBy) { sortBy = 'name'; }
+      if (! sortDirection) { sortDirection = 'asc'; }
+
       var promise =  $http({
         url: _this.baseUrl + '/search/' + searchString,
         params: {skip: skip, limit: limit, sortBy: sortBy, sortDirection:  sortDirection},
