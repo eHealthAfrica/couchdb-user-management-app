@@ -2,7 +2,7 @@ angular.module('ng.simple.table', [])
 
   .filter('limitColumnWidth', function () {
       return function (columnString, limit) {
-        if (columnString.length  >= limit) {
+        if (columnString && columnString.length  >= limit) {
           return columnString.substring(0, limit - 4) + " ...";
         }
         return columnString;
