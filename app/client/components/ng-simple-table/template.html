@@ -28,7 +28,7 @@
       <td width = "5%" ng-show="allowSelect"><input type = "checkbox"  ng-model="rowSelection[$index]" /></td>
 
       <td ng-repeat="col in tableHeader" class = "{{rowClass}}">
-        <span ng-if = "toggleFieldsName.indexOf(col) < 0 && arrayFields.indexOf(col) < 0">{{row[col].toString()}}</span>
+        <span ng-if = "toggleFieldsName.indexOf(col) < 0 && arrayFields.indexOf(col) < 0">{{row[col].toString() | limitColumnWidth : maxColWidth}}</span>
         <span ng-if = "toggleFieldsName.indexOf(col) < 0 && arrayFields.indexOf(col) >= 0">
           <label ng-repeat= "elem in row[col]" class = "label label-default" ng-class="['label-warning', 'label-info'][$index]">{{elem}}</label>
         </span>

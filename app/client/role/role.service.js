@@ -160,9 +160,9 @@ angular.module('app.user').decorate('userDecoratorService', [
             for (var i in userFacilities) {
               var facility = Object.keys(userFacilities[i]);
               if (facility.length > 0) {
-                for (var i in responses[1]) {
-                  if (responses[1][i]._id === facility[1]) {
-                    assignedFacilities += responses[1][i].name + ' ';
+                for (var j in responses[1]) {
+                  if (responses[1][j]._id === facility[0]) {
+                    assignedFacilities += responses[1][j].name + ' ';
                   }
                 }
               }

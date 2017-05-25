@@ -17,6 +17,7 @@ angular.module('app.config')
       allowSort:  true,
       arrayFields: [],
       header: ['name', 'admin_level', 'location', 'status'],
+      maxColWidth : 25,
       roleDependedntFields: ['admin_level', 'location'],
       rowActions: ['assign role', 'edit', 'show', 'delete'],
       rowActionClasses: ['glyphicon glyphicon-user', 'glyphicon glyphicon-pencil', 'glyphicon glyphicon-eye-open', 'glyphicon glyphicon-trash'],
