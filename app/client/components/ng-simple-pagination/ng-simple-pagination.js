@@ -27,7 +27,7 @@ angular.module('ng.simple.pagination', []).directive('ngsimplepagination', funct
         if (scope.pageStart >  scope.total) { scope.pageStart =  scope.total;}
         if (scope.pageEnd > scope.total) {scope.pageEnd =  scope.total;}
 
-        var skip = (pageNumber * scope.pageStart) - 1;
+        var skip = (pageNumber * scope.pageSize);
         if (skip < 0) { skip = 0;}
 
         scope.onPageRequested({limit: scope.pageStart, skip: skip});
