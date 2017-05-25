@@ -24,7 +24,7 @@ angular.module('app.config')
       unsortableFields: ['location']
   })
   .value('NAVIGATION', {
-    customNavbarLinks: [{title: 'Goto Desktop', url: '/', iconClass: 'fa fa-angle-right'}],
+    customNavbarLinks: [{title: 'Goto Dashboard', url: '/', iconClass: 'fa fa-angle-right'}],
     sidebarLinks: [{title: 'Back', url: '/admin', iconClass: 'fa fa-chevron-left fa-fw'}]
   })
   .value('PAGE_SIZE', 30)
