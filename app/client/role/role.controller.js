@@ -22,37 +22,46 @@ angular.module('app.role')
 
 
     vm.submitUpdateUserRoleForm = function () {
+
       if (vm.updateUserRoleForm.$error && !_.isEmpty(vm.updateUserRoleForm.$error)){
         return;
       }
-      vm.updateUserRoleForm.lomis_stock = {};
-      if (vm.updateUserRoleForm.type === vm.userTypes[0]) {
-        vm.updateUserRoleForm.lomis_stock.mobile = {};
-        var adminLevelIndex = -1;
-        for(var i in vm.adminLevels){ if (vm.adminLevels[i]._id === vm.updateUserRoleForm.access.level){adminLevelIndex = i; break;}}
 
-        vm.updateUserRoleForm.lomis_stock.dashboard = {access: {items:[], level: vm.updateUserRoleForm.access.level}};
-        var item = {};
-        item[vm.updateUserRoleForm.access.level] = [];
-        item[vm.updateUserRoleForm.access.level].push(vm.updateUserRoleForm.locations[adminLevelIndex + ""]);
-        vm.updateUserRoleForm.lomis_stock.dashboard.access.items.push(item);
-      } else {
-        vm.updateUserRoleForm.lomis_stock.dashboard = {};
-        if (vm.updateUserRoleForm.facility){
-          vm.updateUserRoleForm.lomis_stock.mobile = {};
-          vm.updateUserRoleForm.lomis_stock.mobile.facilities = [];
-          var entry = {};
-          entry[vm.updateUserRoleForm.facility] = [vm.updateUserRoleForm.program];
-          vm.updateUserRoleForm.lomis_stock.mobile.facilities.push( entry);
-        }
+      var lomis_stock = {dashboard: {}, mobile: {}};
+
+      switch (vm.updateUserRoleForm.type) {
+        case 'mobile':
+          if (!(vm.updateUserRoleForm.facility && vm.updateUserRoleForm.program)) {
+            return;
+          }
+
+          var facilityEntry = {};
+          facilityEntry[vm.updateUserRoleForm.facility] = [vm.updateUserRoleForm.program];
+          lomis_stock.mobile.facilities = [facilityEntry];
+          break;
+
+        case 'dashboard':
+
+          var adminLevelIndex = -1;
+          for(var i in vm.adminLevels){ if (vm.adminLevels[i]._id === vm.updateUserRoleForm.access.level){adminLevelIndex = i; break;}}
+          if (! vm.updateUserRoleForm.locations[adminLevelIndex + ""] ) {
+            return;
+          }
+          lomis_stock.dashboard = { access: { level: vm.updateUserRoleForm.access.level}, is_admin: vm.updateUserRoleForm.is_admin || false};
+          var item = {};
+          item[vm.updateUserRoleForm.access.level] = [ vm.updateUserRoleForm.locations[adminLevelIndex + ""] ];
+          lomis_stock.dashboard.access.items = [item];
+          break;
       }
-      userService.update({name : vm.user.name, _id: vm.user._id, lomis_stock:vm.updateUserRoleForm.lomis_stock}).then(function(response){
-        alertService.showSuccessMessage("Changes successfully saved");
-        var path =  'users/view/' + vm.user.name;
-        $location.path(path);
-      }).catch(function(err) {
-        alertService.showErrorMessage('Entry was not updated' + err);
-      });
+
+      userService.update({name : vm.user.name, _id: vm.user._id, lomis_stock: lomis_stock})
+        .then(function (response) {
+          alertService.showSuccessMessage("Changes successfully saved");
+          var path =  'users/view/' + vm.user.name;
+          $location.path(path);
+        }).catch(function(err) {
+          alertService.showErrorMessage('Entry was not updated' + err);
+        });
     };
 
     vm.getAssignedLocation = function () {
@@ -98,14 +107,8 @@ angular.module('app.role')
 
     vm.getUserType = function () {
       if (user && user.lomis_stock){
-        var possibleUserTypes =  Object.keys(user.lomis_stock);
-        var userType = '';
-        for (var i in possibleUserTypes){
-          if (! _.isEmpty(user.lomis_stock[possibleUserTypes[i]])) {
-            userType += possibleUserTypes[i] + " ";
-          }
-        }
-        return userType.trim();
+        if (user.lomis_stock.dashboard && ! _.isEmpty(user.lomis_stock.dashboard)) { return 'dashboard'; }
+        else if (user.lomis_stocj.mobile && ! _.isEmpty(user.lomis_stock.mobile)) { return 'mobile'; }
       }
       return '';
     };

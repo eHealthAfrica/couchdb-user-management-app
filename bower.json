@@ -19,6 +19,7 @@
     "nprogress": "^0.2.0",
     "textAngular": "^1.5.16",
     "tv4": "^1.2.7",
-    "angular-cookies": "^1.6.4"
+    "angular-cookies": "^1.6.4",
+    "angular-decorate": "^0.1.1"
   }
 }
