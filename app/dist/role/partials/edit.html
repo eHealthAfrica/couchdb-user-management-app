@@ -28,7 +28,7 @@
         </div>
 
         <div id="usertype" class="form-field form-group has-feedback">
-          <label for="type" class="col-sm-2 control-label">User Type</label>
+          <label for="type" class="col-sm-2 control-label">User Type|{{ctrl.getUserType()}}|</label>
           <div class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7"
                ng-init="ctrl.updateUserRoleForm.type=ctrl.getUserType()"
           >
@@ -39,6 +39,14 @@
                      ng-options = "type as type for type in ctrl.userTypes"
 
             ></select>
+          </div>
+        </div>
+
+        <div class="form-field form-group" ng-if="ctrl.updateUserRoleForm.type === 'dashboard'">
+          <label for="password" class="col-sm-2 control-label ng-binding">Administrator</label>
+
+          <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
+            <input type="checkbox"  ng-model="ctrl.updateUserRoleForm.is_admin"  ng-init="ctrl.updateUserRoleForm.is_admin = ctrl.user.lomis_stock.dashboard.is_admin" class="form-control" ng-true-value="true" ng-false-value="false" >
           </div>
         </div>
 

@@ -49,6 +49,10 @@ angular.module('app.role')
       else { return 'Mobile'; }
     };
 
+    vm.isAnAdmin = function () {
+      return vm.user.lomis_stock.dashboard.is_admin;
+    }
+
     vm.getAdminLevel = function () {
       if ( vm.getRole() === 'Mobile' ){ return 'Facility'; }
       var id =  vm.user.lomis_stock.dashboard.access.level;
