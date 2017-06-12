@@ -9,7 +9,8 @@ angular.module('myApp', [
   'app.config',
   'app.navbar',
   'ngRoute',
-  'ngCookies'
+  'ngCookies',
+  'ui.bootstrap'
 ])
   .factory('authInterceptor', [ '$rootScope', '$q', '$cookies', '$window' ,function($rootScope, $q, $cookies, $window) {
     return {
