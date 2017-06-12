@@ -7,10 +7,8 @@ angular.module('app.navbar', [])
 
     getCurrentUser();
 
-
     vm.navigateTo = function (navigationCategory, index) {
       var providedURL;
-
       switch(navigationCategory) {
         case 0:
           providedURL =  vm.additionalNavigation.customNavbarLinks[index].url
@@ -31,7 +29,6 @@ angular.module('app.navbar', [])
       }
     }
 
-
     function getCurrentUser () {
       return $http.get( window.location.protocol + "//" +  window.location.host  + CURRENT_USER.url)
           .then(function(response) {
@@ -44,5 +41,4 @@ angular.module('app.navbar', [])
             vm.username =  name;
           })
     }
-
   }]);
