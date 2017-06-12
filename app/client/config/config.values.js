@@ -26,7 +26,12 @@ angular.module('app.config')
   })
   .value('NAVIGATION', {
     customNavbarLinks: [{title: 'Goto Dashboard', url: '/', iconClass: 'fa fa-angle-right'}],
-    sidebarLinks: [{title: 'Back', url: '/admin', iconClass: 'fa fa-chevron-left fa-fw'}]
+    sidebarLinks: [{title: 'Back', url: '/admin', iconClass: 'fa fa-chevron-left fa-fw'}],
+    userDropdown: [{title: 'logout', url: '/'}]
+  })
+  .value('CURRENT_USER', {
+    url:'/api/users/me',
+    name_field: 'name'
   })
   .value('PAGE_SIZE', 30)
 ;

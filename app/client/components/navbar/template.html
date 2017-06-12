@@ -21,12 +21,15 @@
        ng-click="ctrl.navigateTo(0, $index)">
       <i ng-class="nav.iconClass"></i>{{nav.title}}
     </a>
-    <div uib-dropdown="" class="dropdowne user">
-      <a uib-dropdown-toggle="" class="dropdown-toggle" id="dropdownMenuUser" aria-haspopup="true" aria-expanded="false">
-        <span class="header-username "></span><span class="profile-pic"><i class="fa fa-user"></i></span><i class="fa fa-angle-down"></i>
+    <div uib-dropdown class="dropdown user">
+      <a uib-dropdown-toggle class="dropdown-toggle" id="dropdownMenuUser" aria-haspopup="true" aria-expanded="false">
+        <span class="header-username ">{{ctrl.username}}</span><span class="profile-pic"><i class="fa fa-user"></i></span>
+        <i class="fa fa-angle-down" ng-show = "ctrl.additionalNavigation.userDropdown.length"></i>
       </a>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuUser" role="menu">
-        <li><a href="#" ng-click="logout()">logout</a></li>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuUser" role="menu" ng-if = "ctrl.additionalNavigation.userDropdown.length">
+        <li ng-repeat="item in ctrl.additionalNavigation.userDropdown">
+          <a href="#" ng-click="ctrl.navigateTo(2,$index )">{{item.title}}</a>
+        </li>
       </ul>
     </div>
   </div>
