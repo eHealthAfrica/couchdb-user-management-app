@@ -4,17 +4,29 @@
 'use strict';
 
 angular.module('app.config', [])
-  .service('configService', [ '$http', function ($http) {
+  .service('Config', [ '$http', function ($http) {
 
-    var URL = 'api/config';
+    var _this =  this;
+    this.url = 'api/config';
+    this.config =  null;
+
+
     this.get =  function () {
+      if (_this.config !== null) { return _this.config;}
 
-      var promise = $http.get(  URL, {  withCredentials: true });
+      var promise = $http({
+        url: _this.url,
+        withCredentials: true
+      });
       return promise.then(function (response) {
-        return response;
-      }, function(err) {
+        _this.config = response.data;
+        return response.data;
+      }, function (err) {
+        console.log(err);
         return err;
       });
     };
+
+
 
   }])

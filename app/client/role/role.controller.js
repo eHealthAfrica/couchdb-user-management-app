@@ -4,12 +4,12 @@
 'use strict';
 
 angular.module('app.role')
-  .controller('RoleCtrl', ['$scope', '$location', 'userService','alertService', 'user', 'adminLevels', 'locations', 'facilities', 'programs', 'facilityPrograms', 'SETTINGS',  function($scope, $location, userService, alertService, user, adminLevels, locations, facilities, programs, facilityPrograms, SETTINGS){
+  .controller('RoleCtrl', ['$scope', '$location', 'userService','alertService', 'Config', 'user', 'adminLevels', 'locations', 'facilities', 'programs', 'facilityPrograms', function($scope, $location, userService, alertService, Config, user, adminLevels, locations, facilities, programs, facilityPrograms){
 
     var vm = this;
 
     vm.user =  user;
-    vm.userTypes =  SETTINGS.userTypes;
+    vm.config = Config.get()
     vm.adminLevels =  adminLevels;
     vm.locations =  locations;
     vm.facilities =  facilities;
@@ -108,7 +108,7 @@ angular.module('app.role')
     vm.getUserType = function () {
       if (user && user.lomis_stock){
         if (user.lomis_stock.dashboard && ! _.isEmpty(user.lomis_stock.dashboard)) { return 'dashboard'; }
-        else if (user.lomis_stocj.mobile && ! _.isEmpty(user.lomis_stock.mobile)) { return 'mobile'; }
+        else if (user.lomis_stock.mobile && ! _.isEmpty(user.lomis_stock.mobile)) { return 'mobile'; }
       }
       return '';
     };

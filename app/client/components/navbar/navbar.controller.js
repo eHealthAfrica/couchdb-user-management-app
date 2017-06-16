@@ -1,8 +1,8 @@
 angular.module('app.navbar', [])
-  .controller('navbarCtrl', [ '$http', 'NAVIGATION', 'CURRENT_USER', function ($http, NAVIGATION, CURRENT_USER) {
+  .controller('navbarCtrl', [ '$http', 'Config', function ($http, Config) {
 
     var vm = this;
-    vm.additionalNavigation =  NAVIGATION;
+    vm.config = Config.get();
     vm.username = "";
 
     getCurrentUser();
@@ -11,13 +11,13 @@ angular.module('app.navbar', [])
       var providedURL;
       switch(navigationCategory) {
         case 0:
-          providedURL =  vm.additionalNavigation.customNavbarLinks[index].url
+          providedURL =  vm.config.navigation.customNavbarLinks[index].url
           break;
         case 1:
-          providedURL =  vm.additionalNavigation.sidebarLinks[index].url;
+          providedURL =  vm.config.navigation.sidebarLinks[index].url;
           break;
         case 2:
-          providedURL = vm.additionalNavigation.userDropdown[index].url;
+          providedURL = vm.config.navigation.userDropdown[index].url;
           break;
       }
 
@@ -30,15 +30,31 @@ angular.module('app.navbar', [])
     }
 
     function getCurrentUser () {
-      return $http.get( window.location.protocol + "//" +  window.location.host  + CURRENT_USER.url)
+      return $http.get( window.location.protocol + "//" +  window.location.host  + vm.config.currentUser.url)
           .then(function(response) {
             var currentUser =  response.data;
             var name = '';
-            var fieldParts = CURRENT_USER.name_field.split('.');
+            var fieldParts = vm.config.currentUser.nameField.split('.');
             for (var i in fieldParts){
               name = currentUser[fieldParts[i]];
             }
             vm.username =  name;
+
+            // TODO: update where this is done
+            vm.is_admin =  false;
+
+            if ( currentUser.lomis_stock.dashboard && ! _.isEmpty(currentUser.lomis_stock.dashboard)) {
+              vm.is_admin = currentUser.lomis_stock.dashboard.is_admin;
+            }
+            else if (currentUser.lomis_stock.mobile && ! _.isEmpty(currentUser.lomis_stock.mobile)) {
+              vm.is_admin =  false;
+            }
+
+            if (! vm.is_admin) {
+             // window.location = window.location.protocol + "//" +  window.location.host  ;
+            }
+
+
           })
     }
   }]);

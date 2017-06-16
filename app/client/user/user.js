@@ -3,7 +3,7 @@
 /* jshint node: true */
 'use strict';
 
-angular.module('app.user', ['ngRoute', 'ng.simple.table', 'ng.simple.pagination' ,'app.role']);
+angular.module('app.user', ['ngRoute', 'ng.simple.table', 'ng.simple.pagination' ,'app.role', 'app.config']);
 
 angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
   $routeProvider
@@ -12,10 +12,14 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
       controller: 'UsersCtrl',
       controllerAs: 'ctrl',
       resolve: {
-        users: ['userService', 'PAGE_SIZE', function (userService, PAGE_SIZE) {
-          return userService.getPage(0, PAGE_SIZE)
-            .then(function (resp) { return resp;  })
-            .catch(function (err) { console.log(err); return []; });
+        users: ['userService', 'Config', function (userService) {
+          
+
+            return userService.getPage(0)
+              .then(function (resp) { return resp;  })
+              .catch(function (err) { console.log(err); return []; });
+
+
         }]
       }
 

@@ -6,25 +6,26 @@ angular.module('app.user')
   .controller('UsersCtrl', [
     '$scope',
     '$location',
+    'Config',
     'alertService',
     'userService',
     'userDecoratorService',
     '$filter',
     'users',
-    'PAGE_SIZE',
-    'USERS_TABLE_CONFIG',
-    function ($scope, $location, alertService, userService,userDecoratorService, $filter, users,  PAGE_SIZE, USERS_TABLE_CONFIG) {
+    function ($scope, $location, Config, alertService, userService,userDecoratorService, $filter, users) {
 
+ 
       var vm = this;
       vm.searchString  = "";
       vm.selection = [];
-      vm.simpleTableConfig = USERS_TABLE_CONFIG;
+      vm.config = Config.get();
+      vm.simpleTableConfig = vm.config.usersTable
 
       vm.simplePaginationConfig = {
         currentPage: 0,
         total: users.total_rows,
         offset: users.offset,
-        pageSize: PAGE_SIZE
+        pageSize: vm.config.pagination.pageSize
       };
 
       vm.sortOptions = {
@@ -46,7 +47,7 @@ angular.module('app.user')
 
       vm.onSearchStringChanged =  function () {
         vm.searchString =  vm.searchString.trim();
-        vm.requestPage(0, PAGE_SIZE);
+        vm.requestPage(0, vm.config.pagination.pageSize);
       }
 
       vm.requestPage = function (skip, limit) {
@@ -56,7 +57,7 @@ angular.module('app.user')
           vm.simplePaginationConfig.currentPage = 0;
         }
 
-        var promise = vm.searchString.length === 0 ? userService.getPage(skip, PAGE_SIZE, vm.sortOptions.by, vm.sortOptions.direction) : userService.search(skip, PAGE_SIZE, vm.sortOptions.by, vm.sortOptions.direction, vm.searchString);
+        var promise = vm.searchString.length === 0 ? userService.getPage(skip, vm.config.pagination.pageSize, vm.sortOptions.by, vm.sortOptions.direction) : userService.search(skip, vm.config.pagination.pageSize, vm.sortOptions.by, vm.sortOptions.direction, vm.searchString);
 
         promise
           .then(function (users) {
@@ -71,7 +72,7 @@ angular.module('app.user')
       vm.sort = function (by, direction) {
         vm.sortOptions.by = by;
         vm.sortOptions.direction =  direction;
-        vm.requestPage(0, PAGE_SIZE);
+        vm.requestPage(0, vm.config.pagination.pageSize);
       };
 
       vm.rowActionCallback = function (actionIndex, rowIndex) {
@@ -121,13 +122,13 @@ angular.module('app.user')
           vm.users =  users.rows;
         }
 
-        if (USERS_TABLE_CONFIG.roleDependedntFields) {
-          userDecoratorService.decorate(USERS_TABLE_CONFIG.roleDependedntFields, vm.users)
+        if (vm.config.usersTable.derivedFields) {
+          userDecoratorService.decorate(vm.config.usersTable.derivedFields, vm.users)
 
         }
         vm.simplePaginationConfig.total = users.total_rows;
         vm.simplePaginationConfig.offset =  users.offset;
-        
+
       }
 
       function toggleUserStatus (rowIndex) {

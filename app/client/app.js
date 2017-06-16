@@ -8,28 +8,28 @@ angular.module('myApp', [
   'app.role',
   'app.config',
   'app.navbar',
+  'app.utility',
+  'app.auth',
   'ngRoute',
   'ngCookies',
   'ui.bootstrap'
 ])
-  .factory('authInterceptor', [ '$rootScope', '$q', '$cookies', '$window' ,function($rootScope, $q, $cookies, $window) {
+  .factory('authInterceptor', [ '$rootScope', '$q', '$cookies', '$window' , 'SharedAuth',  function($rootScope, $q, $cookies, $window, SharedAuth) {
+
     return {
-      //TODO modify to be more generic
       request: function(config) {
-        config.headers = config.headers || {};
-        if ($cookies.get('token')) {
-          config.headers.Authorization = 'Bearer '.concat($cookies.getObject('token'));
-        } else {
-           $window.location.href = '/login';
+        if ($rootScope.loggedIn) {
+          config.headers = config.headers || {};
+          if (SharedAuth.isLoggedIn()) {
+            SharedAuth.decorateHeader(config.headers);
+          }
         }
         return config;
       },
 
       responseError: function(response) {
         if (response.status === 401) {
-          $rootScope.$emit('unauthorized');
-          $cookies.remove('token');
-          $window.location.href = '/login';
+          SharedAuth.logOut();
           return $q.reject(response);
         } else {
           return $q.reject(response);
@@ -39,6 +39,25 @@ angular.module('myApp', [
   }])
   .config(['$locationProvider', '$routeProvider','$httpProvider', function($locationProvider, $routeProvider, $httpProvider) {
     $locationProvider.hashPrefix('!');
-    $httpProvider.interceptors.push('authInterceptor');
+   $httpProvider.interceptors.push('authInterceptor');
     $routeProvider.otherwise({redirectTo: '/users/list'});
-  }]);
+  }])
+  .run(['$rootScope', '$route', 'Auth', 'Config', 'Shared', 'SharedAuth', function ( $rootScope, $route, Auth, Config, Shared, SharedAuth)  {
+
+    $rootScope.authenticated =  false;
+    Config.get()
+       .then(function (response) {
+         Shared.setConfig(response);
+         if ( SharedAuth.isLoggedIn() ) {
+            $rootScope.loggedIn =  true;
+           Auth.getCurrentUser()
+             .then(function (response) {
+                $rootScope.authenticated = Auth.isAuthorized();
+                if ($rootScope.authenticated) {
+                  $route.reload();
+                }
+             })
+
+         }
+       });
+  }])
