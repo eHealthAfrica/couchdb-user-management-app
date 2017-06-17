@@ -183,3 +183,25 @@ describe('/', function() {
       });
   });
 });
+
+describe('/config', function () {
+  it('should return the App config', function (done) {
+    chai.request(server)
+      .get('/api/config')
+      .end(function (err, res) {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.have.property('auth');
+        res.body.should.have.property('access');
+        res.body.should.have.property('currentUser');
+        res.body.should.have.property('navigation');
+        res.body.should.have.property('roles');
+        res.body.should.have.property('usersTable');
+        res.body.should.have.property('pagination');
+        res.body.should.have.property('testPort');
+        res.body.should.not.have.property('couch');
+        done();
+      })
+  });
+});
+

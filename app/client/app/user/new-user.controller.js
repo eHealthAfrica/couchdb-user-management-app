@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('app.user')
-  .controller('NewUserCtrl', ['$scope', '$location', 'alertService', 'userService',   function($scope, $location, alertService, userService){
+  .controller('NewUserCtrl', ['$location', '$scope', 'alertService', 'userService',   function( $location, $scope, alertService, userService){
     var vm =  this;
 
     vm.submitNewUserForm =  function () {

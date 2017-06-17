@@ -4,29 +4,9 @@
 'use strict';
 
 angular.module('app.user')
-  .controller('UserCtrl', ['$scope', '$location', 'alertService', 'userService',  'user',  function($scope, $location, alertService, userService, user){
+  .controller('UserCtrl', [ '$location', '$scope', '$window', 'alertService', 'userService',  'user',  function($location, $scope, $window, alertService, userService, user){
     var vm =  this;
     vm.user =  user;
-
-    vm.submitNewUserForm =  function () {
-      if (! _.isEmpty(vm.newUserForm.$error)){ return; }
-      userService.create(_.pick(vm.newUserForm, ["name", "password", "email"]))
-        .then(function(){
-          alertService.showSuccessMessage(vm.newUserForm.name + ' successfully created');
-          var path =  'users/view/' + vm.newUserForm.name;
-          $location.path(path);
-        })
-        .catch(function(err){
-          if (err.data.name === 'ValidationError'){
-            vm.newUserForm.$serverError = vm.newUserForm.name;
-            return;
-          }
-          alertService.showErrorMessage('Entry was not created');
-        });
-    };
-
-
-
 
     vm.submitUpdateUserForm = function () {
       if (! _.isEmpty(vm.updateUserForm.$error)){ return; }
@@ -51,4 +31,9 @@ angular.module('app.user')
           alertService.showErrorMessage('Entry was not created');
         });
     };
+
+    vm.cancelDelete =  function () {
+      $window.history.back();
+    }
+
   }]);

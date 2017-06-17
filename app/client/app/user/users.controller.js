@@ -4,21 +4,21 @@
 
 angular.module('app.user')
   .controller('UsersCtrl', [
-    '$scope',
+    '$filter',
     '$location',
-    'Config',
+    '$scope',
     'alertService',
+    'Shared',
     'userService',
     'userDecoratorService',
-    '$filter',
     'users',
-    function ($scope, $location, Config, alertService, userService,userDecoratorService, $filter, users) {
+    function ( $filter, $location, $scope, alertService, Shared, userService,userDecoratorService, users) {
 
- 
+
       var vm = this;
       vm.searchString  = "";
       vm.selection = [];
-      vm.config = Config.get();
+      vm.config = Shared.getConfig();
       vm.simpleTableConfig = vm.config.usersTable
 
       vm.simplePaginationConfig = {

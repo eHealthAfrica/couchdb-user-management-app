@@ -4,19 +4,20 @@
 
 
 angular.module('myApp', [
-  'app.user',
-  'app.role',
+  'app.auth',
   'app.config',
   'app.navbar',
+  'app.role',
+  'app.user',
   'app.utility',
-  'app.auth',
-  'ngRoute',
   'ngCookies',
+  'ngRoute',
   'ui.bootstrap'
 ])
-  .factory('authInterceptor', [ '$rootScope', '$q', '$cookies', '$window' , 'SharedAuth',  function($rootScope, $q, $cookies, $window, SharedAuth) {
+  .factory('authInterceptor', ['$q', '$rootScope',  'SharedAuth',  function($q, $rootScope, SharedAuth) {
 
     return {
+
       request: function(config) {
         if ($rootScope.loggedIn) {
           config.headers = config.headers || {};
@@ -35,12 +36,15 @@ angular.module('myApp', [
           return $q.reject(response);
         }
       }
+
     };
   }])
   .config(['$locationProvider', '$routeProvider','$httpProvider', function($locationProvider, $routeProvider, $httpProvider) {
+
     $locationProvider.hashPrefix('!');
-   $httpProvider.interceptors.push('authInterceptor');
+    $httpProvider.interceptors.push('authInterceptor');
     $routeProvider.otherwise({redirectTo: '/users/list'});
+
   }])
   .run(['$rootScope', '$route', 'Auth', 'Config', 'Shared', 'SharedAuth', function ( $rootScope, $route, Auth, Config, Shared, SharedAuth)  {
 
@@ -50,14 +54,13 @@ angular.module('myApp', [
          Shared.setConfig(response);
          if ( SharedAuth.isLoggedIn() ) {
             $rootScope.loggedIn =  true;
-           Auth.getCurrentUser()
+            Auth.getCurrentUser()
              .then(function (response) {
                 $rootScope.authenticated = Auth.isAuthorized();
                 if ($rootScope.authenticated) {
                   $route.reload();
                 }
              })
-
          }
        });
   }])

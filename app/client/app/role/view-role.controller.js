@@ -44,7 +44,7 @@ angular.module('app.role')
 
     vm.getRole = function () {
 
-      if (_.isEmpty(vm.user.lomis_stock.mobile) && _.isEmpty(vm.user.lomis_stock.dashboard)) { return 'None'; }
+      if ( !vm.user.lomis_stock ||(  _.isEmpty(vm.user.lomis_stock.mobile) && _.isEmpty(vm.user.lomis_stock.dashboard))) { return 'None'; }
       else if (_.isEmpty(vm.user.lomis_stock.mobile)) { return 'Dashboard'; }
       else { return 'Mobile'; }
     };

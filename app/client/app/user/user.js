@@ -8,12 +8,12 @@ angular.module('app.user', ['ngRoute', 'ng.simple.table', 'ng.simple.pagination'
 angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
   $routeProvider
     .when('/users/list', {
-      templateUrl: 'user/partials/list.html',
+      templateUrl: 'app/user/partials/list.html',
       controller: 'UsersCtrl',
       controllerAs: 'ctrl',
       resolve: {
         users: ['userService', 'Config', function (userService) {
-          
+
 
             return userService.getPage(0)
               .then(function (resp) { return resp;  })
@@ -25,12 +25,12 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
 
     })
     .when('/users/create', {
-      templateUrl: 'user/partials/create.html',
+      templateUrl: 'app/user/partials/create.html',
       controller: 'NewUserCtrl',
       controllerAs: 'ctrl'
     })
     .when('/users/edit/:id', {
-      templateUrl: 'user/partials/edit.html',
+      templateUrl: 'app/user/partials/edit.html',
       controller: 'UserCtrl',
       controllerAs: 'ctrl',
       resolve:{
@@ -47,7 +47,7 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
     }
     })
     .when('/users/view/:id', {
-      templateUrl: 'user/partials/view.html',
+      templateUrl: 'app/user/partials/view.html',
       controller: 'UserCtrl',
       controllerAs: 'ctrl',
       resolve: {
@@ -64,7 +64,7 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
       }
     })
     .when('/users/delete/:id', {
-      templateUrl: 'user/partials/delete.html',
+      templateUrl: 'app/user/partials/delete.html',
       controller: 'UserCtrl',
       controllerAs: 'ctrl',
       resolve:{
