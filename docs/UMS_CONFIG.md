@@ -1,7 +1,8 @@
 Configuring the UMS
 ------------------
 
-For a complelte overview of the umsConfig object, refer to here.
+Complete overview of the umsConfig object.\
+For a sample file, refer to: [root_dir/test/config/index.js](../../test/config/index.js) 
 
 * Authentication\
   Holds details on how authentication should be determined.
