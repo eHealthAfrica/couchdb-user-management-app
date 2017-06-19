@@ -1,45 +1,98 @@
-# couchdb-ums
+# couchdb-user-management-system
 
 
 
-A  [UMS](https://github.com/eHealthAfrica/couchdb-ums) app for Lomis-Stock
-
+A  [User Management System](https://github.com/eHealthAfrica/couchdb-user-management-app) app for couchdb apps.
 
 
 
 #### Prequisites
 
-The [LMIS-Dashboard](https://github.com/eHealthAfrica/LMIS-Dashboard) project is required to serve the app. Follow the instructions over there to set up a local server.
-
-You will then need to modify the file `server/routes.js` by adding the following lines:
-
-```
-var ums_app =  require(path.join(config.root, 'node_modules/couchdb-user-management-app'));
-app.use('/ums', ums_app([couchConfig]));
-```
-
-The couch config object is expected to be in the format stated below
-```
-{ 
-  host: '[COUCH_DB_HOST]',
-  port: '[COUCH_DB_PORT]',
-  auth: { username: '[COUCH_DB_ADMIN_USERNAME]', password: '[COUCH_DB_ADMIN_PASSWORD]' }
- 
-}
-```
+An Express application (to server the app)
 
 
 
 
-#### Install and Serve
+####Installation & Serving
 
-Add the following line to your package.json  dependency
+To serve the UMS from an express application, the following are requireed;
+
+A. Add an entry for the UMS in the package.json file.(As a dependency) 
 
 ```
 couchdb-user-management-app": "eHealthAfrica/couchdb-user-management-app#[BRANCH_NAME]
 ```
 
+B. Update the Main app's route to serve the UMS.
 
+You will then need to modify the file `server/routes.js` by adding the following lines:
+
+
+```
+var ums_app = require('couchdb-user-management-app');
+app.use('/ums', ums_app([umsConfig]));
+```
+
+The umsConfig object is expected to be in the format stated below
+
+```
+{
+  auth: {
+    type: '[AUTH-TYPE]',
+    cookies: {
+      name: '[COOKIE-NAME]',
+      authType: '[COOKIE-AUTH-TYPE]'
+    },
+    redirectUrl: '[REDIRECT-URL]'
+  },
+
+  access: {
+    field: '[ACCESS-PROP]',
+    value: [ACCESS-PROP-VALUE]
+  },
+
+  couch: {
+       host: '[COUCHDB-HOST]',
+       port: [COUCHDB-PORT]',
+       auth: {username: '[COUCHDB-USER NAME]', password: '[COUCHDB-PASSWORD]'},
+       allOrNothing: false,
+       forceSave: false
+  },
+
+  currentUser: {
+    url:'[CURRENT-USER-URL]',
+    nameField: '[CURRENT-USER-NAME-FIELD]'
+  },
+
+  navigation: {
+    customNavbarLinks: [CUSTOM-NAVBAR-LINKS],
+    sidebarLinks: [CUSTOM-SIDEBAR-LINKS],
+    userDropdown: [USER-DROPDOWN-LINKS]
+  },
+
+  roles: [ROLES],
+
+  usersTable: {
+    allowFilter: [USERS-FILTER],
+    allowSelect: [SELECT-USERS],
+    allowSort: [SORT-USERS],
+    arrayFields: [ARRAY-FIELDS],
+    derivedFields: [DERIVED-USER-FIELDS],
+    header: [USERS-TANLE-HEADER],
+    maxColWidth : [MAXIMUM-COL-WIDTH],
+    rowActions: [ACTIONS-PER-USER-ROLE],
+    rowActionClasses: [CLASSES-FOR-USER-ROLE-ACTIONS],
+    toggleFields: [TOGGLE-FIELDS],
+    unsortableFields: [UNSORTABLE-FIELDS]
+  },
+
+  pagination: {
+    pageSize: [PAGE-SIZE]
+  }
+}
+```
+
+For more details on the umsConfig, read the guideline [here](../UMS_CONFIG.md).
 
 
 
