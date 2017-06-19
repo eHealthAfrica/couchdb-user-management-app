@@ -1,7 +1,7 @@
 {
   "name": "couchdb-user-management-app",
   "private": true,
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "A simple UMS app for LoMIS Stock",
   "repository": "http://gr2m.github.io/couchdb-user-management-app",
   "license": "MIT",
