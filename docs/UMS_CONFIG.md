@@ -19,7 +19,7 @@ For a complelte overview of the umsConfig object, refer to here.
   > **AUTH-TYPE**\
   > Type: String\
   > This specifies the type of authentication to be used. 
-  > As at version 3.0.0, the only supported AUTH-TYPE IS 'cookies'
+  > As at version 3.0.0, the only supported ```AUTH-TYPE``` IS ```'cookies'```
   
   >**COOKIE-NAME**\
   >Type: String\
@@ -27,8 +27,9 @@ For a complelte overview of the umsConfig object, refer to here.
   
   > **COOKIE-AUTH-TYPE**\
   > Type: String\
-  > This specifies how the cookie value would be used. As at version 3.0.0,\ the only supported COOKIE-AUTH-TYPE is 
-  > 'BEARER'. 
+  > This specifies how the cookie value would be used. As at version 3.0.0,
+  > the only supported ```COOKIE-AUTH-TYPE``` is 
+  > ```'BEARER'```. 
   
   > **REDIRECT-URL**\
   > Type: String\
@@ -53,27 +54,21 @@ For a complelte overview of the umsConfig object, refer to here.
   
   >**ACCESS-PROP-VALUE**\
   >Type: String\
-  >Specifies the value of the ACCESS-PROP field read earlier. When the read value equals the specified value, it is assumed that the user has Authorization to access the UMS. See examples below.
+  >Specifies the value of the ```ACCESS-PROP``` field read earlier. When the read value equals the specified value, it is assumed that the user has Authorization to access the UMS. See examples below.
   
   
   > _Authorization Example_:
   > 
   >Case a:\
   > The user object has a field access_level which should have a value of 'admin' for authorized users:\
-  > In this case, ACCESS-PROP would be 'access_level' while ACCESS-PROP-VALUE would be 'admin'
+  > In this case, ```ACCESS-PROP``` would be ```'access_level'``` while ```ACCESS-PROP-VALUE``` would be ```'admin'```
   >
   >Case b:\
-  >The user object is defined as   
-  > { name: 'alice', 
-  >   app_data: { 
-  >     credentials: { 
-  >         role: 'basic'
-  >       }
-  >     }
-  >  } \
-  > and the required field is role which is defined in the property credentials of app_data which should have a value
-  > of 'advanced' for authorized users.\
-  > In this case, ACCESS-PROP would be 'app_data.credentials.role' while ACCESS-PROP-VALUE would be 'advanced'.
+  >The user object is defined as  
+  > ```{ name: 'alice', app_data: {  credentials: { role: 'basic' } } }```
+  > and the required field is ```role``` which is defined in the property ```credentials``` of ```app_data which``` should have a value
+  > of ```'advanced'``` for authorized users.\
+  > In this case, ```ACCESS-PROP``` would be ```'app_data.credentials.role'``` while ```ACCESS-PROP-VALUE``` would be ```'advanced'```.
   
   
   * CouchDB\
@@ -100,11 +95,11 @@ For a complelte overview of the umsConfig object, refer to here.
   >**COUCHDB-USER-NAME**\
   >Type: String\
   >Specifies the username which the UMS would use to access couchDB.\
-  >This is expected to be an Admin user who has access to the _users table.
+  >This is expected to be an Admin user who has access to the ```_users``` database.
   
   >**COUCHDB-PASSWORD**\
   >Type: String\
-  >Specifies the password for the user specified in COUCHDB-USER-NAME.
+  >Specifies the password for the user specified in ```COUCHDB-USER-NAME```.
   
   * Current User\
   Holds details on how to obtain details of the current logged in user and the field that 
@@ -142,27 +137,27 @@ For a complelte overview of the umsConfig object, refer to here.
   >Type: Array of Objects\
   >Specifies additional links to be added to the UMS' navbar.\
   >Each object is defined as follows:\
-  >{title: '', url: '', iconClass: ''}
+  >`````{title: '', url: '', iconClass: ''}`````
   >
-  >The title field holds a string which is the display name of the link,\
-  >The url field holds a string which contains the URL to be navigated to when clicked\
-  >and the iconClass field holds a string containing font-awesome or glyphicon classes to be used for the link's icon
+  >The ```title``` field holds a string which is the display name of the link,\
+  >the ```url``` field holds a string which contains the URL to be navigated to when clicked\
+  >and the ```iconClass``` field holds a string containing font-awesome or glyphicon classes to be used for the link's icon
   
   
   >**CUSTOM-SIDEBAR-LINKS**\
   >Type: Array of Objects\
   >Specifies additional links to be added to the UMS' sidebar.\
   > The object definition is identical to that of described above under the section
-  > _CUSTOM-NAVBAR-LINKS_
+  > ```CUSTOM-NAVBAR-LINKS```
   
   >**USER-DROPDOWN-LINKS**\
   >Type: Array of Objects\
   > Specifies links to added to the dropdown that appears when the user's name is clicked. 
   > If the array is empty, the dropdown is inaccessible and the dropdown menu indicator is hidden
   > Each objec tis defined as follows:\
-  > {title: '', url: ''}
+  > ```{title: '', url: ''}```
   >
-  > The title field holds a string which stores the dropdown element's title while the url\
+  > The ```title``` field holds a string which stores the dropdown element's title while the ```url```
   >field holds a string representing the url to be navigated to.
   
   
@@ -219,7 +214,7 @@ usersTable: {
   >Type: Array of String\
   >Specifies properties of the user that are required to be displayed on the table. The field name is used to name the title.\
   >While naming field, any underscore would be replaced with a space and displayed as the column name.\
-  >For instance, a property of user_role would be displayed as 'USER ROLE' (without the quotes).
+  >For instance, a property of ```user_role``` would be displayed as ```'USER ROLE'``` (without the quotes).
   
   
   >**MAXIMUM-COL-WIDTH**\
@@ -228,17 +223,17 @@ usersTable: {
   
   >**ACTIONS-PER-USER-ROLE**\
   >Type: Array of String\
-  >Specifie the actions that can be performed on each user.
+  >Specifies the actions that can be performed on each user.
   
   >**CLASSES-FOR-USER-ROLE-ACTIONS**\
   >Type: Array of String\
-  >Specifies classes to be assigned to each action described in the ACTIONS-PER-USER-ROLE field
+  >Specifies classes to be assigned to each action described in the ```ACTIONS-PER-USER-ROLE``` field
   
   >**TOGGLE-FIELDS**\
   >Type: Array of Object\
   >Specifies a field that is toggle-able. Fields in this category take binary values and are displayed as ticks or crosses.\
-  >Each object is defined as: { name: '', positive: ''}\
-  >The name field is a string and holds the name of the field while the positive field can take any form and represents the value for this field to be considered true.
+  >Each object is defined as: ```{ name: '', positive: ''}```\
+  >The ```name``` field is a string and holds the name of the field while the ```positive``` field can take any form and represents the value for this field to be considered true.
   
   >**UNSORTABLE-FIELDS**\
   >Type: Array of Strings\
