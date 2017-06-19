@@ -8,20 +8,29 @@ A  [User Management System](https://github.com/eHealthAfrica/couchdb-user-manage
 
 ### Prequisites
 
-An Express application (to server the app)
+An Express application (to serve the app)
 
 
 
 
 ### Installation & Serving
 
-To serve the UMS from an express application, the following are requireed;
+To serve the UMS from an express application, the following are required;
 
 A. Add an entry for the UMS in the package.json file (as a dependency). 
 
 ```
-couchdb-user-management-app": "eHealthAfrica/couchdb-user-management-app#[BRANCH_NAME]
+couchdb-user-management-app": "eHealthAfrica/couchdb-user-management-app#v2
 ```
+for instance;
+```$xslt
+  "dependencies": {
+      ...
+      couchdb-user-management-app": "eHealthAfrica/couchdb-user-management-app#v2
+  }
+  
+```
+
 
 B. Update the Main app's route to serve the UMS.
 
@@ -29,8 +38,8 @@ B. Update the Main app's route to serve the UMS.
 i. You will then need to modify the file `server/routes.js` by adding the following lines:
 
 ```
-var ums_app = require('couchdb-user-management-app');
-app.use('/ums', ums_app([umsConfig]));
+var umsApp = require('couchdb-user-management-app');
+app.use('/ums', umsApp([umsConfig]));
 ```
 
 ii.
