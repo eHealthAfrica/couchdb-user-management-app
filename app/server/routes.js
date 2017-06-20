@@ -2,6 +2,10 @@ var express =  require('express');
 
 module.exports = function(app) {
 
+  app.use('/api/config', function (req, res, next) {
+    return res.json(app.get("CONFIG"));
+  });
+
   app.use('/api/users', require('./api/user/index'));
   app.use('/', express.static(__dirname + '/../dist/'));
 

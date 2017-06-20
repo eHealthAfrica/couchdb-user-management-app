@@ -16,8 +16,11 @@
 <body >
   <div ui-view="ng-admin" class="">
     <div id="wrapper" class="">
-      <nav ng-include = "'components/navbar/template.html'"></nav>
-      <div id = "page-wrapper" >
+      <nav ng-include = "'components/navbar/template.html'" ng-if="authenticated"></nav>
+      <div class="margin-top-20 relative"  ng-if="! authenticated" loader>
+        <div class='loader' loaders></div>
+      </div>
+      <div ng-class = "! authenticated ? 'hidden' : ''"  ng-if="authenticated" id = "page-wrapper">
        <div ng-view></div>
      </div>
     </div>
@@ -41,26 +44,26 @@
   <!--endbuild-->
   <!-- build:js app.min.js -->
       <script src="app.js"></script>
-     <script src="config/config.service.js"></script>
-      <script src="config/config.values.js"></script>
-
-      <script src="user/user.js"></script>
-      <script src="user/user.controller.js"></script>
-      <script src="user/users.controller.js"></script>
-      <script src="user/user.service.js"></script>
-      <script src="user/new-user.controller.js"></script>
-      <script src="user/user-decorator.service.js"></script>
-
-      <script src="role/role.js"></script>
-      <script src="role/view-role.controller.js"></script>
-      <script src="role/role.controller.js"></script>
-      <script src="role/role.filter.js"></script>
-      <script src="role/role.service.js"></script>
-
+      <script src="app/config/config.service.js"></script>
+      <script src="app/user/user.js"></script>
+      <script src="app/user/user.controller.js"></script>
+      <script src="app/user/users.controller.js"></script>
+      <script src="app/user/user.service.js"></script>
+      <script src="app/user/new-user.controller.js"></script>
+      <script src="app/user/user-decorator.service.js"></script>
+      <script src="app/role/role.js"></script>
+      <script src="app/role/view-role.controller.js"></script>
+      <script src="app/role/role.controller.js"></script>
+      <script src="app/role/role.filter.js"></script>
+      <script src="app/role/role.service.js"></script>
       <script src="components/ng-simple-table/ng-simple-table.js"></script>
       <script src="components/ng-simple-pagination/ng-simple-pagination.js"></script>
       <script src="components/alert/alert.service.js"></script>
       <script src="components/navbar/navbar.controller.js"></script>
+      <script src="components/utility/shared-values.js"></script>
+      <script src="components/utility/loaders.js"></script>
+      <script src="components/auth/auth.service.js"></script>
+      <script src="components/auth/auth-shared.service.js"></script>
   <!--endbuild -->
 </body>
 </html>

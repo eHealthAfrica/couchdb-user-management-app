@@ -17,17 +17,17 @@
   <div class="navbar-right">
     <a class = "link"
        ng-href
-       ng-repeat= "nav in ctrl.additionalNavigation.customNavbarLinks"
+       ng-repeat= "nav in ctrl.config.navigation.customNavbarLinks"
        ng-click="ctrl.navigateTo(0, $index)">
       <i ng-class="nav.iconClass"></i>{{nav.title}}
     </a>
     <div uib-dropdown class="dropdown user">
       <a uib-dropdown-toggle class="dropdown-toggle" id="dropdownMenuUser" aria-haspopup="true" aria-expanded="false">
         <span class="header-username ">{{ctrl.username}}</span><span class="profile-pic"><i class="fa fa-user"></i></span>
-        <i class="fa fa-angle-down" ng-show = "ctrl.additionalNavigation.userDropdown.length"></i>
+        <i class="fa fa-angle-down" ng-show = "ctrl.config.navigation.userDropdown.length"></i>
       </a>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuUser" role="menu" ng-if = "ctrl.additionalNavigation.userDropdown.length">
-        <li ng-repeat="item in ctrl.additionalNavigation.userDropdown">
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuUser" role="menu" ng-if = "ctrl.config.navigation.userDropdown.length">
+        <li ng-repeat="item in ctrl.config.navigation.userDropdown">
           <a href="#" ng-click="ctrl.navigateTo(2,$index )">{{item.title}}</a>
         </li>
       </ul>
@@ -58,7 +58,7 @@
           </a>
         </li>
         <li class="entities-repeat"
-            ng-repeat = "nav in ctrl.additionalNavigation.sidebarLinks">
+            ng-repeat = "nav in ctrl.config.navigation.sidebarLinks">
           <a  ng-href
               ng-click="ctrl.navigateTo(1, $index)"
               ng-class="{'active': menu.isActive(path)}">

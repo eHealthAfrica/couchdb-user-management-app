@@ -1,45 +1,110 @@
-# couchdb-ums
+# couchdb-user-management-system
 
 
 
-A  [UMS](https://github.com/eHealthAfrica/couchdb-ums) app for Lomis-Stock
+A  [User Management System](https://github.com/eHealthAfrica/couchdb-user-management-app) app for couchdb apps.
+
+
+
+### Prequisites
+
+An Express application (to serve the app)
 
 
 
 
-#### Prequisites
+### Installation & Serving
 
-The [LMIS-Dashboard](https://github.com/eHealthAfrica/LMIS-Dashboard) project is required to serve the app. Follow the instructions over there to set up a local server.
+To serve the UMS from an express application, the following are required;
 
-You will then need to modify the file `server/routes.js` by adding the following lines:
+A. Add an entry for the UMS in the package.json file (as a dependency). 
 
 ```
-var ums_app =  require(path.join(config.root, 'node_modules/couchdb-user-management-app'));
-app.use('/ums', ums_app([couchConfig]));
+couchdb-user-management-app": "eHealthAfrica/couchdb-user-management-app#v2
+```
+for instance;
+```$xslt
+  "dependencies": {
+      ...
+      couchdb-user-management-app": "eHealthAfrica/couchdb-user-management-app#v2
+  }
+  
 ```
 
-The couch config object is expected to be in the format stated below
+
+B. Update the Main app's route to serve the UMS.
+
+
+i. You will then need to modify the file `server/routes.js` by adding the following lines:
+
 ```
-{ 
-  host: '[COUCH_DB_HOST]',
-  port: '[COUCH_DB_PORT]',
-  auth: { username: '[COUCH_DB_ADMIN_USERNAME]', password: '[COUCH_DB_ADMIN_PASSWORD]' }
- 
+var umsApp = require('couchdb-user-management-app');
+app.use('/ums', umsApp([umsConfig]));
+```
+
+ii.
+The umsConfig object is expected to be in the format stated below
+
+```
+{
+  auth: {
+    type: '[AUTH-TYPE]',
+    cookies: {
+      name: '[COOKIE-NAME]',
+      authType: '[COOKIE-AUTH-TYPE]'
+    },
+    redirectUrl: '[REDIRECT-URL]'
+  },
+
+  access: {
+    field: '[ACCESS-PROP]',
+    value: [ACCESS-PROP-VALUE]
+  },
+
+  couch: {
+       host: '[COUCHDB-HOST]',
+       port: [COUCHDB-PORT]',
+       auth: {username: '[COUCHDB-USER NAME]', password: '[COUCHDB-PASSWORD]'},
+       allOrNothing: false,
+       forceSave: false
+  },
+
+  currentUser: {
+    url:'[CURRENT-USER-URL]',
+    nameField: '[CURRENT-USER-NAME-FIELD]'
+  },
+
+  navigation: {
+    customNavbarLinks: [CUSTOM-NAVBAR-LINKS],
+    sidebarLinks: [CUSTOM-SIDEBAR-LINKS],
+    userDropdown: [USER-DROPDOWN-LINKS]
+  },
+
+  roles: [ROLES],
+
+  usersTable: {
+    allowFilter: [USERS-FILTER],
+    allowSelect: [SELECT-USERS],
+    allowSort: [SORT-USERS],
+    arrayFields: [ARRAY-FIELDS],
+    derivedFields: [DERIVED-USER-FIELDS],
+    header: [USERS-TANLE-HEADER],
+    maxColWidth : [MAXIMUM-COL-WIDTH],
+    rowActions: [ACTIONS-PER-USER-ROLE],
+    rowActionClasses: [CLASSES-FOR-USER-ROLE-ACTIONS],
+    toggleFields: [TOGGLE-FIELDS],
+    unsortableFields: [UNSORTABLE-FIELDS]
+  },
+
+  pagination: {
+    pageSize: [PAGE-SIZE]
+  }
 }
 ```
 
+For more details on the umsConfig, read the guideline [here](../docs/UMS_CONFIG.md).
 
-
-
-#### Install and Serve
-
-Add the following line to your package.json  dependency
-
-```
-couchdb-user-management-app": "eHealthAfrica/couchdb-user-management-app#[BRANCH_NAME]
-```
-
-
+After starting the Host app, the UMS will be available at `/ums`  or any custom route that has been configured for it (in step B.i above)
 
 
 
@@ -50,8 +115,12 @@ To test, update the config/index.js file with the details required to connect to
 npm test
 ```
 
+### Other files
+[Change log](../CHANGELOG.md)\
+[Configuring the UMS](../docs/UMS_CONFIG.md)\
+[Sorting and Filtering with couchdb-user-management-app](../docs/SORTING_AND_FILTERING.md)
 
 
-Now the app can be served using `grunt serve` from the `LMIS-Dashboard` root. The application will be available at `http://localhost:9000/ums`.
+
 
 

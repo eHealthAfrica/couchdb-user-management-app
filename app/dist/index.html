@@ -14,8 +14,11 @@
 <body >
   <div ui-view="ng-admin" class="">
     <div id="wrapper" class="">
-      <nav ng-include = "'components/navbar/template.html'"></nav>
-      <div id = "page-wrapper" >
+      <nav ng-include = "'components/navbar/template.html'" ng-if="authenticated"></nav>
+      <div class="margin-top-20 relative"  ng-if="! authenticated" loader>
+        <div class='loader' loaders></div>
+      </div>
+      <div ng-class = "! authenticated ? 'hidden' : ''"  ng-if="authenticated" id = "page-wrapper">
        <div ng-view></div>
      </div>
     </div>

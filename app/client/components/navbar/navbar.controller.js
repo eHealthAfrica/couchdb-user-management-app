@@ -1,44 +1,42 @@
 angular.module('app.navbar', [])
-  .controller('navbarCtrl', [ '$http', 'NAVIGATION', 'CURRENT_USER', function ($http, NAVIGATION, CURRENT_USER) {
+  .controller('navbarCtrl', [ '$http', '$window', 'Auth', 'Shared', function ($http, $window, Auth, Shared) {
 
     var vm = this;
-    vm.additionalNavigation =  NAVIGATION;
-    vm.username = "";
+    vm.config = Shared.getConfig();
+    vm.username = '';
 
-    getCurrentUser();
+    getCurrentUserName();
 
     vm.navigateTo = function (navigationCategory, index) {
       var providedURL;
       switch(navigationCategory) {
         case 0:
-          providedURL =  vm.additionalNavigation.customNavbarLinks[index].url
+          providedURL =  vm.config.navigation.customNavbarLinks[index].url
           break;
         case 1:
-          providedURL =  vm.additionalNavigation.sidebarLinks[index].url;
+          providedURL =  vm.config.navigation.sidebarLinks[index].url;
           break;
         case 2:
-          providedURL = vm.additionalNavigation.userDropdown[index].url;
+          providedURL = vm.config.navigation.userDropdown[index].url;
           break;
       }
 
       if (providedURL.indexOf('/') === 0) {
-        window.location = window.location.protocol + "//" +  window.location.host  + providedURL ;
+        $window.location = $window.location.protocol + "//" +  $window.location.host  + providedURL ;
       }
       else {
-        window.location = providedURL;
+        $window.location = providedURL;
       }
     }
 
-    function getCurrentUser () {
-      return $http.get( window.location.protocol + "//" +  window.location.host  + CURRENT_USER.url)
-          .then(function(response) {
-            var currentUser =  response.data;
-            var name = '';
-            var fieldParts = CURRENT_USER.name_field.split('.');
-            for (var i in fieldParts){
-              name = currentUser[fieldParts[i]];
-            }
-            vm.username =  name;
-          })
+    function getCurrentUserName () {
+      var currentUser =  Auth.getCurrentUser();
+      var userPropValue =  currentUser;
+      var pathToName =  vm.config.currentUser.nameField.split('.');
+      for (var i in pathToName) {
+        userPropValue =  userPropValue[pathToName[i]];
+      }
+      vm.username =  userPropValue;
     }
+
   }]);
