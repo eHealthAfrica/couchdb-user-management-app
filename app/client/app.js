@@ -52,7 +52,7 @@ angular.module('myApp', [
     Config.get()
        .then(function (response) {
          Shared.setConfig(response);
-         if ( SharedAuth.isLoggedIn() ) {
+         if ( SharedAuth.isLoggedIn() === true) {
             $rootScope.loggedIn =  true;
             Auth.getCurrentUser()
              .then(function (response) {
