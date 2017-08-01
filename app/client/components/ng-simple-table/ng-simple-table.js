@@ -62,11 +62,11 @@ angular.module('ng.simple.table', [])
 
       scope.getSubFieldEntry = function (row, field) {
 
-        var parts =  field.split('.');
-        var resp =  row;
-        for (var i in parts) {
-          if (resp.hasOwnProperty(parts[i])) {
-            resp = resp[parts[i]];
+        var fieldPath =  field.split('.');
+        var response =  row;
+        for (var i in fieldPath) {
+          if (response.hasOwnProperty(fieldPath[i])) {
+            response = response[fieldPath[i]];
           } else {
               return null
           }
@@ -84,9 +84,7 @@ angular.module('ng.simple.table', [])
           } else {
             columns.push(scope.tableHeader[i])
           }
-
         }
-        console.log(columns)
         return columns;
       }
 
