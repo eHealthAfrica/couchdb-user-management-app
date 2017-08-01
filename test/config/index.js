@@ -3,7 +3,7 @@ module.exports = {
   auth: {
     type: 'COOKIES',
     cookies: {
-      name: 'token',
+      name: 'my_token',
       authType: 'bearer'
     },
     redirectUrl: '/'
@@ -58,16 +58,7 @@ module.exports = {
     maxColWidth : 25,
     rowActions: ['assign role', 'edit', 'show', 'delete'],
     rowActionClasses: ['glyphicon glyphicon-user', 'glyphicon glyphicon-pencil', 'glyphicon glyphicon-eye-open', 'glyphicon glyphicon-trash'],
-    toggleFields: [{
-      name: 'status',
-      default: 'active',
-      positive: 'active',
-      negative: 'inactive',
-      denyIf: [{
-        field: '_id',
-        value: "$currentuser$._id"
-      }]
-    }],
+    toggleFields: [{ name: 'status', positive: 'active'}],
     unsortableFields: ['location']
   },
 
