@@ -7,7 +7,6 @@ module.exports = {
       authType: 'bearer'
     },
     redirectUrl: '/'
-    redirectUrl: '/'
   },
 
   access: {
