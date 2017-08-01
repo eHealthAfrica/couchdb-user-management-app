@@ -42,6 +42,7 @@ angular.module('ng.simple.table', [])
       scope.selectAll = false;
       scope.tableDataCopy = scope.tableData;
       scope.toggleFieldsName =  _.map(scope.toggleFields, 'name');
+      scope.columns =  getColumns();
 
 
       scope.$watch('tableData', function(newVal, oldVal){
@@ -50,6 +51,44 @@ angular.module('ng.simple.table', [])
           scope.tableDataCopy =  scope.tableData;
         }
       });
+
+      scope.hasSubField = function (columnIndex) {
+        return  typeof scope.tableHeader[columnIndex] === 'object'
+      }
+
+      scope.getSubField = function (columnIndex) {
+        return scope.tableHeader[columnIndex].subFields
+      }
+
+      scope.getSubFieldEntry = function (row, field) {
+
+        var parts =  field.split('.');
+        var resp =  row;
+        for (var i in parts) {
+          if (resp.hasOwnProperty(parts[i])) {
+            resp = resp[parts[i]];
+          } else {
+              return null
+          }
+        }
+        return resp;
+      }
+
+      function getColumns() {
+        var columns = [];
+        for (var i in scope.tableHeader) {
+          if (typeof scope.tableHeader[i] === 'object') {
+            if (scope.tableHeader[i].hasOwnProperty('name')) {
+              columns.push(scope.tableHeader[i].name)
+            }
+          } else {
+            columns.push(scope.tableHeader[i])
+          }
+
+        }
+        console.log(columns)
+        return columns;
+      }
 
       function resetRowSelection () {
         var arr = [];

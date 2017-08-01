@@ -34,7 +34,11 @@ angular.module('app.auth', [])
         var authorizationRequirement = config.access.value;
         var userAuthorization = currentUser;
         for (var i in authorizationFieldPath) {
-          userAuthorization =  userAuthorization[authorizationFieldPath[i]];
+          if (userAuthorization.hasOwnProperty(authorizationFieldPath[i])) {
+            userAuthorization = userAuthorization[authorizationFieldPath[i]];
+          } else {
+            break;
+          }
         }
         if (userAuthorization === authorizationRequirement) { return true;}
       }
