@@ -3,9 +3,10 @@ module.exports = {
   auth: {
     type: 'COOKIES',
     cookies: {
-      name: 'token',
+      name: 'my_token',
       authType: 'bearer'
     },
+    redirectUrl: '/'
     redirectUrl: '/'
   },
 
@@ -51,16 +52,7 @@ module.exports = {
     allowSort: true,
     arrayFields: [],
     derivedFields: ['admin_level', 'location'],
-    header: [
-      {
-        label: 'name',
-        field:  'name',
-        subFields: [
-          {field: 'is_admin', displayMode: 'label', positive: true, positiveLabel: 'ADMIN' }
-        ]
-      },
-      'name', 'admin_level', 'location', 'status'
-    ],
+    header: ['name', 'admin_level', 'location', 'status'],
     maxColWidth : 25,
     rowActions: ['assign role', 'edit', 'show', 'delete'],
     rowActionClasses: ['glyphicon glyphicon-user', 'glyphicon glyphicon-pencil', 'glyphicon glyphicon-eye-open', 'glyphicon glyphicon-trash'],
@@ -79,6 +71,8 @@ module.exports = {
 
   pagination: {
     pageSize: 30
-  }
+  },
+
+  testPort: 1337
 
 }
