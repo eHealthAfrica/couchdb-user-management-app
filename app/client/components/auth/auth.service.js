@@ -30,15 +30,13 @@ angular.module('app.auth', [])
       }
 
       if (SharedAuth.isLoggedIn()) {
-        /* var authorizationFieldPath = config.access.field.split(".");
+         var authorizationFieldPath = config.access.field.split(".");
          var authorizationRequirement = config.access.value;
          var userAuthorization = currentUser;
          for (var i in authorizationFieldPath) {
          userAuthorization =  userAuthorization[authorizationFieldPath[i]];
          }
          if (userAuthorization === authorizationRequirement) { return true;}
-         }*/
-        return true;
       }
       $window.location.href = config.auth.redirectUrl;
     }
