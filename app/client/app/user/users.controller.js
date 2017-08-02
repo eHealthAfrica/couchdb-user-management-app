@@ -8,11 +8,12 @@ angular.module('app.user')
     '$location',
     '$scope',
     'alertService',
+    'Auth',
     'Shared',
     'userService',
     'userDecoratorService',
     'users',
-    function ( $filter, $location, $scope, alertService, Shared, userService,userDecoratorService, users) {
+    function ( $filter, $location, $scope, alertService, Auth, Shared, userService,userDecoratorService, users) {
 
 
       var vm = this;
@@ -98,16 +99,35 @@ angular.module('app.user')
       };
 
       vm.toggleFieldCalllback = function (fieldIndex , rowIndex) {
-        switch (fieldIndex) {
-          case 0 :
-            toggleUserStatus(rowIndex);
-            userService.update(vm.users[rowIndex])
-              .catch (function (err) {
-                toggleUserStatus(rowIndex);
-              });
-            break;
+
+        var fieldEntry =  vm.config.usersTable.toggleFields[fieldIndex];
+        var selectedUser =  vm.users[rowIndex];
+
+        if (fieldEntry.hasOwnProperty('denyIf')) {
+          for (var i in fieldEntry.denyIf) {
+            var fieldValue =  fieldEntry.denyIf[i].field.toLowerCase().indexOf('$currentuser$.') === 0 ?  Auth.getCurrentUser()[fieldEntry.denyIf[i].field.split('.')[1]]   :    selectedUser[fieldEntry.denyIf[i].field]
+            var value =       fieldEntry.denyIf[i].value.toLowerCase().indexOf('$currentuser$.') === 0 ?  Auth.getCurrentUser()[fieldEntry.denyIf[i].value.split('.')[1]]   :    selectedUser[fieldEntry.denyIf[i].value]
+            if (fieldValue === value) { return; }
           }
-        };
+        }
+
+        if (! selectedUser.hasOwnProperty(fieldEntry.name)) {
+          if ( fieldEntry.hasOwnProperty('default')) {
+            selectedUser[fieldEntry.name] = fieldEntry.default;
+          }
+        } else {
+          if (selectedUser[fieldEntry.name] === fieldEntry.positive) {
+            selectedUser[fieldEntry.name] =  fieldEntry.negative;
+          } else {
+            selectedUser[fieldEntry.name] = fieldEntry.positive;
+          }
+        }
+
+        userService.update(vm.users[rowIndex])
+          .catch (function (err) {
+            toggleUserStatus(rowIndex);
+          });
+      };
 
       vm.getSelectionCount = function () {
          return vm.selection.filter(function(elem){ return elem; }).length;
@@ -131,13 +151,5 @@ angular.module('app.user')
 
       }
 
-      function toggleUserStatus (rowIndex) {
-        if ( ! vm.users[rowIndex].status || vm.users[rowIndex].status === 'inactive') {
-          vm.users[rowIndex].status = 'active';
-        }
-        else {
-          vm.users[rowIndex].status = 'inactive';
-        }
-      }
     }
   ]);
