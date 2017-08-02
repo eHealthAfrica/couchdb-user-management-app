@@ -30,8 +30,7 @@ angular.module('app.auth', [])
       }
 
       if (SharedAuth.isLoggedIn()) {
-
-        var passed =  true;
+       var passed =  true;
 
         if (config.access.denyIf) {
           for (var i = 0; i < config.access.denyIf.length; i++) {
