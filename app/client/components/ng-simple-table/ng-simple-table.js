@@ -71,15 +71,15 @@ angular.module('ng.simple.table', [])
               return null
           }
         }
-        return resp;
+        return response;
       }
 
       function getColumns() {
         var columns = [];
         for (var i in scope.tableHeader) {
           if (typeof scope.tableHeader[i] === 'object') {
-            if (scope.tableHeader[i].hasOwnProperty('name')) {
-              columns.push(scope.tableHeader[i].name)
+            if (scope.tableHeader[i].hasOwnProperty('field')) {
+              columns.push(scope.tableHeader[i].field)
             }
           } else {
             columns.push(scope.tableHeader[i])
