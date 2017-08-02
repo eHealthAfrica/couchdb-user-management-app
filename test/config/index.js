@@ -10,7 +10,7 @@ module.exports = {
   },
 
   access: {
-    field: 'dashboard.is_admin',
+    field: 'lomis_stock.dashboard.is_admin',
     value: true
   },
 
@@ -51,7 +51,10 @@ module.exports = {
     allowSort: true,
     arrayFields: [],
     derivedFields: ['admin_level', 'location'],
-    header: ['name', 'admin_level', 'location', 'status'],
+    header: [
+      {label: 'name', field:  'name', subFields: [ {field: 'lomis_stock.dashboard.is_admin', displayMode: 'label', positive: true, positiveLabel: 'ADMIN', positiveColour: '#4289CD'}]},
+      'name', 'admin_level', 'location', 'status'
+    ],
     maxColWidth : 25,
     rowActions: ['assign role', 'edit', 'show', 'delete'],
     rowActionClasses: ['glyphicon glyphicon-user', 'glyphicon glyphicon-pencil', 'glyphicon glyphicon-eye-open', 'glyphicon glyphicon-trash'],

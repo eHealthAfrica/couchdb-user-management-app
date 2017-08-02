@@ -8,7 +8,7 @@
     <th width = "5%" ng-show="allowSelect">
       <input type = "checkbox" ng-model="selectAll" ng-change = "toggleSelectAll()" />
     </th>
-    <th ng-repeat = "head in tableHeader" class = "{{headerClass}}">
+    <th ng-repeat = "head in columns" class = "{{headerClass}}">
       <a ng-if = "unsortableFields && unsortableFields.indexOf(head) >= 0">
         &nbsp; {{head.replace('_', ' ') | uppercase}} &nbsp;&nbsp;
       </a>
@@ -25,10 +25,36 @@
     </thead>
     <tbody>
     <tr ng-repeat=" row in tableData" class = "{{rowClass}}">
+
       <td width = "5%" ng-show="allowSelect"><input type = "checkbox"  ng-model="rowSelection[$index]" /></td>
 
-      <td ng-repeat="col in tableHeader" class = "{{rowClass}}">
-        <span ng-if = "toggleFieldsName.indexOf(col) < 0 && arrayFields.indexOf(col) < 0">{{row[col].toString() | limitColumnWidth : maxColWidth}}</span>
+      <td ng-repeat="col in columns" class = "{{rowClass}}">
+
+        <span ng-if = "toggleFieldsName.indexOf(col) < 0 && arrayFields.indexOf(col) < 0">
+          {{row[col].toString() | limitColumnWidth : maxColWidth}}
+
+          <span ng-if="hasSubField(columns.indexOf(col))"
+                ng-repeat="field in getSubField(columns.indexOf(col))">
+
+            <label class = "label label-default pull-right" ng-style="field.positiveColour !== undefined ? {'background-color':field.positiveColour} : ''"
+                   ng-if="(field.displayMode.toLowerCase() === 'label') && (field.positive !== undefined) && (getSubFieldEntry(row, field.field) === field.positive)">
+                {{field.positiveLabel}}
+            </label>
+
+            <label class = "label label-default pull-right" ng-style="field.negativeColour !== undefined ? {'background-color':field.negativeColour} : ''"
+                   ng-if="(field.displayMode.toLowerCase() === 'label') && (field.negative !== undefined) && (getSubFieldEntry(row, field.field) === field.negative)">
+                {{field.negativeLabel}}
+            </label>
+
+            <span class = "pull-right"
+                  ng-if="field.displayMode.toLocaleLowerCase() === 'text'">
+                  {{getSubFieldEntry(row, field.field)}}
+            </span>
+
+          </span>
+
+        </span>
+
         <span ng-if = "toggleFieldsName.indexOf(col) < 0 && arrayFields.indexOf(col) >= 0">
           <label ng-repeat= "elem in row[col]" class = "label label-default" ng-class="['label-warning', 'label-info'][$index]">{{elem}}</label>
         </span>
@@ -40,6 +66,7 @@
                    ng-class=" row[col] === toggleFields[colIndex].positive ? 'glyphicon-ok': 'glyphicon-remove' "></span>
           </a>
         </span>
+
       </td>
       <td ng-show = "{{rowActions.length > 0}}" class = "{{rowActionClass}}">
         <a href
