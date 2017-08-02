@@ -41,6 +41,7 @@ angular.module('app.auth', [])
           }
         }
         if (userAuthorization === authorizationRequirement) { return true;}
+
       }
       $window.location.href = config.auth.redirectUrl;
     }
