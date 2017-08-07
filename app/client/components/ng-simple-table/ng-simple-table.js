@@ -43,6 +43,7 @@ angular.module('ng.simple.table', [])
       scope.tableDataCopy = scope.tableData;
       scope.toggleFieldsName =  _.map(scope.toggleFields, 'name');
       scope.columns =  getColumns();
+      scope.sortIndex = -1;
 
 
       scope.$watch('tableData', function(newVal, oldVal){
@@ -61,25 +62,24 @@ angular.module('ng.simple.table', [])
       }
 
       scope.getSubFieldEntry = function (row, field) {
-
         var fieldPath =  field.split('.');
         var response =  row;
         for (var i in fieldPath) {
           if (response.hasOwnProperty(fieldPath[i])) {
             response = response[fieldPath[i]];
           } else {
-              return null
+              return null;
           }
         }
-        return resp;
+        return response;
       }
 
       function getColumns() {
         var columns = [];
         for (var i in scope.tableHeader) {
           if (typeof scope.tableHeader[i] === 'object') {
-            if (scope.tableHeader[i].hasOwnProperty('name')) {
-              columns.push(scope.tableHeader[i].name)
+            if (scope.tableHeader[i].hasOwnProperty('field')) {
+              columns.push(scope.tableHeader[i].field)
             }
           } else {
             columns.push(scope.tableHeader[i])
@@ -129,7 +129,14 @@ angular.module('ng.simple.table', [])
       };
 
       scope.sort = function (colIndex) {
-        if (scope.sortBy && scope.sortBy === scope.tableHeader[colIndex]) {
+
+        var sortField =  scope.tableHeader[colIndex];
+        if (typeof  scope.tableHeader[colIndex] === 'object') {
+          sortField =  scope.tableHeader[colIndex].field;
+        }
+
+
+        if (scope.sortBy && scope.sortBy === sortField) {
           if (scope.sortDirection && scope.sortDirection === 'asc') {
             scope.sortDirection = 'desc';
           }
@@ -138,8 +145,9 @@ angular.module('ng.simple.table', [])
           }
         }
         else {
-          scope.sortBy = scope.tableHeader[colIndex];
+          scope.sortBy = sortField;
           scope.sortDirection = 'asc';
+          scope.sortIndex = colIndex ;
         }
         scope.sortCallback({by: scope.sortBy, direction: scope.sortDirection});
       };

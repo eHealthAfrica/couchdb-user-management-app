@@ -1,5 +1,5 @@
 angular.module('app.auth', [])
-  .factory('Auth', ['$cookies','$http', '$window', 'Shared', 'SharedAuth', function ($cookies, $http, $window, Shared, SharedAuth) {
+  .factory('Auth', ['$cookies','$http', '$window', 'Shared', 'SharedAuth', 'Util', function ($cookies, $http, $window, Shared, SharedAuth, Util) {
 
     var config = null;
     var currentUser = null;
@@ -30,18 +30,27 @@ angular.module('app.auth', [])
       }
 
       if (SharedAuth.isLoggedIn()) {
-        var authorizationFieldPath = config.access.field.split(".");
-        var authorizationRequirement = config.access.value;
-        var userAuthorization = currentUser;
-        for (var i in authorizationFieldPath) {
-          if (userAuthorization.hasOwnProperty(authorizationFieldPath[i])) {
-            userAuthorization = userAuthorization[authorizationFieldPath[i]];
-          } else {
-            break;
+       var passed =  true;
+
+        if (config.access.denyIf) {
+          for (var i = 0; i < config.access.denyIf.length; i++) {
+            if (config.access.denyIf[i].value === Util.getProperty(currentUser, config.access.denyIf[i].field)) {
+              passed =  false;
+              break;
+            }
           }
         }
-        if (userAuthorization === authorizationRequirement) { return true;}
 
+        if (config.access.allowIf) {
+          for (var i = 0; i < config.access.allowIf.length; i++) {
+            if (config.access.allowIf[i].value !== Util.getProperty(currentUser, config.access.allowIf[i].field)) {
+              passed =  false;
+              break;
+            }
+          }
+        }
+
+        if (passed) { return true; }
       }
       $window.location.href = config.auth.redirectUrl;
     }

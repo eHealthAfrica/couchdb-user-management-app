@@ -10,8 +10,22 @@ module.exports = {
   },
 
   access: {
-    field: 'lomis_stock.dashboard.is_admin',
-    value: true
+    allowIf: [
+      {
+        field: 'lomis_stock.dashboard.is_admin',
+        value: true
+      },
+      {
+        field: 'status',
+        value: 'active'
+      }
+    ],
+    denyIf: [
+      {
+        field: 'status',
+        value: 'inactive'
+      }
+    ]
   },
 
   couch: {
@@ -53,7 +67,7 @@ module.exports = {
     derivedFields: ['admin_level', 'location'],
     header: [
       {label: 'name', field:  'name', subFields: [ {field: 'lomis_stock.dashboard.is_admin', displayMode: 'label', positive: true, positiveLabel: 'ADMIN', positiveColour: '#4289CD'}]},
-      'name', 'admin_level', 'location', 'status'
+      'admin_level', 'location', 'status'
     ],
     maxColWidth : 25,
     rowActions: ['assign role', 'edit', 'show', 'delete'],

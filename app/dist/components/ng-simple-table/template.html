@@ -16,8 +16,8 @@
       <a ng-if="!unsortableFields || unsortableFields.indexOf(head) < 0"
          ng-href
          ng-click="sort($index)">
-          <i class = "fa fa-angle-up" ng-if = "(sortBy === head) && (sortDirection === 'desc')"></i>
-          <i class = "fa fa-angle-down" ng-if = "(sortBy === head) && (sortDirection === 'asc')"></i>
+          <i class = "fa fa-angle-up" ng-if = "($index === sortIndex) && (sortDirection === 'desc')"></i>
+          <i class = "fa fa-angle-down" ng-if = "($index === sortIndex) && (sortDirection === 'asc')"></i>
         &nbsp;  {{head.replace('_', ' ') | uppercase}} &nbsp;&nbsp;
       </a>
     </th>
