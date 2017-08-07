@@ -5,6 +5,7 @@ angular.module('app.utility')
       var outcome =  object;
       var propertyPath =  property.split('.');
       for (var i in propertyPath) {
+        if (! outcome.hasOwnProperty(propertyPath[i])) { return null; }
         outcome =  outcome[propertyPath[i]];
       }
       return outcome;
