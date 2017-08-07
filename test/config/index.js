@@ -10,8 +10,22 @@ module.exports = {
   },
 
   access: {
-    field: 'lomis_stock.dashboard.is_admin',
-    value: true
+    allowIf: [
+      {
+        field: 'lomis_stock.dashboard.is_admin',
+        value: true
+      },
+      {
+        field: 'status',
+        value: 'active'
+      }
+    ],
+    denyIf: [
+      {
+        field: 'status',
+        value: 'inactive'
+      }
+    ]
   },
 
   couch: {
