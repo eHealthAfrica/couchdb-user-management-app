@@ -13,8 +13,9 @@ angular.module('app.role')
     vm.adminLevels =  adminLevels;
     vm.locations =  locations;
     vm.facilities =  facilities;
-    vm.programs = programs;
+    vm.programs = _.sortBy(programs, ['name']);
     vm.facilityPrograms = facilityPrograms;
+
 
     $scope.$watch('vm.updateUserRoleForm.access.level', function (newValue, oldValue) {
       vm.getAssignedLocation();
@@ -22,7 +23,6 @@ angular.module('app.role')
 
 
     vm.submitUpdateUserRoleForm = function () {
-
       if (vm.updateUserRoleForm.$error && !_.isEmpty(vm.updateUserRoleForm.$error)){
         return;
       }
@@ -47,7 +47,7 @@ angular.module('app.role')
           if (! vm.updateUserRoleForm.locations[adminLevelIndex + ""] ) {
             return;
           }
-          lomis_stock.dashboard = { access: { level: vm.updateUserRoleForm.access.level}, is_admin: vm.updateUserRoleForm.is_admin || false};
+          lomis_stock.dashboard = { access: { level: vm.updateUserRoleForm.access.level, programs: vm.updateUserRoleForm.access.programs}, is_admin: vm.updateUserRoleForm.is_admin || false};
           var item = {};
           item[vm.updateUserRoleForm.access.level] = [ vm.updateUserRoleForm.locations[adminLevelIndex + ""] ];
           lomis_stock.dashboard.access.items = [item];
@@ -84,6 +84,7 @@ angular.module('app.role')
       }
       else if (vm.user.lomis_stock.dashboard && ! _.isEmpty(vm.user.lomis_stock.dashboard)) {
 
+        //vm.updateUserRoleForm.program =  vm.user.lomis_stock.dashboard.access.programs || [];
         var accessLevel = vm.user.lomis_stock.dashboard.access.level;
         var accessItemId = vm.user.lomis_stock.dashboard.access.items[0][accessLevel][0];
 
