@@ -4,13 +4,14 @@
 'use strict';
 
 angular.module('app.role')
-  .controller('ViewRoleCtrl', ['$scope', 'adminLevelService', 'facilityService', 'locationService', function($scope, adminLevelService, facilityService, locationService){
+  .controller('ViewRoleCtrl', ['$scope', 'adminLevelService', 'facilityService', 'locationService', 'programService', function($scope, adminLevelService, facilityService, locationService, programService){
 
     var vm = this;
     vm.user =  $scope.$parent.ctrl.user;
     vm.adminLevels = [];
     vm.locations = [];
     vm.facilities = [];
+    vm.programs = {};
 
     vm.init =  function () {
       adminLevelService.getAll()
@@ -36,6 +37,15 @@ angular.module('app.role')
         .catch (function (error) {
           console.log(error);
         });
+
+      programService.getAll()
+        .then(function (response) {
+          console.log("RSPP", response);
+          vm.programs =  _.keyBy(response, '_id');
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
     };
 
     vm.hasNoRole =  function () {
@@ -103,11 +113,45 @@ angular.module('app.role')
           }
         }
 
+
         return assignedLocations;
 
 
 
       }
     };
+
+    vm.getPrograms =  function () {
+
+      var programList = [];
+
+      switch(vm.getRole()) {
+        case 'Mobile':
+          var facility =  vm.user.lomis_stock.mobile.facilities[0]  || {};
+          var props =  Object.keys(facility);
+          var facilityPrograms = [];
+          _.forEach(props, function (prop) {
+            _.forEach(facility[props], function (program) {
+              facilityPrograms.push(program);
+            });
+          });
+          _.forEach(facilityPrograms, function (program) {
+            if (vm.programs[program]){
+              programList.push(vm.programs[program].name);
+            }
+          })
+          break;
+        case 'Dashboard':
+          var userProgramList =  vm.user.lomis_stock.dashboard.access.programs || []
+          _.forEach(userProgramList, function (program) {
+            if (vm.programs[program]){
+              programList.push(vm.programs[program].name);
+            }
+          })
+          break;
+      }
+
+      return programList;
+    }
 
   }]);

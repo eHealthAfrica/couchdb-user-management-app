@@ -104,20 +104,26 @@ angular.module('app.role')
 angular.module('app.user').decorate('userDecoratorService', [
   '$delegate',
   '$q',
+  'Shared',
   'adminLevelService',
   'facilityService',
   'locationService',
-  function ($delegate, $q, adminLevelService, facilityService,  locationService) {
+  'programService',
+  function ($delegate, $q, Shared, adminLevelService, facilityService,  locationService, programService) {
 
 
     $delegate.decorate =  function (fields, users) {
       var promises = $q.all([
         adminLevelService.getAll(),
         facilityService.getAll(),
-        locationService.getAll()
+        locationService.getAll(),
+        programService.getAll()
       ]);
 
       return promises.then( function (responses) {
+
+        var programsById =  _.keyBy(responses[3], '_id');
+
         function getRole (user) {
           if (
             !user.lomis_stock ||
@@ -192,10 +198,53 @@ angular.module('app.user').decorate('userDecoratorService', [
             return assignedLocations;
           }
         };
+        function getPrograms (user) {
+          var programList = [];
+
+          switch(getRole(user)) {
+            case 'Mobile':
+              var facility =  user.lomis_stock.mobile.facilities[0]  || {};
+              var props =  Object.keys(facility);
+              var facilityPrograms = [];
+              _.forEach(props, function (prop) {
+                _.forEach(facility[props], function (program) {
+                  facilityPrograms.push(program);
+                });
+              });
+              _.forEach(facilityPrograms, function (program) {
+                if (programsById[program]){
+                  programList.push(programsById[program].name);
+                }
+              })
+              break;
+            case 'Dashboard':
+              var userProgramList =  user.lomis_stock.dashboard.access.programs || []
+              _.forEach(userProgramList, function (program) {
+                if (programsById[program]){
+                  programList.push(programsById[program].name);
+                }
+              })
+              break;
+          }
+
+          return programList;
+        }
+
+        var workspace =  Shared.getConfig().workSpace || 'umsWorkspace';
+
 
         for (var i in users) {
-          users[i]['admin_level'] =  getAdminLevel(users[i]);
-          users[i]['location'] = getLocation(users[i]);
+          console.log("qq");
+          users[i][workspace] = {};
+          if (i === '0') {
+            console.log("got here",  users[i])
+          }
+          users[i][workspace]['admin_level'] =  getAdminLevel(users[i]);
+          users[i][workspace]['location'] = getLocation(users[i]);
+          users[i][workspace]['programs'] =  getPrograms(users[i]);
+          if (i === 0) {
+            console.log("got here",  users[i])
+          }
         }
       })
     }

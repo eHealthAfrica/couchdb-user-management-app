@@ -24,7 +24,22 @@ angular.module('app.utility', [])
     }
 
     function setConfig (cfg) {
+
+      /*var workSpace =  cfg.workSpace || 'umsWorkspace';
+
+      for (var i in cfg.usersTable.header) {
+        if (typeof  cfg.usersTable.header[i] === 'object') {
+          if (cfg.usersTable.derivedFields.indexOf(cfg.usersTable.header[i].field) >= 0) {
+            cfg.usersTable.header[i].field =  workSpace + '.' +  cfg.usersTable.header[i].field;
+          }
+        }else {
+          if (cfg.usersTable.derivedFields.indexOf(cfg.usersTable.header[i]) >= 0) {
+            cfg.usersTable.header[i] =  workSpace + '.' +  cfg.usersTable.header[i];
+          }
+        }
+      }*/
       config =  cfg;
+
     }
 
   })
