@@ -1,5 +1,5 @@
-//jshint strict: false
-module.exports = function(config) {
+// jshint strict: false
+module.exports = function (config) {
   config.set({
 
     basePath: './app',
@@ -30,5 +30,5 @@ module.exports = function(config) {
       suite: 'unit'
     }
 
-  });
-};
+  })
+}

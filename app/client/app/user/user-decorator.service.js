@@ -1,13 +1,12 @@
-/*global angular */
+/* global angular */
 /* jshint node: true */
-'use strict';
+'use strict'
 
 angular.module('app.user')
-  .service('userDecoratorService',  function () {
+  .service('userDecoratorService', function () {
+    this.methods = {}
 
-      this.methods = {}
+    this.decorate = function (fields, param) {
 
-      this.decorate = function (fields, param) {
-
-      }
-  });
+    }
+  })

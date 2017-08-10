@@ -1,46 +1,43 @@
 angular.module('app.auth')
-  .factory('SharedAuth', ['$cookies','$window', 'Shared', function ($cookies,$window, Shared) {
-
+  .factory('SharedAuth', ['$cookies', '$window', 'Shared', function ($cookies, $window, Shared) {
     function decorateHeader (headers) {
-      var config =  Shared.getConfig();
-      switch(config.auth.type.toLowerCase()) {
+      var config = Shared.getConfig()
+      switch (config.auth.type.toLowerCase()) {
         case 'cookies':
-          var cookie = $cookies.getObject(config.auth.cookies.name);
+          var cookie = $cookies.getObject(config.auth.cookies.name)
           if (config.auth.cookies.authType.toLowerCase() === 'bearer') {
-            headers.Authorization = 'Bearer '.concat(cookie);
+            headers.Authorization = 'Bearer '.concat(cookie)
           }
-          break;
+          break
       }
-      return headers;
+      return headers
     }
 
-    function isLoggedIn() {
-      var config =  Shared.getConfig();
-      switch(config.auth.type.toLowerCase()) {
+    function isLoggedIn () {
+      var config = Shared.getConfig()
+      switch (config.auth.type.toLowerCase()) {
         case 'cookies':
           if ($cookies.get(config.auth.cookies.name) !== undefined) {
-            return true;
+            return true
           }
-          break;
+          break
       }
-      $window.location.href = config.auth.redirectUrl;
+      $window.location.href = config.auth.redirectUrl
     }
 
     function logOut () {
-      var config =  Shared.getConfig();
-      switch(config.auth.type.toLowerCase()) {
+      var config = Shared.getConfig()
+      switch (config.auth.type.toLowerCase()) {
         case 'cookies':
           $cookies.remove(config.auth.cookies.name)
-          break;
+          break
       }
-      $window.location.href = config.auth.redirectUrl;
+      $window.location.href = config.auth.redirectUrl
     }
 
-
-    return  {
+    return {
       decorateHeader: decorateHeader,
       isLoggedIn: isLoggedIn,
       logOut: logOut
     }
-
   }])

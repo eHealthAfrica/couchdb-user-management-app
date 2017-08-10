@@ -1,59 +1,48 @@
-'use strict';
+'use strict'
 
 /**
  * Error responses
  */
 
-module.exports[404] = function pageNotFound(req, res) {
-  var viewFilePath = '404';
-  var statusCode = 404;
+module.exports[404] = function pageNotFound (req, res) {
+  var viewFilePath = '404'
+  var statusCode = 404
   var result = {
     status: statusCode
-  };
+  }
 
-  res.status(result.status);
+  res.status(result.status)
   res.render(viewFilePath, function (err) {
-    if (err) { return res.json(result, result.status); }
+    if (err) { return res.json(result, result.status) }
 
-    res.render(viewFilePath);
-  });
-};
+    res.render(viewFilePath)
+  })
+}
 
 /**
  * Validation errors
  */
-function ValidationError() {
-  Error.call(this);
-  this.name = 'ValidationError';
-  this.errors = {};
+function ValidationError () {
+  Error.call(this)
+  this.name = 'ValidationError'
+  this.errors = {}
 }
 
-
-
-
-
-ValidationError.prototype = Object.create(Error.prototype);
-ValidationError.prototype.constructor = Error;
-
-
+ValidationError.prototype = Object.create(Error.prototype)
+ValidationError.prototype.constructor = Error
 
 Object.defineProperty(ValidationError.prototype, 'length', {
-  get: function() {
-    return Object.keys(this.errors).length;
+  get: function () {
+    return Object.keys(this.errors).length
   }
-});
+})
 
+ValidationError.prototype.required = function (field) {
+  this.errors[field] = 'required'
+}
 
+ValidationError.prototype.unique = function (field) {
+  this.errors[field] = 'unique'
+}
 
-ValidationError.prototype.required = function(field) {
-  this.errors[field] = 'required';
-};
-
-
-ValidationError.prototype.unique = function(field) {
-  this.errors[field] = 'unique';
-};
-
-
-
-module.exports.ValidationError = ValidationError;
+module.exports.ValidationError = ValidationError

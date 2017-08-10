@@ -1,8 +1,7 @@
 angular.module('app.utility', [])
   .factory('Shared', function () {
-
-    var parentHeight = 0;
-    var config = {};
+    var parentHeight = 0
+    var config = {}
 
     return {
       getConfig: getConfig,
@@ -11,20 +10,19 @@ angular.module('app.utility', [])
       setParentHeight: setParentHeight
     }
 
-    function setParentHeight(pH) {
-      parentHeight = pH;
+    function setParentHeight (pH) {
+      parentHeight = pH
     }
 
-    function getParentHeight() {
-      return parentHeight;
+    function getParentHeight () {
+      return parentHeight
     }
 
     function getConfig () {
-      return config;
+      return config
     }
 
     function setConfig (cfg) {
-      config =  cfg;
+      config = cfg
     }
-
   })
