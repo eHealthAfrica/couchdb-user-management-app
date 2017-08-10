@@ -31,7 +31,7 @@
       <td ng-repeat="col in columns" class = "{{rowClass}}">
 
         <span ng-if = "toggleFieldsName.indexOf(col) < 0 && arrayFields.indexOf(col) < 0">
-          {{row[col].toString() | limitColumnWidth : maxColWidth}}
+          <span ng-bind="getRowEntry(row,col) | limitColumnWidth : maxColWidth"></span>
 
           <span ng-if="hasSubField(columns.indexOf(col))"
                 ng-repeat="field in getSubField(columns.indexOf(col))">
@@ -56,7 +56,7 @@
         </span>
 
         <span ng-if = "toggleFieldsName.indexOf(col) < 0 && arrayFields.indexOf(col) >= 0">
-          <label ng-repeat= "elem in row[col]" class = "label label-default" >{{elem}}</label>
+          <label ng-repeat= "elem in getRowEntry(row,col)" class = "label label-default" >{{elem}}</label>
         </span>
 
         <span ng-if = "toggleFieldsName.indexOf(col) >= 0"
