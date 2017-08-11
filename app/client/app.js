@@ -10,8 +10,7 @@ angular.module('myApp', [
   'app.user',
   'app.utility',
   'ngCookies',
-  'ngRoute',
-  'ui.bootstrap'
+  'ngRoute'
 ])
   .factory('authInterceptor', ['$q', '$rootScope', 'SharedAuth', function ($q, $rootScope, SharedAuth) {
     return {
@@ -39,7 +38,7 @@ angular.module('myApp', [
   }])
   .config(['$locationProvider', '$routeProvider', '$httpProvider', function ($locationProvider, $routeProvider, $httpProvider) {
     $locationProvider.hashPrefix('!')
-    $httpProvider.interceptors.push('authInterceptor')
+    //$httpProvider.interceptors.push('authInterceptor')
     $routeProvider.otherwise({redirectTo: '/users/list'})
   }])
   .run(['$rootScope', '$route', 'Auth', 'Config', 'Shared', 'SharedAuth', function ($rootScope, $route, Auth, Config, Shared, SharedAuth) {
