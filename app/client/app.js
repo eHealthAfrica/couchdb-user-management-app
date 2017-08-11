@@ -38,7 +38,7 @@ angular.module('myApp', [
   }])
   .config(['$locationProvider', '$routeProvider', '$httpProvider', function ($locationProvider, $routeProvider, $httpProvider) {
     $locationProvider.hashPrefix('!')
-    //$httpProvider.interceptors.push('authInterceptor')
+    $httpProvider.interceptors.push('authInterceptor')
     $routeProvider.otherwise({redirectTo: '/users/list'})
   }])
   .run(['$rootScope', '$route', 'Auth', 'Config', 'Shared', 'SharedAuth', function ($rootScope, $route, Auth, Config, Shared, SharedAuth) {

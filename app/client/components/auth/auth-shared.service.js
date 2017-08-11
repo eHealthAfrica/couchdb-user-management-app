@@ -4,7 +4,7 @@ angular.module('app.auth')
       var config = Shared.getConfig()
       switch (config.auth.type.toLowerCase()) {
         case 'cookies':
-          var cookie = $cookies.getObject(config.auth.cookies.name)
+          var cookie = $cookies.get(config.auth.cookies.name)
           if (config.auth.cookies.authType.toLowerCase() === 'bearer') {
             headers.Authorization = 'Bearer '.concat(cookie)
           }
