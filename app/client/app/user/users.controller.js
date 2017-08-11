@@ -13,7 +13,17 @@ angular.module('app.user')
     'userService',
     'userDecoratorService',
     'users',
-    function ($filter, $location, $scope, alertService, Auth, Shared, userService, userDecoratorService, users) {
+    function (
+      $filter,
+      $location,
+      $scope,
+      alertService,
+      Auth,
+      Shared,
+      userService,
+      userDecoratorService,
+      users
+    ) {
       var vm = this
       vm.searchString = ''
       vm.selection = []
@@ -55,7 +65,15 @@ angular.module('app.user')
           vm.simplePaginationConfig.currentPage = 0
         }
 
-        var promise = vm.searchString.length === 0 ? userService.getPage(skip, vm.config.pagination.pageSize, vm.sortOptions.by, vm.sortOptions.direction) : userService.search(skip, vm.config.pagination.pageSize, vm.sortOptions.by, vm.sortOptions.direction, vm.searchString)
+        var promise = vm.searchString.length === 0
+          ? userService.getPage(skip, vm.config.pagination.pageSize, vm.sortOptions.by, vm.sortOptions.direction)
+          : userService.search(
+            skip,
+            vm.config.pagination.pageSize,
+            vm.sortOptions.by,
+            vm.sortOptions.direction,
+            vm.searchString
+          )
 
         promise
           .then(function (users) {
@@ -101,8 +119,13 @@ angular.module('app.user')
 
         if (fieldEntry.hasOwnProperty('denyIf')) {
           for (var i in fieldEntry.denyIf) {
-            var fieldValue = fieldEntry.denyIf[i].field.toLowerCase().indexOf('$currentuser$.') === 0 ? Auth.getCurrentUser()[fieldEntry.denyIf[i].field.split('.')[1]] : selectedUser[fieldEntry.denyIf[i].field]
-            var value = fieldEntry.denyIf[i].value.toLowerCase().indexOf('$currentuser$.') === 0 ? Auth.getCurrentUser()[fieldEntry.denyIf[i].value.split('.')[1]] : selectedUser[fieldEntry.denyIf[i].value]
+            var fieldValue = fieldEntry.denyIf[i].field.toLowerCase().indexOf('$currentuser$.') === 0
+              ? Auth.getCurrentUser()[fieldEntry.denyIf[i].field.split('.')[1]]
+              : selectedUser[fieldEntry.denyIf[i].field]
+
+            var value = fieldEntry.denyIf[i].value.toLowerCase().indexOf('$currentuser$.') === 0
+              ? Auth.getCurrentUser()[fieldEntry.denyIf[i].value.split('.')[1]]
+              : selectedUser[fieldEntry.denyIf[i].value]
             if (fieldValue === value) { return }
           }
         }
@@ -120,7 +143,8 @@ angular.module('app.user')
         }
 
         userService.update(vm.users[rowIndex])
-          .catch(function (err) { // eslint-disable-line
+          .catch(function (err) {
+            console.log(err)
             toggleUserStatus(rowIndex) // eslint-disable-line
           })
       }
