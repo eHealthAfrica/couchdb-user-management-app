@@ -5,9 +5,8 @@ module.exports = function (app) {
   app.use('/api/config', function (req, res, next) {
     return res.json(app.get('CONFIG'))
   })
-
-  app.use('/api/users', require('./api/user/index'))
-  app.use('/', express.static(path.join(__dirname, '../dist/')))
+  app.use('/', express.static(path.join(__dirname, '../client/')))
+  app.use('/api/users', require('./api/user'))
 
   app.use(function (err, req, res, next) {
     switch (err.name) {
