@@ -22,7 +22,6 @@
     "angular-cookies": "^1.6.4",
     "angular-decorate": "^0.1.1",
     "angular-sanitize": "^1.6.5",
-    "object-path": "^0.11.0",
     "objectpath": "^1.2.1"
   }
 }
