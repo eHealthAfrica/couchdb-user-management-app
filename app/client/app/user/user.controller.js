@@ -4,9 +4,10 @@
 'use strict'
 
 angular.module('app.user')
-  .controller('UserCtrl', [ '$location', '$scope', '$window', 'alertService', 'userService', 'user', function ($location, $scope, $window, alertService, userService, user) {
+  .controller('UserCtrl', [ '$location', '$scope', '$window', 'Shared', 'alertService', 'userService', 'user', function ($location, $scope, $window, Shared, alertService, userService, user) {
     var vm = this
     vm.user = user
+    vm.loadRoles = Shared.getConfig().roles.enable
 
     vm.submitUpdateUserForm = function () {
       if (!_.isEmpty(vm.updateUserForm.$error)) { return }

@@ -18,7 +18,9 @@ angular.module('app.user')
       vm.searchString = ''
       vm.selection = []
       vm.config = Shared.getConfig()
-      vm.simpleTableConfig = vm.config.usersTable
+      vm.simpleTableConfig = {}
+      angular.copy(vm.config.usersTable, vm.simpleTableConfig)
+      vm.simpleTableConfig.rowActions = _.map(vm.simpleTableConfig.rowActions, 'title')
 
       vm.simplePaginationConfig = {
         currentPage: 0,
@@ -73,20 +75,20 @@ angular.module('app.user')
 
       vm.rowActionCallback = function (actionIndex, rowIndex) {
         var path = ''
-        switch (actionIndex) {
-          case 0:
+        switch (vm.config.usersTable.rowActions[actionIndex].action) {
+          case 'edit-role':
             path = 'users/' + vm.users[rowIndex][userService.getSingleRecordKey()] + '/role/edit'
             $location.path(path)
             break
-          case 1:
+          case 'edit-user':
             path = 'users/edit/' + vm.users[rowIndex][userService.getSingleRecordKey()]
             $location.path(path)
             break
-          case 2:
+          case 'show-user':
             path = 'users/view/' + vm.users[rowIndex][userService.getSingleRecordKey()]
             $location.path(path)
             break
-          case 3:
+          case 'delete-user':
             path = 'users/delete/' + vm.users[rowIndex][userService.getSingleRecordKey()]
             $location.path(path)
             break
