@@ -3,12 +3,14 @@ angular.module('app.utility', [])
 
     var parentHeight = 0;
     var config = {};
+    var currentPage = '';
 
     return {
       getConfig: getConfig,
       setConfig: setConfig,
       getParentHeight: getParentHeight,
-      setParentHeight: setParentHeight
+      setParentHeight: setParentHeight,
+      getDefaultPageTitle: getDefaultPageTitle
     }
 
     function setParentHeight(pH) {
@@ -25,6 +27,10 @@ angular.module('app.utility', [])
 
     function setConfig (cfg) {
       config =  cfg;
+    }
+
+    function getDefaultPageTitle () {
+      return "User Management System";
     }
 
   })

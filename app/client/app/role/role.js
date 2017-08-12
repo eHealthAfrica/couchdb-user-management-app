@@ -8,6 +8,7 @@ angular.module('app.role', ['ngRoute', 'app.user'])
       templateUrl: 'app/role/partials/edit.html',
       controller: 'RoleCtrl',
       controllerAs: 'ctrl',
+      pageTitle: 'update-user-role',
       resolve: {
         user :['userService', '$route', function(userService, $route){
            return userService.getOne($route.current.params.id).then(function (resp){  return resp; }).catch(function (err) {console.log(err); return null;});

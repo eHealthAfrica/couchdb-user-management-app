@@ -23,6 +23,7 @@ angular.module('app.user')
 
     this.getPage = function (skip, limit, sortBy, sortDirection) {
 
+      
       if (! limit) { limit =  30;}
       if (! sortBy) { sortBy = 'name'; }
       if (! sortDirection) { sortDirection = 'asc'; }
