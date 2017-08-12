@@ -12,8 +12,9 @@ angular.module('app.role')
     vm.adminLevels = adminLevels
     vm.locations = locations
     vm.facilities = facilities
-    vm.programs = programs
+    vm.programs = _.sortBy(programs, ['name']);
     vm.facilityPrograms = facilityPrograms
+
 
     $scope.$watch('vm.updateUserRoleForm.access.level', function (newValue, oldValue) {
       vm.getAssignedLocation()
@@ -78,8 +79,8 @@ angular.module('app.role')
       } else if (vm.user.lomis_stock.dashboard && !_.isEmpty(vm.user.lomis_stock.dashboard)) {
         var accessLevel = vm.user.lomis_stock.dashboard.access.level
         var accessItemId = vm.user.lomis_stock.dashboard.access.items[0][accessLevel][0]
-
         var accessItem = null
+
         for (var i in vm.locations) {
           if (vm.locations[i]._id === accessItemId) {
             accessItem = vm.locations[i]
