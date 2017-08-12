@@ -11,3 +11,4 @@ app/dist/app.js
 app/dist/components
 app/dist/img
 app/dist/app
+app/access.json

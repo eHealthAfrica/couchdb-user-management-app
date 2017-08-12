@@ -4,7 +4,7 @@ angular.module('app.auth')
       var config = Shared.getConfig()
       switch (config.auth.type.toLowerCase()) {
         case 'cookies':
-          var cookie = ''
+          var cookie
           try {
             cookie = $cookies.getObject(config.auth.cookies.name)
           } catch (e) {
