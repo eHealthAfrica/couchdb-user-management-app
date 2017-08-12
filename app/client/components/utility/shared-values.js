@@ -1,6 +1,5 @@
 angular.module('app.utility', [])
   .factory('Shared', function () {
-
     var currentPage = ''
     var parentHeight = 0
     var config = {}
