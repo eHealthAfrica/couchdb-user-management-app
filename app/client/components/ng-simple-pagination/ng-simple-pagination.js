@@ -1,9 +1,9 @@
 /* global angular */
-'use strict';
+'use strict'
 
 angular.module('ng.simple.pagination', []).directive('ngsimplepagination', function () {
   return {
-    scope : {
+    scope: {
       currentPage: '=',
       total: '=',
       pageSize: '=',
@@ -12,50 +12,49 @@ angular.module('ng.simple.pagination', []).directive('ngsimplepagination', funct
     },
 
     link: function (scope, element, attrs) {
-      scope.pageCount = 0;
-      scope.pageResized =  false;
-      scope.pageStart =  0;
-      scope.pageEnd = 0;
-
+      scope.pageCount = 0
+      scope.pageResized = false
+      scope.pageStart = 0
+      scope.pageEnd = 0
 
       function changePageTo (pageNumber) {
-        scope.currentPage =  pageNumber ;
+        scope.currentPage = pageNumber
 
-        scope.pageStart = (scope.currentPage * scope.pageSize) + 1;
-        scope.pageEnd =  scope.pageStart + scope.pageSize - 1;
+        scope.pageStart = (scope.currentPage * scope.pageSize) + 1
+        scope.pageEnd = scope.pageStart + scope.pageSize - 1
 
-        if (scope.pageStart >  scope.total) { scope.pageStart =  scope.total;}
-        if (scope.pageEnd > scope.total) {scope.pageEnd =  scope.total;}
+        if (scope.pageStart > scope.total) { scope.pageStart = scope.total }
+        if (scope.pageEnd > scope.total) { scope.pageEnd = scope.total }
 
-        var skip = (pageNumber * scope.pageSize);
-        if (skip < 0) { skip = 0;}
+        var skip = (pageNumber * scope.pageSize)
+        if (skip < 0) { skip = 0 }
 
-        scope.onPageRequested({limit: scope.pageStart, skip: skip});
+        scope.onPageRequested({limit: scope.pageStart, skip: skip})
       }
 
       function updatePageCount () {
-        scope.pageCount =  Math.ceil(scope.total /  scope.pageSize);
-        scope.pageStart = (scope.currentPage * scope.pageSize) + 1;
-        scope.pageEnd =  scope.pageStart + scope.pageSize - 1;
-        if (scope.pageStart >  scope.total) { scope.pageStart =  scope.total;}
-        if (scope.pageEnd > scope.total) {scope.pageEnd =  scope.total;}
+        scope.pageCount = Math.ceil(scope.total / scope.pageSize)
+        scope.pageStart = (scope.currentPage * scope.pageSize) + 1
+        scope.pageEnd = scope.pageStart + scope.pageSize - 1
+        if (scope.pageStart > scope.total) { scope.pageStart = scope.total }
+        if (scope.pageEnd > scope.total) { scope.pageEnd = scope.total }
       }
 
       scope.$watch('total', function (newValue, oldValue) {
-          updatePageCount();
-      });
+        updatePageCount()
+      })
 
       scope.$watch('currentPage', function (newVal, oldVal) {
-        changePageTo(newVal);
-      });
+        changePageTo(newVal)
+      })
 
       scope.navigateTo = function (page) {
-        changePageTo(page);
-      };
+        changePageTo(page)
+      }
     },
 
     restrict: 'AEC',
     replace: true,
     templateUrl: 'components/ng-simple-pagination/template.html'
-  };
-});
+  }
+})

@@ -1,9 +1,9 @@
 angular.module('app.utility', [])
   .factory('Shared', function () {
 
-    var parentHeight = 0;
-    var config = {};
-    var currentPage = '';
+    var currentPage = ''
+    var parentHeight = 0
+    var config = {}
 
     return {
       getConfig: getConfig,
@@ -13,20 +13,20 @@ angular.module('app.utility', [])
       getDefaultPageTitle: getDefaultPageTitle
     }
 
-    function setParentHeight(pH) {
-      parentHeight = pH;
+    function setParentHeight (pH) {
+      parentHeight = pH
     }
 
-    function getParentHeight() {
-      return parentHeight;
+    function getParentHeight () {
+      return parentHeight
     }
 
     function getConfig () {
-      return config;
+      return config
     }
 
     function setConfig (cfg) {
-      config =  cfg;
+      config = cfg
     }
 
     function getDefaultPageTitle () {

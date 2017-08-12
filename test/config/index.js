@@ -37,7 +37,7 @@ module.exports = {
   },
 
   currentUser: {
-    url:'/api/users/me',
+    url: '/api/users/me',
     nameField: 'name'
   },
 
@@ -46,7 +46,7 @@ module.exports = {
       type: 'user',
       field: 'lomis_stock.dashboard.access.items',
       reducer: function () {
-        return "";
+        return ''
       }
     }
   ],
@@ -66,10 +66,10 @@ module.exports = {
     arrayFields: [],
     derivedFields: ['admin_level', 'location'],
     header: [
-      {label: 'name', field:  'name', subFields: [ {field: 'lomis_stock.dashboard.is_admin', displayMode: 'label', positive: true, positiveLabel: 'ADMIN', positiveColour: '#4289CD'}]},
+      {label: 'name', field: 'name', subFields: [ {field: 'lomis_stock.dashboard.is_admin', displayMode: 'label', positive: true, positiveLabel: 'ADMIN', positiveColour: '#4289CD'} ]},
       'admin_level', 'location', 'status'
     ],
-    maxColWidth : 25,
+    maxColWidth: 25,
     rowActions: ['assign role', 'edit', 'show', 'delete'],
     rowActionClasses: ['glyphicon glyphicon-user', 'glyphicon glyphicon-pencil', 'glyphicon glyphicon-eye-open', 'glyphicon glyphicon-trash'],
     toggleFields: [{
@@ -79,7 +79,7 @@ module.exports = {
       negative: 'inactive',
       denyIf: [{
         field: '_id',
-        value: "$currentuser$._id"
+        value: '$currentuser$._id'
       }]
     }],
     unsortableFields: ['location']

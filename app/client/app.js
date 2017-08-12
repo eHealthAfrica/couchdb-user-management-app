@@ -1,7 +1,6 @@
 /* jshint node: true */
 /* global angular */
-'use strict';
-
+'use strict'
 
 angular.module('myApp', [
   'app.auth',
@@ -11,68 +10,61 @@ angular.module('myApp', [
   'app.user',
   'app.utility',
   'ngCookies',
-  'ngRoute',
-  'ui.bootstrap'
+  'ngRoute'
 ])
-  .factory('authInterceptor', ['$q', '$rootScope',  'SharedAuth',  function($q, $rootScope, SharedAuth) {
-
+  .factory('authInterceptor', ['$q', '$rootScope', 'SharedAuth', function ($q, $rootScope, SharedAuth) {
     return {
 
-      request: function(config) {
+      request: function (config) {
         if ($rootScope.loggedIn) {
-          config.headers = config.headers || {};
+          config.headers = config.headers || {}
           if (SharedAuth.isLoggedIn()) {
-            SharedAuth.decorateHeader(config.headers);
+            SharedAuth.decorateHeader(config.headers)
           }
         }
-        return config;
+        return config
       },
 
-      responseError: function(response) {
+      responseError: function (response) {
         if (response.status === 401) {
-          SharedAuth.logOut();
-          return $q.reject(response);
+          SharedAuth.logOut()
+          return $q.reject(response)
         } else {
-          return $q.reject(response);
+          return $q.reject(response)
         }
       }
 
-    };
+    }
   }])
-  .config(['$locationProvider', '$routeProvider','$httpProvider', function($locationProvider, $routeProvider, $httpProvider) {
-
-    $locationProvider.hashPrefix('!');
-    $httpProvider.interceptors.push('authInterceptor');
-    $routeProvider.otherwise({redirectTo: '/users/list'});
-
+  .config(['$locationProvider', '$routeProvider', '$httpProvider', function ($locationProvider, $routeProvider, $httpProvider) {
+    $locationProvider.hashPrefix('!')
+    $httpProvider.interceptors.push('authInterceptor')
+    $routeProvider.otherwise({redirectTo: '/users/list'})
   }])
-  .run(['$rootScope', '$route', 'Auth', 'Config', 'Shared', 'SharedAuth', function ( $rootScope, $route, Auth, Config, Shared, SharedAuth)  {
-
-    $rootScope.authenticated =  false;
+  .run(['$rootScope', '$route', 'Auth', 'Config', 'Shared', 'SharedAuth', function ($rootScope, $route, Auth, Config, Shared, SharedAuth) {
+    $rootScope.authenticated = false
     Config.get()
        .then(function (response) {
 
-         $rootScope.overrideDefaultStyle = response.ui.styling.overrideDefaultStyle || false;
-         $rootScope.customStyles =  response.ui.styling.urls;
-         $rootScope.currentPage = response.ui.pageTitles["list-users"] || Shared.getDefaultPageTitle();
+         $rootScope.overrideDefaultStyle = response.ui.styling.overrideDefaultStyle || false
+         $rootScope.customStyles =  response.ui.styling.urls
+         $rootScope.currentPage = response.ui.pageTitles["list-users"] || Shared.getDefaultPageTitle()
 
          $rootScope.$on('$routeChangeStart', function (event, next, current) {
-           $rootScope.currentPage = response.ui.pageTitles[next.$$route.pageTitle] || Shared.getDefaultPageTitle();
+           $rootScope.currentPage = response.ui.pageTitles[next.$$route.pageTitle] || Shared.getDefaultPageTitle()
          })
 
-         Shared.setConfig(response);
+         Shared.setConfig(response)
+
          if (SharedAuth.isLoggedIn()) {
-            $rootScope.loggedIn =  true;
-            Auth.getCurrentUser()
+           $rootScope.loggedIn = true
+           Auth.getCurrentUser()
              .then(function (response) {
-                $rootScope.authenticated = Auth.isAuthorized();
-                if ($rootScope.authenticated) {
-                  $route.reload();
-                }
+               $rootScope.authenticated = Auth.isAuthorized()
+               if ($rootScope.authenticated) {
+                 $route.reload()
+               }
              })
          }
-       });
-
-
-
+       })
   }])

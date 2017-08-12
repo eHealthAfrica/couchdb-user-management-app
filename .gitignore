@@ -3,3 +3,11 @@ node_modules
 bower_components
 .grunt
 .idea/
+dist/app.min.css
+dist/app.min.js
+dist/vendor.min.js
+app/dist/app.css
+app/dist/app.js
+app/dist/components
+app/dist/img
+app/dist/app

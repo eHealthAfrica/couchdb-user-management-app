@@ -1,11 +1,11 @@
 /* global angular */
 /* global _ */
 /* jshint node: true */
-'use strict';
+'use strict'
 
-angular.module('app.user', ['ngRoute', 'ng.simple.table', 'ng.simple.pagination' ,'app.role', 'app.config']);
+angular.module('app.user', ['ngRoute', 'ng.simple.table', 'ng.simple.pagination', 'app.role', 'app.config'])
 
-angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
+angular.module('app.user').config(['$routeProvider', function ($routeProvider) {
   $routeProvider
     .when('/users/list', {
       templateUrl: 'app/user/partials/list.html',
@@ -13,10 +13,10 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
       controllerAs: 'ctrl',
       pageTitle: 'list-users',
       resolve: {
-        users: ['userService', function (userService) {
-            return userService.getPage(0)
-              .then(function (resp) { return resp;  })
-              .catch(function (err) { console.log(err); return []; });
+        users: ['userService', 'Config', function (userService) {
+          return userService.getPage(0)
+              .then(function (resp) { return resp })
+              .catch(function (err) { console.log(err); return [] })
         }]
       }
 
@@ -32,18 +32,18 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
       controller: 'UserCtrl',
       controllerAs: 'ctrl',
       pageTitle: 'update-user',
-      resolve:{
-      user:['userService', '$route', function (userService, $route) {
-        return userService.getOne($route.current.params.id)
-          .then (function (resp){
-            return resp;
+      resolve: {
+        user: ['userService', '$route', function (userService, $route) {
+          return userService.getOne($route.current.params.id)
+          .then(function (resp) {
+            return resp
           })
-          .catch (function (err) {
-            console.log(err);
-            return null;
-          });
-      }]
-    }
+          .catch(function (err) {
+            console.log(err)
+            return null
+          })
+        }]
+      }
     })
     .when('/users/view/:id', {
       templateUrl: 'app/user/partials/view.html',
@@ -54,12 +54,12 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
         user: ['userService', '$route', function (userService, $route) {
           return userService.getOne($route.current.params.id)
             .then(function (resp) {
-              return resp;
+              return resp
             })
             .catch(function (err) {
-              console.log(err);
-              return null;
-            });
+              console.log(err)
+              return null
+            })
         }]
       }
     })
@@ -68,17 +68,17 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
       controller: 'UserCtrl',
       controllerAs: 'ctrl',
       pageTitle: 'delete-user',
-      resolve:{
-      user: ['userService', '$route', function (userService, $route) {
-        return userService.getOne($route.current.params.id)
-          .then(function (resp){
-            return resp;
+      resolve: {
+        user: ['userService', '$route', function (userService, $route) {
+          return userService.getOne($route.current.params.id)
+          .then(function (resp) {
+            return resp
           })
           .catch(function (err) {
-            console.log(err);
-            return null;
-          });
-      }]
-    }
-  });
-}]);
+            console.log(err)
+            return null
+          })
+        }]
+      }
+    })
+}])
