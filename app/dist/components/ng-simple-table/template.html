@@ -31,7 +31,7 @@
       <td ng-repeat="col in columns" class = "{{rowClass}}">
 
         <span ng-if = "toggleFieldsName.indexOf(col) < 0 && arrayFields.indexOf(col) < 0">
-          {{row[col].toString() | limitColumnWidth : maxColWidth}}
+          <span ng-bind="getRowEntry(row,col) | limitColumnWidth : maxColWidth"></span>
 
           <span ng-if="hasSubField(columns.indexOf(col))"
                 ng-repeat="field in getSubField(columns.indexOf(col))">
@@ -56,14 +56,14 @@
         </span>
 
         <span ng-if = "toggleFieldsName.indexOf(col) < 0 && arrayFields.indexOf(col) >= 0">
-          <label ng-repeat= "elem in row[col]" class = "label label-default" ng-class="['label-warning', 'label-info'][$index]">{{elem}}</label>
+          <label ng-repeat= "elem in getRowEntry(row,col)" class = "label label-default" >{{elem}}</label>
         </span>
 
         <span ng-if = "toggleFieldsName.indexOf(col) >= 0"
               ng-init = "colIndex = toggleFieldsName.indexOf(col)">
           <a href ng-click="toggleFieldCallback({fieldIndex: colIndex, rowIndex: $parent.$parent.$index})">
             <span  class = "glyphicon"
-                   ng-class=" row[col] === toggleFields[colIndex].positive ? 'glyphicon-ok': 'glyphicon-remove' "></span>
+                   ng-class=" getRowEntry(row,col) === toggleFields[colIndex].positive ? 'glyphicon-ok': 'glyphicon-remove' "></span>
           </a>
         </span>
 

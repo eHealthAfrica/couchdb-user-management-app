@@ -102,7 +102,7 @@
           <label for="name" class="col-sm-2 control-label">PROGRAM</label>
 
           <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
-            <select  ng-model="ctrl.updateUserRoleForm.program" id="nalme" name="name" class="form-control"
+            <select  ng-model="ctrl.updateUserRoleForm.program" id="facility-programs" class="form-control"
                      ng-required="true"
                      multiple
                      ng-options ="program._id as program.name for program in ctrl.programs | getProgramsInFacility : ctrl.facilityPrograms : ctrl.updateUserRoleForm.facility"
@@ -115,7 +115,7 @@
         <label for="name" class="col-sm-2 control-label" ng-init="ctrl.updateUserRoleForm.access.programs =  ctrl.user.lomis_stock.dashboard.access.programs || []">PROGRAM</label>
 
         <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
-          <select  ng-model="ctrl.updateUserRoleForm.access.programs"  class="form-control" id="naflme" name="nvame"
+          <select  ng-model="ctrl.updateUserRoleForm.access.programs"  class="form-control" id="programs"
                    ng-required="true"
                    multiple
                    ng-options ="program._id as program.name for program in ctrl.programs"

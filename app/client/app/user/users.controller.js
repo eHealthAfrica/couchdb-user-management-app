@@ -21,6 +21,7 @@ angular.module('app.user')
       vm.selection = [];
       vm.config = Shared.getConfig();
       vm.simpleTableConfig = vm.config.usersTable
+      vm.simpleTableConfig.workspace =  vm.config.usersTable ||  'umsWorkspace'
 
       vm.simplePaginationConfig = {
         currentPage: 0,
