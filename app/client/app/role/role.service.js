@@ -234,17 +234,11 @@ angular.module('app.user').decorate('userDecoratorService', [
 
 
         for (var i in users) {
-          console.log("qq");
           users[i][workspace] = {};
-          if (i === '0') {
-            console.log("got here",  users[i])
-          }
           users[i][workspace]['admin_level'] =  getAdminLevel(users[i]);
           users[i][workspace]['location'] = getLocation(users[i]);
           users[i][workspace]['programs'] =  getPrograms(users[i]);
-          if (i === 0) {
-            console.log("got here",  users[i])
-          }
+
         }
       })
     }
