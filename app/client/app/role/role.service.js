@@ -5,34 +5,34 @@
 
 angular.module('app.role')
   .service('adminLevelService', [ '$http', function ($http) {
-  var URL = '/api/admin_level'
+    var URL = '/api/admin_level'
 
-  this.getAll = function () {
-    var promise = $http.get(URL, { withCredentials: true })
-    return promise.then(function (response) {
-      var sortedAdminLevel = []
+    this.getAll = function () {
+      var promise = $http.get(URL, { withCredentials: true })
+      return promise.then(function (response) {
+        var sortedAdminLevel = []
 
-      for (var i in response.data) {
-        if (response.data[i].parent === null) {
-          sortedAdminLevel.push(response.data[i])
-        }
-      }
-
-      for (var k = 0; k < response.data.length; k++) {
-        var parId = sortedAdminLevel[sortedAdminLevel.length - 1]._id
-        for (var j in response.data) {
-          if (response.data[j].parent === parId) {
-            sortedAdminLevel.push(response.data[j])
+        for (var i in response.data) {
+          if (response.data[i].parent === null) {
+            sortedAdminLevel.push(response.data[i])
           }
         }
-      }
 
-      return sortedAdminLevel
-    }, function (err) {
-      return err
-    })
-  }
-}])
+        for (var k = 0; k < response.data.length; k++) {
+          var parId = sortedAdminLevel[sortedAdminLevel.length - 1]._id
+          for (var j in response.data) {
+            if (response.data[j].parent === parId) {
+              sortedAdminLevel.push(response.data[j])
+            }
+          }
+        }
+
+        return sortedAdminLevel
+      }, function (err) {
+        return err
+      })
+    }
+  }])
   .service('facilityService', [ '$http', function ($http) {
     var URL = '/api/facilities'
     this.getAll = function () {
@@ -88,8 +88,7 @@ angular.module('app.user').decorate('userDecoratorService', [
   'facilityService',
   'locationService',
   function ($delegate, $q, Shared, adminLevelService, facilityService, locationService) {
-
-    var config =  Shared.getConfig();
+    var config = Shared.getConfig()
 
     if (config.roles.enable) {
       $delegate.decorate = function (fields, users) {
@@ -181,5 +180,4 @@ angular.module('app.user').decorate('userDecoratorService', [
     }
 
     return $delegate
-
   }])

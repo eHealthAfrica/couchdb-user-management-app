@@ -12,9 +12,8 @@ angular.module('app.role')
     vm.adminLevels = adminLevels
     vm.locations = locations
     vm.facilities = facilities
-    vm.programs = _.sortBy(programs, ['name']);
+    vm.programs = _.sortBy(programs, ['name'])
     vm.facilityPrograms = facilityPrograms
-
 
     $scope.$watch('vm.updateUserRoleForm.access.level', function (newValue, oldValue) {
       vm.getAssignedLocation()

@@ -1,6 +1,5 @@
 angular.module('app.utility', [])
   .factory('Shared', function () {
-    var currentPage = ''
     var parentHeight = 0
     var config = {}
 
@@ -29,7 +28,6 @@ angular.module('app.utility', [])
     }
 
     function getDefaultPageTitle () {
-      return "User Management System";
+      return 'User Management System'
     }
-
   })
