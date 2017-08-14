@@ -1,69 +1,70 @@
 {
-  "name": "couchdb-user-management-app",
-  "private": true,
-  "version": "3.0.0",
-  "description": "A simple UMS app for LoMIS Stock",
-  "repository": "http://gr2m.github.io/couchdb-user-management-app",
-  "license": "MIT",
-  "devDependencies": {
-    "bower": "^1.7.7",
-    "chai": "^3.5.0",
-    "chai-http": "^3.0.0",
-    "cradle": "^0.7.1",
-    "crypto": "0.0.3",
-    "express": "^4.15.2",
-    "grunt": "^0.4.0",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-copy": "~0.5.0",
-    "grunt-contrib-cssmin": "~0.7.0",
-    "grunt-contrib-uglify": "~0.2.7",
-    "grunt-usemin": "~2.0.2",
-    "http": "0.0.0",
-    "http-server": "^0.9.0",
-    "jasmine-core": "^2.4.1",
-    "karma": "^0.13.22",
-    "karma-chrome-launcher": "^0.2.3",
-    "karma-firefox-launcher": "^0.1.7",
-    "karma-jasmine": "^0.3.8",
-    "karma-junit-reporter": "^0.4.1",
-    "lodash": "^4.17.4",
-    "protractor": "^4.0.9",
-    "snazzy": "^7.0.0",
-    "standard": "^10.0.3"
-  },
-  "dependencies": {
-    "couchdb-bootstrap": "^1.14.0",
-    "cradle": "^0.7.1",
-    "express": "^4.15.2",
-    "lodash": "^4.17.4",
-    "path": "^0.12.7",
-    "q": "^1.5.0",
-    "winston": "^2.3.1"
-  },
-  "scripts": {
-    "pretespt": "npm install",
-    "postinstall": "bower install",
-    "fix": "standard --fix | snazzy --format --verbose",
-    "test": "mocha",
-    "..test": "karma start karma.conf.js",
-    "preprotractor": "npm run update-webdriver",
-    "protractor": "protractor e2e-tests/protractor.conf.js",
-    "update-index-async": "node -e \"var fs=require('fs'),indexFile='app/index-async.html',loaderFile='app/bower_components/angular-loader/angular-loader.min.js',loaderText=fs.readFileSync(loaderFile,'utf-8').split(/sourceMappingURL=angular-loader.min.js.map/).join('sourceMappingURL=bower_components/angular-loader/angular-loader.min.js.map'),indexText=fs.readFileSync(indexFile,'utf-8').split(/\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/).join('//@@NG_LOADER_START@@\\n'+loaderText+'    //@@NG_LOADER_END@@');fs.writeFileSync(indexFile,indexText);\""
-  },
-  "standard": {
-    "global": [
-      "_",
-      "angular"
-    ],
-    "env": [
-      "chai",
-      "mocha",
-      "jasmine"
-    ],
-    "ignore": [
-      "couchdb/",
-      "dist/"
-    ]
-  }
+    "name": "couchdb-user-management-app",
+    "private": true,
+    "version": "3.0.0",
+    "description": "A simple UMS app for LoMIS Stock",
+    "repository": "http://gr2m.github.io/couchdb-user-management-app",
+    "license": "MIT",
+    "devDependencies": {
+        "bower": "^1.7.7",
+        "chai": "^3.5.0",
+        "chai-http": "^3.0.0",
+        "cradle": "^0.7.1",
+        "crypto": "0.0.3",
+        "express": "^4.15.2",
+        "grunt": "^0.4.0",
+        "grunt-contrib-clean": "~0.5.0",
+        "grunt-contrib-concat": "~0.3.0",
+        "grunt-contrib-copy": "~0.5.0",
+        "grunt-contrib-cssmin": "~0.7.0",
+        "grunt-contrib-uglify": "~0.2.7",
+        "grunt-usemin": "~2.0.2",
+        "http": "0.0.0",
+        "http-server": "^0.9.0",
+        "jasmine-core": "^2.4.1",
+        "karma": "^0.13.22",
+        "karma-chrome-launcher": "^0.2.3",
+        "karma-firefox-launcher": "^0.1.7",
+        "karma-jasmine": "^0.3.8",
+        "karma-junit-reporter": "^0.4.1",
+        "lodash": "^4.17.4",
+        "protractor": "^4.0.9",
+        "snazzy": "^7.0.0",
+        "standard": "^10.0.3"
+    },
+    "dependencies": {
+        "couchdb-bootstrap": "^1.14.0",
+        "cradle": "^0.7.1",
+        "express": "^4.15.2",
+        "lodash": "^4.17.4",
+        "path": "^0.12.7",
+        "q": "^1.5.0",
+        "winston": "^2.3.1"
+    },
+    "scripts": {
+        "dev": "nodemon app",
+        "pretespt": "npm install",
+        "postinstall": "bower install",
+        "fix": "standard --fix | snazzy --format --verbose",
+        "test": "mocha",
+        "..test": "karma start karma.conf.js",
+        "preprotractor": "npm run update-webdriver",
+        "protractor": "protractor e2e-tests/protractor.conf.js",
+        "update-index-async": "node -e \"var fs=require('fs'),indexFile='app/index-async.html',loaderFile='app/bower_components/angular-loader/angular-loader.min.js',loaderText=fs.readFileSync(loaderFile,'utf-8').split(/sourceMappingURL=angular-loader.min.js.map/).join('sourceMappingURL=bower_components/angular-loader/angular-loader.min.js.map'),indexText=fs.readFileSync(indexFile,'utf-8').split(/\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/).join('//@@NG_LOADER_START@@\\n'+loaderText+'    //@@NG_LOADER_END@@');fs.writeFileSync(indexFile,indexText);\""
+    },
+    "standard": {
+        "global": [
+            "_",
+            "angular"
+        ],
+        "env": [
+            "chai",
+            "mocha",
+            "jasmine"
+        ],
+        "ignore": [
+            "couchdb/",
+            "dist/"
+        ]
+    }
 }
