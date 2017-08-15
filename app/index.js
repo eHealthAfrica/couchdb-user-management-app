@@ -11,11 +11,10 @@ try { configOverrides = require('./ums-config') } catch (e) { console.log(e); co
 try { access = require('./access.json') } catch (e) { access = testConfig.access }
 
 const config = extend(true, testConfig, configOverrides)
-config.couch.db = process.env.UMS_DB || config.couch.db || 'set'
+config.couch.db = process.env.UMS_DB || config.couch.db || '_users'
 config.currentUser.url = process.env.UMS_USER_URL || config.currentUser.url || 'http://localhost:3333/api/v1/users/me'
 config.auth.redirectUrl = process.env.UMS_REDIRECT_URL || config.auth.redirectUrl || 'http://localhost:3000'
 config.access = access
-console.log(config)
 const app = require('./server/app')(config)
 http.createServer(app)
   .listen(PORT, () => {
