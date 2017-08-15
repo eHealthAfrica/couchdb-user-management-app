@@ -12,3 +12,4 @@ app/dist/components
 app/dist/img
 app/dist/app
 app/access.json
+app/ums-config.js

@@ -45,14 +45,14 @@ angular.module('myApp', [
     $rootScope.authenticated = false
     Config.get()
        .then(function (response) {
-
          if (response.ui && response.ui.styling) {
            $rootScope.overrideDefaultStyle = response.ui.styling.overrideDefaultStyle || false
            $rootScope.customStyles = response.ui.styling.urls
          }
 
-         if (response.ui && response.ui.pageTitles){
-           $rootScope.currentPage = response.ui.pageTitles["list-users"] || Shared.getDefaultPageTitle()
+         if (response.ui && response.ui.pageTitles) {
+           $rootScope.logoImg = response.ui.logo
+           $rootScope.currentPage = response.ui.pageTitles['list-users'] || Shared.getDefaultPageTitle()
            $rootScope.$on('$routeChangeStart', function (event, next, current) {
              $rootScope.currentPage = response.ui.pageTitles[next.$$route.pageTitle] || Shared.getDefaultPageTitle()
            })

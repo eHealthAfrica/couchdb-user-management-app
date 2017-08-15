@@ -1,17 +1,21 @@
 'use strict'
 
+const extend = require('extend')
 const http = require('http')
 const os = require('os')
-const config = require('../test/config')
-const app = require('./server/app')(config)
+const testConfig = require('../test/config')
 const PORT = process.env.UMS_PORT || 3331
+let configOverrides = {}
 let access = {}
-try { access = require('./access.json') } catch (e) { access = config.access }
-config.couch.db = process.env.UMS_DB || 'set'
-config.currentUser.url = process.env.UMS_USER_URL || 'http://localhost:3333/api/v1/users/me'
-config.auth.redirectUrl = process.env.UMS_REDIRECT_URL || 'http://localhost:3000'
-config.access = access
+try { configOverrides = require('./ums-config') } catch (e) { console.log(e); configOverrides = testConfig }
+try { access = require('./access.json') } catch (e) { access = testConfig.access }
 
+const config = extend(true, testConfig, configOverrides)
+config.couch.db = process.env.UMS_DB || config.couch.db || '_users'
+config.currentUser.url = process.env.UMS_USER_URL || config.currentUser.url || 'http://localhost:3333/api/v1/users/me'
+config.auth.redirectUrl = process.env.UMS_REDIRECT_URL || config.auth.redirectUrl || 'http://localhost:3000'
+config.access = access
+const app = require('./server/app')(config)
 http.createServer(app)
   .listen(PORT, () => {
     console.log(`up and running @: ${os.hostname()} on port: ${PORT}`)
