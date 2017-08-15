@@ -16,6 +16,7 @@ angular.module('ng.simple.table', [])
       allowSelect: '=',
       allowSort: '=',
       arrayFields: '=',
+      derivedFields: '=',
       filterFieldClass: '@',
       filterFieldPlaceholder: '@',
       headerClass: '@',
@@ -32,7 +33,8 @@ angular.module('ng.simple.table', [])
       tableHeader: '=',
       toggleFields: '=',
       toggleFieldCallback: '&',
-      unsortableFields: '='
+      unsortableFields: '=',
+      workSpace: '='
     },
 
     link: function(scope, element, attrs){
@@ -107,6 +109,19 @@ angular.module('ng.simple.table', [])
           return result;
         }
         return list.sort(compare);
+      }
+
+      scope.getRowEntry = function(row, entry) {
+        var entrySplit = entry.split(".")
+
+        if (scope.derivedFields.indexOf(entry)>= 0) {
+          if (! row[scope.workSpace]) { row[scope.workSpace] = {}; }
+          return row[scope.workSpace][entry]
+        }
+        else {
+
+          return row[entry];
+        }
       }
 
 

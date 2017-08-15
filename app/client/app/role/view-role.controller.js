@@ -4,110 +4,95 @@
 'use strict';
 
 angular.module('app.role')
-  .controller('ViewRoleCtrl', ['$scope', 'adminLevelService', 'facilityService', 'locationService', function($scope, adminLevelService, facilityService, locationService){
+  .controller('ViewRoleCtrl', ['$scope', '$q', 'adminLevelService', 'facilityService', 'locationService', 'programService', function($scope, $q, adminLevelService, facilityService, locationService, programService){
 
     var vm = this;
     vm.user =  $scope.$parent.ctrl.user;
-    vm.adminLevels = [];
+
+
+    vm.hasNoRole =  ! vm.user.lomis_stock;
+    vm.isAnAdmin =  false;
+
+    vm.role = 'None';
+    vm.adminLevel = 'Unknown Access Level';
     vm.locations = [];
-    vm.facilities = [];
+    vm.programs = [];
 
-    vm.init =  function () {
-      adminLevelService.getAll()
-        .then (function (response) {
-          vm.adminLevels = response;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
 
-      facilityService.getAll()
-        .then (function (response) {
-          vm.facilities = response;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+    isAnAdmin();
 
-      locationService.getAll()
-        .then (function (response) {
-          vm.locations =  response;
-        })
-        .catch (function (error) {
-          console.log(error);
-        });
-    };
 
-    vm.hasNoRole =  function () {
-      return ! vm.user.lomis_stock;
-    };
-
-    vm.getRole = function () {
-
+    function getRole() {
       if ( !vm.user.lomis_stock ||(  _.isEmpty(vm.user.lomis_stock.mobile) && _.isEmpty(vm.user.lomis_stock.dashboard))) { return 'None'; }
       else if (_.isEmpty(vm.user.lomis_stock.mobile)) { return 'Dashboard'; }
       else { return 'Mobile'; }
     };
 
-    vm.isAnAdmin = function () {
-      return vm.user.lomis_stock.dashboard.is_admin;
+    function isAnAdmin () {
+      if (vm.user.lomis_stock && vm.user.lomis_stock.dashboard) {
+        vm.user.lomis_stock.dashboard.is_admin || false;
+      }
     }
 
-    vm.getAdminLevel = function () {
-      if ( vm.getRole() === 'Mobile' ){ return 'Facility'; }
-      var id =  vm.user.lomis_stock.dashboard.access.level;
+    vm.init =  function () {
+      var promises = $q.all([
+        adminLevelService.getAll(),
+        facilityService.getAll(),
+        locationService.getAll(),
+        programService.getAll()
+      ]);
 
-      for (var i in vm.adminLevels) {
-        if (vm.adminLevels[i]._id === id) {
-          return vm.adminLevels[i].name;
-        }
-      }
-      return "Unknown Access Level";
-    };
+      promises.then(function (responses) {
 
-    vm.getLocations = function () {
-      if ( vm.getRole() === 'Mobile' ) {
-        var facilities =  vm.user.lomis_stock.mobile.facilities;
-        var assignedFacilities = '';
+        var adminLevels = _.keyBy(responses[0], '_id');
+        var facilities = _.keyBy(responses[1], '_id');
+        var locations = _.keyBy(responses[2], '_id');
+        var programs = _.keyBy(responses[3], '_id');
 
-        for (var i in facilities) {
-          var facility =  Object.keys(facilities[i]);
-          if (facility.length > 0) {
-            for (var i in vm.facilities ) {
-              if (vm.facilities[i]._id === facility[0]) {
-                assignedFacilities += vm.facilities[i].name + ' ';
+        vm.role =  getRole();
+
+        switch (vm.role) {
+          case 'Mobile':
+            vm.adminLevel = 'Facility';
+            var userFacility = vm.user.lomis_stock.mobile.facilities[0] || {};
+            var facilityId = Object.keys(userFacility)[0] || null;
+            var userPrograms = userFacility[facilityId] || [];
+            if (facilities[facilityId]) { vm.locations = [facilities[facilityId].name]; }
+            vm.programs = [];
+            _.forEach(userPrograms, function (program) {
+              if (programs[program]) {
+                vm.programs.push(programs[program].name);
               }
-            }
-          }
-
-        }
-        return assignedFacilities;
-      }
-      else {
-        var accessLevel =  vm.user.lomis_stock.dashboard.access.level;
-        var accessItems = vm.user.lomis_stock.dashboard.access.items;
-        var accessItem =  null;
-        for (var i in accessItems) {
-          if ( accessItems[i][accessLevel] ){
-            accessItem =  accessItems[i][accessLevel];
+            })
             break;
-          }
-        }
-        var assignedLocations = '';
-
-        for (var i in accessItem) {
-          for (var j in vm.locations) {
-            if (vm.locations[j]._id === accessItem[i]) {
-              assignedLocations += vm.locations[j].name;
+          case 'Dashboard':
+            var accessLevel = vm.user.lomis_stock.dashboard.access.level;
+            if (adminLevels[accessLevel]) {
+              vm.adminLevel = adminLevels[accessLevel].name;
             }
-          }
+            var accessItems =  vm.user.lomis_stock.dashboard.access.items || []
+            var accessList = [];
+            _.forEach(accessItems, function (accessItem) {
+              if (accessItem[accessLevel]) {
+                accessList =  accessItem[accessLevel];
+              }
+            })
+            _.forEach(accessList, function (locationId) {
+                if (locations[locationId]) {
+                  vm.locations.push(locations[locationId].name)
+                }
+            })
+
+            var userProgramsList =  vm.user.lomis_stock.dashboard.access.programs || [];
+            _.forEach(userProgramsList,  function (programId) {
+              if (programs[programId]) {
+                vm.programs.push(programs[programId].name)
+              }else{
+              }
+            });
+            break;
         }
-
-        return assignedLocations;
-
-
-
-      }
-    };
+      });
+    }
 
   }]);

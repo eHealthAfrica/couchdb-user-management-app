@@ -10,9 +10,7 @@ angular.module('myApp', [
   'app.role',
   'app.user',
   'app.utility',
-  'ngCookies',
-  'ngRoute',
-  'ui.bootstrap'
+  'ngCookies'
 ])
   .factory('authInterceptor', ['$q', '$rootScope',  'SharedAuth',  function($q, $rootScope, SharedAuth) {
 

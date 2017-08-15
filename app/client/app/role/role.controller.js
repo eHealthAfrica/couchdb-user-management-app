@@ -36,7 +36,7 @@ angular.module('app.role')
           }
 
           var facilityEntry = {};
-          facilityEntry[vm.updateUserRoleForm.facility] = [vm.updateUserRoleForm.program];
+          facilityEntry[vm.updateUserRoleForm.facility] = vm.updateUserRoleForm.program;
           lomis_stock.mobile.facilities = [facilityEntry];
           break;
 
