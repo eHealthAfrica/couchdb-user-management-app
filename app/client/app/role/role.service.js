@@ -99,8 +99,6 @@ angular.module('app.role')
 
   }]);
 
-
-
 angular.module('app.user').decorate('userDecoratorService', [
   '$delegate',
   '$q',
