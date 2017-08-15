@@ -1,73 +1,60 @@
-<nav id="header-nav"
-     class="navbar navbar-default navbar-static-top"
-     role="navigation"
-     ng-controller = "navbarCtrl as ctrl">
-        <span>
+<nav id="header-nav" class="navbar navbar-default navbar-static-top" role="navigation" ng-controller="navbarCtrl as ctrl">
+    <span>
           <div class="navbar-header" >
             <button type="button" class="navbar-toggle" ng-click="isCollapsed = !isCollapsed">
               <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-            </button>
-            <div class="col-md-2 admin-logo-bg">
-              <a class=" stock-logo" href="/"><img src="img/logo.png" class="img-responsive stock-logo"></a>
-            </div>
-            <div class="col-md-6 admin-text">
-                <a class="link" ng-href>User Management </a>
-            </div>
-            <div class="col-md-4">
-  <div class="navbar-right">
-    <a class = "link"
-       ng-href
-       ng-repeat= "nav in ctrl.config.navigation.customNavbarLinks"
-       ng-click="ctrl.navigateTo(0, $index)">
-      <i ng-class="nav.iconClass"></i>{{nav.title}}
-    </a>
-    <div uib-dropdown class="dropdown user">
-      <a uib-dropdown-toggle class="dropdown-toggle" id="dropdownMenuUser" aria-haspopup="true" aria-expanded="false">
-        <span class="header-username ">{{ctrl.username}}</span><span class="profile-pic"><i class="fa fa-user"></i></span>
-        <i class="fa fa-angle-down" ng-show = "ctrl.config.navigation.userDropdown.length"></i>
-      </a>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuUser" role="menu" ng-if = "ctrl.config.navigation.userDropdown.length">
-        <li ng-repeat="item in ctrl.config.navigation.userDropdown">
-          <a href="#" ng-click="ctrl.navigateTo(2,$index )">{{item.title}}</a>
-        </li>
-      </ul>
+    </button>
+    <div class="col-md-2 admin-logo-bg" ng-if="logoImg">
+        <a class=" stock-logo" href="/"><img src="img/logo.png" class="img-responsive stock-logo"></a>
     </div>
-  </div>
+    <div class="admin-text" ng-class="{'col-md-6': logoImg, 'col-md-8': !logoImg}">
+        <a class="link" ng-href>User Management </a>
     </div>
+    <div class="col-md-4">
+        <div class="navbar-right">
+            <a class="link" ng-href ng-repeat="nav in ctrl.config.navigation.customNavbarLinks" ng-click="ctrl.navigateTo(0, $index)">
+                <i ng-class="nav.iconClass"></i>{{nav.title}}
+            </a>
+            <div uib-dropdown class="dropdown user">
+                <a uib-dropdown-toggle class="dropdown-toggle" id="dropdownMenuUser" aria-haspopup="true" aria-expanded="false">
+                    <span class="header-username ">{{ctrl.username}}</span><span class="profile-pic"><i class="fa fa-user"></i></span>
+                    <i class="fa fa-angle-down" ng-show="ctrl.config.navigation.userDropdown.length"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuUser" role="menu" ng-if="ctrl.config.navigation.userDropdown.length">
+                    <li ng-repeat="item in ctrl.config.navigation.userDropdown">
+                        <a href="#" ng-click="ctrl.navigateTo(2,$index )">{{item.title}}</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        </span>
-  <div class="navbar-default sidebar " role="navigation" >
-    <div class="sidebar-nav navbar-collapse  collapse" uib-collapse="$parent.isCollapsed" aria-expanded="false" aria-hidden="true" style="height: 0px;">
-      <ul class="nav" id="side-menu">
-        <li class="entities-repeat">
-          <a  href="#!/users/list"
-              ng-click="activateLink(menu)"
-              ng-class="{'active': menu.isActive(path)}">
-              <span>
-                <span class="fa fa-users fa-fw "></span>
-              </span> List Users
-          </a>
-        </li>
-        <li class="entities-repeat">
-          <a  href="#!/users/create"
-              ng-click="activateLink(menu)"
-              ng-class="{'active': menu.isActive(path)}">
-            <span>
-              <span class="fa fa-user-plus fa-fw "></span>
-            </span> Add User
-          </a>
-        </li>
-        <li class="entities-repeat"
-            ng-repeat = "nav in ctrl.config.navigation.sidebarLinks">
-          <a  ng-href
-              ng-click="ctrl.navigateTo(1, $index)"
-              ng-class="{'active': menu.isActive(path)}">
-            <span>
-              <span ng-class="nav.iconClass"></span>
-            </span> {{nav.title}}
-          </a>
-        </li>
-      </ul>
     </div>
-  </div>
+    </div>
+    </span>
+    <div class="navbar-default sidebar " role="navigation">
+        <div class="sidebar-nav navbar-collapse  collapse" uib-collapse="$parent.isCollapsed" aria-expanded="false" aria-hidden="true" style="height: 0px;">
+            <ul class="nav" id="side-menu">
+                <li class="entities-repeat">
+                    <a href="#!/users/list" ng-click="activateLink(menu)" ng-class="{'active': menu.isActive(path)}">
+                        <span>
+                <span class="fa fa-users fa-fw "></span>
+                        </span> List Users
+                    </a>
+                </li>
+                <li class="entities-repeat">
+                    <a href="#!/users/create" ng-click="activateLink(menu)" ng-class="{'active': menu.isActive(path)}">
+                        <span>
+              <span class="fa fa-user-plus fa-fw "></span>
+                        </span> Add User
+                    </a>
+                </li>
+                <li class="entities-repeat" ng-repeat="nav in ctrl.config.navigation.sidebarLinks">
+                    <a ng-href ng-click="ctrl.navigateTo(1, $index)" ng-class="{'active': menu.isActive(path)}">
+                        <span>
+              <span ng-class="nav.iconClass"></span>
+                        </span> {{nav.title}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </nav>
