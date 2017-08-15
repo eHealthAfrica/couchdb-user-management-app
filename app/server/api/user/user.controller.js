@@ -55,6 +55,7 @@ function fetchOne (req, res, next) {
 }
 
 function fetchPaged (req, res, next) {
+  console.log("got filters", req.filters);
   User.fetchPaged(parseInt(req.query.skip), parseInt(req.query.limit), req.query.sortBy, req.query.sortDirection, function (err, users) {
     if (err) {
       return next(err);
