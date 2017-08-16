@@ -12,7 +12,7 @@ angular.module('app.user').config(['$routeProvider',  function($routeProvider) {
       controller: 'UsersCtrl',
       controllerAs: 'ctrl',
       resolve: {
-        users: ['userService', 'Auth', function (userService, Auth) {
+        users: ['userService',  function (userService) {
 
 
             return userService.getPage(0)
