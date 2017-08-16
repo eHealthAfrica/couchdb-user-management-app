@@ -34,21 +34,24 @@ exports.fetchPaged =  fetchPaged;
 exports.search = search;
 
 
-function search(skip, limit, sortBy, sortDirection,searchString , cb) {
+function search(options) {
+  var descending = options.sortDirection === 'asc' ? false : true;
+  if (options.sortBy.trim().toLowerCase() === 'name') { options.sortBy =  'id'; }
 
-  var descending = sortDirection === 'asc' ? false : true;
-  if (sortBy.trim().toLowerCase() === 'name') { sortBy =  'id'; }
-
-  db.view('couchdb-user-management-app/by_' +  sortBy ,{ descending: descending}, function(err, rows){
+  db.view('couchdb-user-management-app/by_' +  options.sortBy ,{ descending: descending}, function(err, rows){
     if (err) {
-      cb(err);
+      options.callback(err);
     } else {
       var users =  lodash.map(rows.rows, "value");
       var filteredUsers =  users.filter( function (user) {
-        return user.name.indexOf(searchString) >= 0;
+        return user.name.indexOf(options.searchString) >= 0;
       })
-      return cb(null, {total_rows: filteredUsers.length, offset:skip, rows:filteredUsers.slice(skip, skip + limit)});
+      lodash.forEach(options.filters, function (filter) {
+        filteredUsers = filter.filter(filter.dependency, options.filterParams[filter.field], filteredUsers, lodash)
+      })
+      return options.callback(null, {total_rows: filteredUsers.length, offset: options.skip, rows:filteredUsers.slice(options.skip, options.skip + options.limit)});
     }
+
   });
 
 }
@@ -141,29 +144,36 @@ function update (name, data, cb) {
     db.merge(user._id, data , cb);
   });
 }
-function fetchPaged (skip, limit, sortBy, sortDirection, cb) {
 
-  var descending = sortDirection === 'asc' ? false : true;
-  if (sortBy.trim().toLowerCase() === 'name') { sortBy =  'id'; }
+function fetchPaged (options) {
+
+  //skip, limit, sortBy, sortDirection,
+
+  var descending = options.sortDirection === 'asc' ? false : true;
+  if (options.sortBy.trim().toLowerCase() === 'name') { options.sortBy =  'id'; }
 
   var d = q.defer();
   allPromise = d.promise;
-  db.view('couchdb-user-management-app/by_' +  sortBy ,{ skip: skip, limit: limit, descending: descending}, function(err, rows){
+  db.view('couchdb-user-management-app/by_' +  options.sortBy ,{ /*skip: skip, limit: limit,*/ descending: descending}, function(err, rows){
     if (err) {
       d.reject(err);
     } else {
-      d.resolve(rows);
+      var filteredUsers = lodash.map(rows.rows, "value")
+      lodash.forEach(options.filters, function (filter) {
+        filteredUsers = filter.filter(filter.dependency, options.filterParams[filter.field], filteredUsers, lodash)
+      })
+      d.resolve({total_rows: filteredUsers.length, offset: options.skip, rows:filteredUsers.slice(options.skip, options.skip + options.limit)});
     }
   });
 
 
   allPromise
     .then(function(rows) {
-      cb(null, rows);
+      options.callback(null, rows);
     })
     .catch(function(err) {
       allPromise = null;
-      cb(err);
+      options.callback(err);
     });
 }
 function findById (id, cb, auth) {
