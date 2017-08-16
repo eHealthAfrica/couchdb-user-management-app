@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module('app.user')
-  .service('userService', ['$http',  function ($http) {
+  .service('userService', ['$http', 'Auth','Shared', function ($http, Auth, Shared) {
 
     var _this =  this;
     this.baseUrl = 'api/users';
@@ -23,6 +23,16 @@ angular.module('app.user')
 
     this.getPage = function (skip, limit, sortBy, sortDirection) {
 
+      var filterParams = {};
+      var config =  Shared.getConfig();
+      if (config.filters.length > 0) {
+        _.forEach(config.filters, function (filter) {
+          if (filter.hasOwnProperty('field')){
+            filterParams[filter.field.id] =  Auth.getCurrentUser()[filter.field.id] || filter.field.default;
+          }
+        });
+      }
+
       if (! limit) { limit =  30;}
       if (! sortBy) { sortBy = 'name'; }
       if (! sortDirection) { sortDirection = 'asc'; }
@@ -30,7 +40,7 @@ angular.module('app.user')
       var promise = $http({
         method: 'GET',
         url: _this.baseUrl,
-        params: {skip: skip, limit: limit, sortBy: sortBy, sortDirection:  sortDirection},
+        params: {skip: skip, limit: limit, sortBy: sortBy, sortDirection:  sortDirection, filterParams: filterParams,},
         withCredentials: true
       });
       return promise.then(function (response) {
@@ -52,12 +62,22 @@ angular.module('app.user')
 
     this.search = function (skip, limit, sortBy, sortDirection, searchString) {
 
+      var filterParams = {};
+      var config =  Shared.getConfig();
+      if (config.filters.length > 0) {
+        _.forEach(config.filters, function (filter) {
+          if (filter.hasOwnProperty('field')){
+            filterParams[filter.field.id] =  Auth.getCurrentUser()[filter.field.id] || filter.field.default;
+          }
+        });
+      }
+
       if (! sortBy) { sortBy = 'name'; }
       if (! sortDirection) { sortDirection = 'asc'; }
 
       var promise =  $http({
         url: _this.baseUrl + '/search/' + searchString,
-        params: {skip: skip, limit: limit, sortBy: sortBy, sortDirection:  sortDirection},
+        params: {skip: skip, limit: limit, sortBy: sortBy, sortDirection:  sortDirection, filterParams: filterParams,},
         withCredentials: true
       });
       return promise.then(function (response) {

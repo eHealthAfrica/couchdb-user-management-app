@@ -31,7 +31,7 @@ function search (req, res, next) {
       sortDirection:  req.query.sortDirection,
       searchString:   req.params.searchString,
       filters: req.filters || [],
-      filterParams: {location: 'location:nasarawa'},
+      filterParams: JSON.parse(req.query.filterParams),
       callback: function (err, searchResult) {
         if (err) {
         return next(err);
@@ -58,7 +58,6 @@ function fetchOne (req, res, next) {
 }
 
 function fetchPaged (req, res, next) {
-  console.log("got filters", req.filters);
   User.fetchPaged(
     {
       skip: parseInt(req.query.skip),
@@ -66,7 +65,7 @@ function fetchPaged (req, res, next) {
       sortBy: req.query.sortBy,
       sortDirection: req.query.sortDirection,
       filters: req.filters || [],
-      filterParams: {location: 'location:nasarawa'},
+      filterParams: JSON.parse(req.query.filterParams),
       callback: function (err, users) {
         if (err) {
           return next(err);

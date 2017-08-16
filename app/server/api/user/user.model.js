@@ -47,7 +47,7 @@ function search(options) {
         return user.name.indexOf(options.searchString) >= 0;
       })
       lodash.forEach(options.filters, function (filter) {
-        filteredUsers = filter.filter(filter.dependency, options.filterParams[filter.field], filteredUsers, lodash)
+        filteredUsers = filter.filter(filter.dependency, options.filterParams, filteredUsers, lodash)
       })
       return options.callback(null, {total_rows: filteredUsers.length, offset: options.skip, rows:filteredUsers.slice(options.skip, options.skip + options.limit)});
     }
@@ -147,22 +147,32 @@ function update (name, data, cb) {
 
 function fetchPaged (options) {
 
-  //skip, limit, sortBy, sortDirection,
-
-  var descending = options.sortDirection === 'asc' ? false : true;
   if (options.sortBy.trim().toLowerCase() === 'name') { options.sortBy =  'id'; }
+
+  var queryParams = { skip: options.skip, limit: options.limit, descending: options.sortDirection === 'asc' ? false : true}
+  if (options.filters.length > 0) {
+    queryParams = lodash.omit(queryParams, ['skip', 'limit'])
+  }
 
   var d = q.defer();
   allPromise = d.promise;
-  db.view('couchdb-user-management-app/by_' +  options.sortBy ,{ /*skip: skip, limit: limit,*/ descending: descending}, function(err, rows){
+  db.view('couchdb-user-management-app/by_' +  options.sortBy ,queryParams, function(err, rows){
     if (err) {
       d.reject(err);
     } else {
-      var filteredUsers = lodash.map(rows.rows, "value")
-      lodash.forEach(options.filters, function (filter) {
-        filteredUsers = filter.filter(filter.dependency, options.filterParams[filter.field], filteredUsers, lodash)
-      })
-      d.resolve({total_rows: filteredUsers.length, offset: options.skip, rows:filteredUsers.slice(options.skip, options.skip + options.limit)});
+      if (options.filters.length > 0) {
+        var filteredUsers = lodash.map(rows.rows, "value")
+        lodash.forEach(options.filters, function (filter) {
+          filteredUsers = filter.filter(filter.dependency, options.filterParams, filteredUsers, lodash)
+        })
+        d.resolve({
+          total_rows: filteredUsers.length,
+          offset: options.skip,
+          rows: filteredUsers.slice(options.skip, options.skip + options.limit)
+        });
+      } else {
+        d.resolve(rows);
+      }
     }
   });
 
@@ -179,10 +189,8 @@ function fetchPaged (options) {
 function findById (id, cb, auth) {
   db.get(id, function(err, user) {
     if (err) {
-
       return cb(err);
     }
-
     cb(null, user);
   });
 }

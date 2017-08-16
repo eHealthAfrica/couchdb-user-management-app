@@ -15,7 +15,12 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
+config.filters = [];
+app.use(function (req, res, next) {
+  req.filters = [];
+  req.filterParams = {};
+  next();
+})
 app.use('/', ums_app(config));
 
 var server   = http.createServer(app);
