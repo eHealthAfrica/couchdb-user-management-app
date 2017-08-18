@@ -7,7 +7,7 @@ var cradle = require('cradle');
 var crypto = require('crypto');
 var utility = require('../../components/utility');
 var errors = require('../../components/errors');
-
+var rp = require('request-promise');
 var db = new (cradle.Connection)().database('_users');
 
 // use promises for caching across all requests
@@ -34,24 +34,55 @@ exports.fetchPaged =  fetchPaged;
 exports.search = search;
 
 
+function getUsers (options) {
+  var pr = q.defer();
+  db.view('couchdb-user-management-app/by_' +  options.sortBy ,options.queryParams , function(err, rows){
+    if (err) { pr.reject(err); }
+    pr.resolve(rows);
+  })
+  return pr.promise;
+}
+
+function loadDependencies (options) {
+  return Object.keys(options.dependencies).map(function (id) {
+    return rp({ uri: options.host + '/' + options.dependencies[id]});
+  });
+}
+
 function search(options) {
   var descending = options.sortDirection === 'asc' ? false : true;
   if (options.sortBy.trim().toLowerCase() === 'name') { options.sortBy =  'id'; }
 
-  db.view('couchdb-user-management-app/by_' +  options.sortBy ,{ descending: descending}, function(err, rows){
-    if (err) {
-      options.callback(err);
-    } else {
-      var users =  lodash.map(rows.rows, "value");
-      var filteredUsers =  users.filter( function (user) {
-        return user.name.indexOf(options.searchString) >= 0;
-      })
-      lodash.forEach(options.filters, function (filter) {
-        filteredUsers = filter.filter(filter.dependency, options.filterParams, filteredUsers, lodash)
-      })
-      return options.callback(null, {total_rows: filteredUsers.length, offset: options.skip, rows:filteredUsers.slice(options.skip, options.skip + options.limit)});
-    }
+  var dependencies = {};
 
+  if (options.filters.length > 0 ){
+    lodash.forEach(options.filters, function (filter) {
+      var dp = filter.dependency;
+      var dpIds =  Object.keys(dp);
+
+      lodash.forEach(dpIds, function (id) {
+        dependencies[id] = dp[id];
+      })
+
+    })
+  }
+
+  var searchPromise =  q.all(
+    lodash.concat(
+      [getUsers({ sortBy: options.sortBy, queryParams: { descending: descending}})],
+      loadDependencies({ host: options.host, dependencies: dependencies})
+    )
+  );
+
+  searchPromise.then(function (responses) {
+    var responseObj = lodash.zipObject( lodash.concat(['users'], Object.keys(dependencies)) , responses);
+    var filteredUsers =  lodash.map(responseObj.users.rows, "value").filter( function (user) {
+      return user.name.indexOf(options.searchString) >= 0;
+    })
+    lodash.forEach(options.filters, function (filter) {
+      filteredUsers = filter.filter(responseObj, options.filterParams, filteredUsers, lodash)
+    })
+    return options.callback(null, {total_rows: filteredUsers.length, offset: options.skip, rows:filteredUsers.slice(options.skip, options.skip + options.limit)});
   });
 
 }
@@ -144,7 +175,6 @@ function update (name, data, cb) {
     db.merge(user._id, data , cb);
   });
 }
-
 function fetchPaged (options) {
 
   if (options.sortBy.trim().toLowerCase() === 'name') { options.sortBy =  'id'; }
@@ -154,37 +184,36 @@ function fetchPaged (options) {
     queryParams = lodash.omit(queryParams, ['skip', 'limit'])
   }
 
-  var d = q.defer();
-  allPromise = d.promise;
-  db.view('couchdb-user-management-app/by_' +  options.sortBy ,queryParams, function(err, rows){
-    if (err) {
-      d.reject(err);
-    } else {
-      if (options.filters.length > 0) {
-        var filteredUsers = lodash.map(rows.rows, "value")
-        lodash.forEach(options.filters, function (filter) {
-          filteredUsers = filter.filter(filter.dependency, options.filterParams, filteredUsers, lodash)
-        })
-        d.resolve({
-          total_rows: filteredUsers.length,
-          offset: options.skip,
-          rows: filteredUsers.slice(options.skip, options.skip + options.limit)
-        });
-      } else {
-        d.resolve(rows);
-      }
-    }
-  });
+  var dependencies = {};
+  if (options.filters.length > 0 ){
+    lodash.forEach(options.filters, function (filter) {
+      var dp = filter.dependency;
+      var dpIds =  Object.keys(dp);
 
+      lodash.forEach(dpIds, function (id) {
+        dependencies[id] = dp[id];
+      })
 
-  allPromise
-    .then(function(rows) {
-      options.callback(null, rows);
     })
-    .catch(function(err) {
-      allPromise = null;
-      options.callback(err);
+  }
+
+  var searchPromise =  q.all(
+    lodash.concat(
+      [getUsers({ sortBy: options.sortBy, queryParams: queryParams})],
+      loadDependencies({ host: options.host, dependencies: dependencies})
+    )
+  );
+
+  searchPromise.then(function (responses) {
+    var responseObj = lodash.zipObject( lodash.concat(['users'], Object.keys(dependencies)) , responses);
+    var filteredUsers =  lodash.map(responseObj.users.rows, "value");
+    lodash.forEach(options.filters, function (filter) {
+      filteredUsers = filter.filter(responseObj, options.filterParams, filteredUsers, lodash)
     });
+    return options.callback(null, {total_rows: filteredUsers.length, offset: options.skip, rows:filteredUsers.slice(options.skip, options.skip + options.limit)});
+  })
+  .catch(function (err){ return options.callback(err); })
+
 }
 function findById (id, cb, auth) {
   db.get(id, function(err, user) {

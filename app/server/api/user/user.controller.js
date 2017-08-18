@@ -32,6 +32,7 @@ function search (req, res, next) {
       searchString:   req.params.searchString,
       filters: req.filters || [],
       filterParams: JSON.parse(req.query.filterParams),
+      host: req.protocol + '://' + req.get('host'),
       callback: function (err, searchResult) {
         if (err) {
         return next(err);
@@ -66,6 +67,7 @@ function fetchPaged (req, res, next) {
       sortDirection: req.query.sortDirection,
       filters: req.filters || [],
       filterParams: JSON.parse(req.query.filterParams),
+      host: req.protocol + '://' + req.get('host'),
       callback: function (err, users) {
         if (err) {
           return next(err);
