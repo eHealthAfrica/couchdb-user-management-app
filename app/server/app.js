@@ -20,6 +20,12 @@ module.exports = function(config) {
 
   config.couch.raw  = true;
   cradle.setup(config.couch);
+
+  app.use(function (req, res, next) {
+    req.filters = config.filters || [];
+    next();
+  })
+
   require('./routes')(app);
   return app;
 };

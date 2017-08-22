@@ -24,17 +24,21 @@ function create (req, res, next) {
 
 
 function search (req, res, next) {
-  User.search(
-    parseInt(req.query.skip),
-    parseInt(req.query.limit),
-    req.query.sortBy,
-    req.query.sortDirection,
-    req.params.searchString,
-    function (err, searchResult) {
-      if (err) {
+  User.search({
+      skip:   parseInt(req.query.skip),
+      limit:  parseInt(req.query.limit),
+      sortBy: req.query.sortBy,
+      sortDirection:  req.query.sortDirection,
+      searchString:   req.params.searchString,
+      filters: req.filters || [],
+      filterParams: JSON.parse(req.query.filterParams),
+      host: req.protocol + '://' + req.get('host'),
+      callback: function (err, searchResult) {
+        if (err) {
         return next(err);
+        }
+        res.json(searchResult);
       }
-      res.json(searchResult);
     }
   )
 }
@@ -55,12 +59,22 @@ function fetchOne (req, res, next) {
 }
 
 function fetchPaged (req, res, next) {
-  User.fetchPaged(parseInt(req.query.skip), parseInt(req.query.limit), req.query.sortBy, req.query.sortDirection, function (err, users) {
-    if (err) {
-      return next(err);
-    }
-    res.json(users);
-  });
+  User.fetchPaged(
+    {
+      skip: parseInt(req.query.skip),
+      limit: parseInt(req.query.limit),
+      sortBy: req.query.sortBy,
+      sortDirection: req.query.sortDirection,
+      filters: req.filters || [],
+      filterParams: JSON.parse(req.query.filterParams),
+      host: req.protocol + '://' + req.get('host'),
+      callback: function (err, users) {
+        if (err) {
+          return next(err);
+        }
+        res.json(users);
+      }
+    });
 }
 
 function update (req, res, next) {
