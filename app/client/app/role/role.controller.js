@@ -12,7 +12,7 @@ angular.module('app.role')
     vm.config = Config.get()
     vm.adminLevels =  adminLevels;
     vm.locations =  locations;
-    vm.facilities =  facilities;
+    vm.facilities =  _.sortBy(facilities, ['name']);
     vm.programs = _.sortBy(programs, ['name']);
     vm.facilityPrograms = facilityPrograms;
 
