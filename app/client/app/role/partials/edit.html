@@ -101,21 +101,12 @@
         <div id="usertype" class="form-field form-group has-feedback" ng-if="ctrl.updateUserRoleForm.type === 'mobile'">
           <label for="name" class="col-sm-2 control-label">PROGRAM</label>
           <div class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
-            <div class="container_x">
+            <div class="program_container">
               <span ng-repeat="program in ctrl.programs | getProgramsInFacility : ctrl.facilityPrograms : ctrl.updateUserRoleForm.facility">
                 <input type="checkbox" ng-checked="ctrl.hasProgram(program._id)"  ng-model="selectedPrograms[$index]" ng-change="ctrl.toggleProgram(program._id)"/> {{program.name}}<br />
               </span>
             </div>
           </div>
-
-            <!--replace...-->
-            <!--select  ng-model="ctrl.updateUserRoleForm.program" id="facility-programs" class="form-control"
-                     ng-required="true"
-                     multiple
-                     ng-options ="program._id as program.name for program in ctrl.programs | getProgramsInFacility : ctrl.facilityPrograms : ctrl.updateUserRoleForm.facility"
-            ></select-->
-
-
           </div>
         </div>
 
@@ -123,11 +114,16 @@
         <label for="name" class="col-sm-2 control-label" ng-init="ctrl.updateUserRoleForm.access.programs =  ctrl.user.lomis_stock.dashboard.access.programs || []">PROGRAM</label>
 
         <div ng-class="" class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
-          <select  ng-model="ctrl.updateUserRoleForm.access.programs"  class="form-control" id="programs"
+          <!--select  ng-model="ctrl.updateUserRoleForm.access.programs"  class="form-control" id="programs"
                    ng-required="true"
                    multiple
                    ng-options ="program._id as program.name for program in ctrl.programs"
-          ></select>
+          ></select-->
+          <div class="program_container">
+              <span ng-repeat="program in ctrl.programs">
+                <input type="checkbox" ng-checked="ctrl.hasDashboardProgram(program._id)"  ng-model="selectedPrograms[$index]" ng-change="ctrl.toggleDashboardProgram(program._id)"/> {{program.name}}<br />
+              </span>
+          </div>
         </div>
       </div>
 

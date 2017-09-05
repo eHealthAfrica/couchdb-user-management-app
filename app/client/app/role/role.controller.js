@@ -16,10 +16,6 @@ angular.module('app.role')
     vm.programs = _.sortBy(programs, ['name']);
     vm.facilityPrograms = facilityPrograms;
 
-
-    vm.assignedPrograms = [];
-
-
     $scope.$watch('vm.updateUserRoleForm.access.level', function (newValue, oldValue) {
       vm.getAssignedLocation();
     });
@@ -30,16 +26,10 @@ angular.module('app.role')
         return;
       }
 
-      // run own verification here ..... send appropriate messages back .....
-
-
-
-
       var lomis_stock = {dashboard: {}, mobile: {}};
 
       switch (vm.updateUserRoleForm.type) {
         case 'mobile':
-          // throw appropriate error message to the user here .....
           if (!(vm.updateUserRoleForm.facility && vm.updateUserRoleForm.program)) {
             return;
           }
@@ -74,19 +64,25 @@ angular.module('app.role')
     };
 
     vm.toggleProgram =  function (id) {
-      console.log("THis is it:", vm.updateUserRoleForm.program)
-      if (! vm.updateUserRoleForm.program) { vm.updateUserRoleForm.program = []; }
-      var index =  vm.updateUserRoleForm.program.indexOf(id);
-      if (index < 0) { vm.updateUserRoleForm.program.push(id); }
-      else {
-        vm.updateUserRoleForm.program.splice(index, 1);
-      }
+      if (! vm.updateUserRoleForm.programs) { vm.updateUserRoleForm.programs = []; }
+      var index =  vm.updateUserRoleForm.programs.indexOf(id);
+      index < 0 ? vm.updateUserRoleForm.programs.push(id) : vm.updateUserRoleForm.programs.splice(index, 1);
+
+    }
+
+    vm.toggleDashboardProgram = function (id) {
+      if (! vm.updateUserRoleForm.access.programs) { vm.updateUserRoleForm.access.programs = []; }
+      var index =  vm.updateUserRoleForm.access.programs.indexOf(id);
+      index < 0 ? vm.updateUserRoleForm.access.programs.push(id) :  vm.updateUserRoleForm.access.programs.splice(index, 1);
     }
 
     vm.hasProgram = function (id) {
       return vm.updateUserRoleForm.program.length && (vm.updateUserRoleForm.program.indexOf(id) >= 0);
     }
 
+    vm.hasDashboardProgram = function (id) {
+      return vm.updateUserRoleForm.access.programs.length && (vm.updateUserRoleForm.access.programs.indexOf(id) >= 0 );
+    }
 
     vm.getAssignedLocation = function () {
 
