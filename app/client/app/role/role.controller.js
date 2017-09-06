@@ -12,10 +12,9 @@ angular.module('app.role')
     vm.config = Config.get()
     vm.adminLevels =  adminLevels;
     vm.locations =  locations;
-    vm.facilities =  facilities;
+    vm.facilities =  _.sortBy(facilities, ['name']);
     vm.programs = _.sortBy(programs, ['name']);
     vm.facilityPrograms = facilityPrograms;
-
 
     $scope.$watch('vm.updateUserRoleForm.access.level', function (newValue, oldValue) {
       vm.getAssignedLocation();
@@ -64,6 +63,27 @@ angular.module('app.role')
         });
     };
 
+    vm.toggleProgram =  function (id) {
+      if (! vm.updateUserRoleForm.programs) { vm.updateUserRoleForm.programs = []; }
+      var index =  vm.updateUserRoleForm.programs.indexOf(id);
+      index < 0 ? vm.updateUserRoleForm.programs.push(id) : vm.updateUserRoleForm.programs.splice(index, 1);
+
+    }
+
+    vm.toggleDashboardProgram = function (id) {
+      if (! vm.updateUserRoleForm.access.programs) { vm.updateUserRoleForm.access.programs = []; }
+      var index =  vm.updateUserRoleForm.access.programs.indexOf(id);
+      index < 0 ? vm.updateUserRoleForm.access.programs.push(id) :  vm.updateUserRoleForm.access.programs.splice(index, 1);
+    }
+
+    vm.hasProgram = function (id) {
+      return vm.updateUserRoleForm.program.length && (vm.updateUserRoleForm.program.indexOf(id) >= 0);
+    }
+
+    vm.hasDashboardProgram = function (id) {
+      return vm.updateUserRoleForm.access.programs.length && (vm.updateUserRoleForm.access.programs.indexOf(id) >= 0 );
+    }
+
     vm.getAssignedLocation = function () {
 
       if (! vm.user.lomis_stock || (! vm.user.lomis_stock.mobile && ! vm.user.lomis_stock.dashboard)) {
@@ -72,14 +92,14 @@ angular.module('app.role')
 
       if (vm.user.lomis_stock.mobile && ! _.isEmpty(vm.user.lomis_stock.mobile)) {
         if (vm.updateUserRoleForm.facility) {
-          vm.updateUserRoleForm.program =  null;
+          vm.updateUserRoleForm.program =  [];
           return;
         }
 
 
         var facility = vm.user.lomis_stock.mobile.facilities[0];
         vm.updateUserRoleForm.facility =  Object.keys(facility)[0];
-        vm.updateUserRoleForm.program=  vm.user.lomis_stock.mobile.facilities[0][vm.updateUserRoleForm.facility][0];
+        vm.updateUserRoleForm.program =  vm.user.lomis_stock.mobile.facilities[0][vm.updateUserRoleForm.facility];
 
       }
       else if (vm.user.lomis_stock.dashboard && ! _.isEmpty(vm.user.lomis_stock.dashboard)) {
