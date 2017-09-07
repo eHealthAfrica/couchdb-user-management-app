@@ -77,7 +77,7 @@ angular.module('app.role')
     }
 
     vm.hasProgram = function (id) {
-      return vm.updateUserRoleForm.program && (vm.updateUserRoleForm.program.indexOf(id) >= 0);
+      return vm.updateUserRoleForm.programs && (vm.updateUserRoleForm.programs.indexOf(id) >= 0);
     }
 
     vm.hasDashboardProgram = function (id) {
