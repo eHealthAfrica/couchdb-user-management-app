@@ -30,12 +30,12 @@ angular.module('app.role')
 
       switch (vm.updateUserRoleForm.type) {
         case 'mobile':
-          if (!(vm.updateUserRoleForm.facility && vm.updateUserRoleForm.program)) {
+          if (!(vm.updateUserRoleForm.facility && vm.updateUserRoleForm.programs)) {
             return;
           }
 
           var facilityEntry = {};
-          facilityEntry[vm.updateUserRoleForm.facility] = vm.updateUserRoleForm.program;
+          facilityEntry[vm.updateUserRoleForm.facility] = vm.updateUserRoleForm.programs;
           lomis_stock.mobile.facilities = [facilityEntry];
           break;
 
@@ -77,7 +77,7 @@ angular.module('app.role')
     }
 
     vm.hasProgram = function (id) {
-      return vm.updateUserRoleForm.program.length && (vm.updateUserRoleForm.program.indexOf(id) >= 0);
+      return vm.updateUserRoleForm.program && (vm.updateUserRoleForm.program.indexOf(id) >= 0);
     }
 
     vm.hasDashboardProgram = function (id) {
