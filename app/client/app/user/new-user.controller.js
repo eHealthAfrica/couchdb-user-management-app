@@ -4,12 +4,20 @@
 'use strict'
 
 angular.module('app.user')
-  .controller('NewUserCtrl', ['$location', '$scope', 'alertService', 'userService', function ($location, $scope, alertService, userService) {
+  .controller('NewUserCtrl', ['$location', '$scope', 'alertService','Shared', 'userService',  function ($location, $scope, alertService, Shared, userService) {
     var vm = this
+    vm.config =  Shared.getConfig();
+    vm.roles = vm.config.roles.enable && vm.config.roles.definition.type.toLowerCase() === 'simple'
+      ? {label: vm.config.roles.definition.displayName, options: vm.config.roles.definition.options, mode: vm.config.roles.definition.selectMultiple, required: vm.config.roles.definition.required, type: vm.config.roles.type}
+      : {label: null, options: []};
+
 
     vm.submitNewUserForm = function () {
       if (!_.isEmpty(vm.newUserForm.$error)) { return }
-      userService.create(_.pick(vm.newUserForm, ['name', 'password', 'email']))
+      var pickList = ['name', 'password', 'email'];
+      if (vm.roles.label !== null) { pickList.push('roles'); }
+
+      userService.create(_.pick(vm.newUserForm, pickList))
         .then(function () {
           alertService.showSuccessMessage(vm.newUserForm.name + ' successfully created')
           var path = 'users/view/' + vm.newUserForm.name

@@ -24,6 +24,7 @@ angular.module('app.user')
       userDecoratorService,
       users
     ) {
+
       var vm = this
       vm.searchString = ''
       vm.selection = []
