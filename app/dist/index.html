@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title ng-bind-template="{{currentPage|| 'User Management System'}}"></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,400i" rel="stylesheet">
+    <link rel="stylesheet" href="app.min.css"/>
+</head>
+<body >
+  <div ui-view="ng-admin" class="">
+    <div id="wrapper" class="">
+      <nav ng-include = "'components/navbar/template.html'" ng-if="authenticated"></nav>
+      <div class="margin-top-20 relative"  ng-if="! authenticated" loader>
+        <div class='loader' loaders></div>
+      </div>
+      <div ng-class = "! authenticated ? 'hidden' : ''"  ng-if="authenticated" id = "page-wrapper">
+       <div ng-view></div>
+     </div>
+    </div>
+  </div>
+  <script src="vendor.min.js"></script>
+  <script src="app.min.js"></script>
+</body>
+</html>
