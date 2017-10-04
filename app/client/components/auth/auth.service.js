@@ -32,23 +32,32 @@ angular.module('app.auth', [])
       if (SharedAuth.isLoggedIn()) {
        var passed =  true;
 
-        if (config.access.denyIf) {
-          for (var i = 0; i < config.access.denyIf.length; i++) {
-            if (config.access.denyIf[i].value === Util.getProperty(currentUser, config.access.denyIf[i].field)) {
-              passed =  false;
-              break;
-            }
-          }
-        }
+       if (config.access.alwaysAllowIf) {
+         for (var i = 0; i < config.access.alwaysAllowIf.length; i++) {
+           if (config.access.alwaysAllowIf[i].value !== Util.getProperty(currentUser, config.access.alwaysAllowIf[i].field)) {
+             passed =  false;
+             break;
+           }
+         }
+       } else {
+         if (config.access.denyIf) {
+           for (var i = 0; i < config.access.denyIf.length; i++) {
+             if (config.access.denyIf[i].value === Util.getProperty(currentUser, config.access.denyIf[i].field)) {
+               passed =  false;
+               break;
+             }
+           }
+         }
 
-        if (config.access.allowIf) {
-          for (var i = 0; i < config.access.allowIf.length; i++) {
-            if (config.access.allowIf[i].value !== Util.getProperty(currentUser, config.access.allowIf[i].field)) {
-              passed =  false;
-              break;
-            }
-          }
-        }
+         if (config.access.allowIf) {
+           for (var i = 0; i < config.access.allowIf.length; i++) {
+             if (config.access.allowIf[i].value !== Util.getProperty(currentUser, config.access.allowIf[i].field)) {
+               passed =  false;
+               break;
+             }
+           }
+         }
+       }
 
         if (passed) { return true; }
       }
