@@ -39,11 +39,15 @@ angular.module('app.auth', [])
              break;
            }
          }
-       } else {
+       }
+
+        if (! config.access.alwaysAllowIf ||! passed){
+          passed = true;
+
          if (config.access.denyIf) {
            for (var i = 0; i < config.access.denyIf.length; i++) {
              if (config.access.denyIf[i].value === Util.getProperty(currentUser, config.access.denyIf[i].field)) {
-               passed =  false;
+                passed =  false;
                break;
              }
            }
