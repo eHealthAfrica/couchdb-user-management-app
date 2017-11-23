@@ -228,7 +228,7 @@ angular.module('app.user').decorate('userDecoratorService', [
           return programList;
         }
 
-        var workspace =  Shared.getConfig().usersTable.workSpace || 'umsWorkspace';
+        var workspace =  Shared.getConfig().workSpace || 'umsWorkspace';
 
 
         for (var i in users) {

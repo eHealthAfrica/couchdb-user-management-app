@@ -103,7 +103,6 @@ angular.module('app.user')
       var config =  Shared.getConfig();
       var workSpace = config.usersTable.workSpace || 'umsWorkspace';
       update = _.omit(update, workSpace);
-      console.log(update);
 
 
       return $http({
