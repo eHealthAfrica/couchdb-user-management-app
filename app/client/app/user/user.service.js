@@ -100,6 +100,11 @@ angular.module('app.user')
     };
 
     this.update = function (update) {
+      var config =  Shared.getConfig();
+      var workSpace = config.usersTable.workSpace || 'umsWorkspace';
+      update = _.omit(update, workSpace);
+
+
       return $http({
         method: 'PUT',
         url: _this.baseUrl + '/' +  update[_this.singleRecordKey],
