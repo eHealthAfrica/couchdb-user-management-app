@@ -89,12 +89,13 @@
           <label for="facility" class="col-sm-2 control-label">FACILIY</label>
 
           <div class="ng-admin-field-name ng-admin-type-string col-sm-10 col-md-8 col-lg-7">
-            <select
-              ng-model="ctrl.updateUserRoleForm.facility" id="facility" class="form-control"
-              ng-options ="facility._id as facility.name for facility in ctrl.facilities"
-              ng-required="true"
-              ng-change="ctrl.getAssignedLocation()"
-            ></select>
+            <ui-select ng-model="ctrl.updateUserRoleForm.facility" theme="bootstrap"   title="Choose a facility"
+                       ng-required="true" id="facility" ng-change="ctrl.getAssignedLocation()">
+              <ui-select-match placeholder="Search">{{$select.selected.name}}</ui-select-match>
+              <ui-select-choices repeat="facility._id as  facility in (ctrl.facilities  | filter: { 'name' : $select.search})">
+                <span ng-bind-html="facility.name | highlight: $select.search"></span>
+              </ui-select-choices>
+            </ui-select>
           </div>
         </div>
         <div id="usertype" class="form-field form-group has-feedback" ng-if="ctrl.updateUserRoleForm.type === 'mobile'">

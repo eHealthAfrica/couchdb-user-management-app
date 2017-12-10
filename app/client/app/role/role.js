@@ -2,7 +2,7 @@
 /* jshint node: true */
 'use strict';
 
-angular.module('app.role', ['ngRoute', 'app.user'])
+angular.module('app.role', ['ngRoute', 'app.user', 'ui.select', 'ngSanitize'])
   .config(['$routeProvider',  function($routeProvider) {
     $routeProvider.when('/users/:id/role/edit', {
       templateUrl: 'app/role/partials/edit.html',
