@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,400i" rel="stylesheet">
-    <!-- build:css app.min.css -->
+    <!-- build:css -->
     <link href="app.css" rel="stylesheet">
     <!-- endbuild -->
 
@@ -26,10 +26,11 @@
      </div>
     </div>
   </div>
-  <!-- build:js vendor.min.js -->
+  <!-- build:vendorjs-->
 
       <script src="bower_components/jquery/dist/jquery.js"></script>
       <script src="bower_components/angular/angular.js"></script>
+      <script src="bower_components/angular-route/angular-route.js"></script>
       <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
       <script src="bower_components/angular-decorate/angular-decorate.js"></script>
       <script src="bower_components/tv4/tv4.js"></script>
@@ -39,22 +40,25 @@
       <script src="bower_components/angular-route/angular-route.min.js"></script>
       <script src="bower_components/lodash/dist/lodash.min.js"></script>
       <script src="bower_components/humane-js/humane.min.js"></script>
-      <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
-  <!--endbuild-->
-  <!-- build:js app.min.js -->
+      <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <!-- endbuild -->
+  <!-- build:js -->
       <script src="app.js"></script>
       <script src="app/config/config.service.js"></script>
+
       <script src="app/user/user.js"></script>
       <script src="app/user/user.controller.js"></script>
       <script src="app/user/users.controller.js"></script>
       <script src="app/user/user.service.js"></script>
       <script src="app/user/new-user.controller.js"></script>
       <script src="app/user/user-decorator.service.js"></script>
+
       <script src="app/role/role.js"></script>
       <script src="app/role/view-role.controller.js"></script>
       <script src="app/role/role.controller.js"></script>
       <script src="app/role/role.filter.js"></script>
       <script src="app/role/role.service.js"></script>
+
       <script src="components/ng-simple-table/ng-simple-table.js"></script>
       <script src="components/ng-simple-pagination/ng-simple-pagination.js"></script>
       <script src="components/alert/alert.service.js"></script>
@@ -62,8 +66,9 @@
       <script src="components/utility/shared-values.js"></script>
       <script src="components/utility/loaders.js"></script>
       <script src="components/utility/util.js"></script>
+
       <script src="components/auth/auth.service.js"></script>
       <script src="components/auth/auth-shared.service.js"></script>
-  <!--endbuild -->
+  <!-- endbuild -->
 </body>
 </html>
