@@ -63,7 +63,9 @@ angular.module('app.role')
         });
     };
 
-    vm.toggleProgram =  function (id) {
+
+
+  vm.toggleProgram =  function (id) {
       if (! vm.updateUserRoleForm.programs) { vm.updateUserRoleForm.programs = []; }
       var index =  vm.updateUserRoleForm.programs.indexOf(id);
       index < 0 ? vm.updateUserRoleForm.programs.push(id) : vm.updateUserRoleForm.programs.splice(index, 1);
@@ -85,7 +87,6 @@ angular.module('app.role')
     }
 
     vm.getAssignedLocation = function () {
-
       if (! vm.user.lomis_stock || (! vm.user.lomis_stock.mobile && ! vm.user.lomis_stock.dashboard)) {
         return;
       }
