@@ -66,9 +66,21 @@ angular.module('app.role')
   .service('locationService', [ '$http', function ($http) {
 
     var URL = '/api/location';
+    var TREE_URL = '/api/location/tree';
 
     this.getAll =  function () {
       var promise = $http.get(  URL, {  withCredentials: true });
+      return promise.then(function (response) {
+
+
+        return response.data;
+      }, function(err) {
+        return err;
+      });
+    };
+
+    this.getTree =  function () {
+      var promise = $http.get(  TREE_URL, {  withCredentials: true });
       return promise.then(function (response) {
 
 
