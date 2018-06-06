@@ -18,6 +18,9 @@ angular.module('app.role', ['ngRoute', 'app.user', 'ui.select', 'ngSanitize'])
         locations: ['locationService', function (locationService) {
           return locationService.getAll().then( function (data) {   return data;}).catch(function (err) {console.log(err); return [];});
         }],
+        locationsTree: ['locationService', function (locationService) {
+          return locationService.getTree().then( function (data) {   return data;}).catch(function (err) {console.log(err); return [];});
+        }],
         facilities: ['facilityService',  function (facilityService) {
           return facilityService.getAll().then( function (data) {   return data;}).catch(function (err) {console.log(err); return [];});
         }],

@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('app.role')
-  .controller('RoleCtrl', ['$scope', '$location', 'userService','alertService', 'Config', 'user', 'adminLevels', 'locations', 'facilities', 'programs', 'facilityPrograms', function($scope, $location, userService, alertService, Config, user, adminLevels, locations, facilities, programs, facilityPrograms){
+  .controller('RoleCtrl', ['$scope', '$location', 'userService','alertService', 'Config', 'user', 'adminLevels', 'locations', 'locationsTree', 'facilities', 'programs', 'facilityPrograms', function($scope, $location, userService, alertService, Config, user, adminLevels, locations,locationsTree, facilities, programs, facilityPrograms){
 
     var vm = this;
 
@@ -12,6 +12,7 @@ angular.module('app.role')
     vm.config = Config.get()
     vm.adminLevels =  adminLevels;
     vm.locations =  locations;
+    vm.locationsTree =  locationsTree;
     vm.facilities =  _.sortBy(facilities, ['name']);
     vm.programs = _.sortBy(programs, ['name']);
     vm.facilityPrograms = facilityPrograms;
@@ -48,7 +49,7 @@ angular.module('app.role')
           }
           lomis_stock.dashboard = { access: { level: vm.updateUserRoleForm.access.level, programs: vm.updateUserRoleForm.access.programs}, is_admin: vm.updateUserRoleForm.is_admin || false};
           var item = {};
-          item[vm.updateUserRoleForm.access.level] = [ vm.updateUserRoleForm.locations[adminLevelIndex + ""] ];
+          item[vm.updateUserRoleForm.access.level] = [ vm.updateUserRoleForm.locations[adminLevelIndex + ""]._id ];
           lomis_stock.dashboard.access.items = [item];
           break;
       }
