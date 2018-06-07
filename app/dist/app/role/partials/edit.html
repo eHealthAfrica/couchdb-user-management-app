@@ -73,13 +73,13 @@
           >
             <select ng-if="$index === 0"
                     ng-model="ctrl.updateUserRoleForm.locations[$index]"  class="form-control"
-                    ng-options="location._id as location.name for location in ctrl.locations | filter :{adminLevel: (  adminLevel._id)}"
+                    ng-options="location as location.name for location in ctrl.locationsTree | filter :{adminLevel: (  adminLevel._id)}"
                     ng-required="true"
             ></select>
 
             <select ng-if="$index > 0"
                     ng-model="ctrl.updateUserRoleForm.locations[$index]"  class="form-control"
-                    ng-options="location._id as location.name for location in ctrl.locations | getChildrenLocation : ctrl.updateUserRoleForm.locations[$index - 1] : $index - 1"
+                    ng-options="location as location.name for location in ctrl.updateUserRoleForm.locations[$index - 1].children"
                     ng-required="true"
             ></select>
 
