@@ -1,41 +1,126 @@
-CouchDB User Management App
-===========================
+# couchdb-user-management-system
 
-> Web app to manage CouchDB users and database security settings
 
-## Setup
+
+A  [User Management System](https://github.com/eHealthAfrica/couchdb-user-management-app) app for couchdb apps.
+
+
+
+### Prequisites
+
+An Express application (to serve the app)
+
+
+
+
+### Installation & Serving
+
+To serve the UMS from an express application, the following are required;
+
+A. Add an entry for the UMS in the package.json file (as a dependency). 
 
 ```
-git clone git@github.com:gr2m/couchdb-user-management-app.git
-cd couchdb-user-management-app
-npm install
-bower install
-grunt serve
+couchdb-user-management-app": "eHealthAfrica/couchdb-user-management-app#v2
+```
+for instance;
+```$xslt
+  "dependencies": {
+      ...
+      couchdb-user-management-app": "eHealthAfrica/couchdb-user-management-app#v2
+  }
+  
 ```
 
-## Required CouchDB Settings
 
-CORS must be enabled in the CouchDB you try to connect
-to, and the apps' URL must either be listed in `cors.origin`,
-or it must be set to `*` (allows all origins).
+B. Update the Main app's route to serve the UMS.
 
-<table>
-  <thead>
-    <tr>
-      <th>Section</th>
-      <th>Option</th>
-      <th>Value</th>
-    </tr>
-  </thead>
-  <tr>
-    <td><strong>cors</strong></td>
-    <td>credentials</td>
-    <td>true</td>
-  </tr>
-  <tr>
-    <td><strong>cors</strong></td>
-    <td>origins</td>
-    <td>*</td>
-  </tr>
-</table>
+
+i. You will then need to modify the file `server/routes.js` by adding the following lines:
+
+```
+var umsApp = require('couchdb-user-management-app');
+app.use('/ums', umsApp([umsConfig]));
+```
+
+ii.
+The umsConfig object is expected to be in the format stated below
+
+```
+{
+  auth: {
+    type: '[AUTH-TYPE]',
+    cookies: {
+      name: '[COOKIE-NAME]',
+      authType: '[COOKIE-AUTH-TYPE]'
+    },
+    redirectUrl: '[REDIRECT-URL]'
+  },
+
+  access: {
+    field: '[ACCESS-PROP]',
+    value: [ACCESS-PROP-VALUE]
+  },
+
+  couch: {
+       host: '[COUCHDB-HOST]',
+       port: [COUCHDB-PORT]',
+       auth: {username: '[COUCHDB-USER NAME]', password: '[COUCHDB-PASSWORD]'},
+       allOrNothing: false,
+       forceSave: false
+  },
+
+  currentUser: {
+    url:'[CURRENT-USER-URL]',
+    nameField: '[CURRENT-USER-NAME-FIELD]'
+  },
+
+  navigation: {
+    customNavbarLinks: [CUSTOM-NAVBAR-LINKS],
+    sidebarLinks: [CUSTOM-SIDEBAR-LINKS],
+    userDropdown: [USER-DROPDOWN-LINKS]
+  },
+
+  roles: [ROLES],
+
+  usersTable: {
+    allowFilter: [USERS-FILTER],
+    allowSelect: [SELECT-USERS],
+    allowSort: [SORT-USERS],
+    arrayFields: [ARRAY-FIELDS],
+    derivedFields: [DERIVED-USER-FIELDS],
+    header: [USERS-TANLE-HEADER],
+    maxColWidth : [MAXIMUM-COL-WIDTH],
+    rowActions: [ACTIONS-PER-USER-ROLE],
+    rowActionClasses: [CLASSES-FOR-USER-ROLE-ACTIONS],
+    toggleFields: [TOGGLE-FIELDS],
+    unsortableFields: [UNSORTABLE-FIELDS]
+  },
+
+  pagination: {
+    pageSize: [PAGE-SIZE]
+  }
+}
+```
+
+For more details on the umsConfig, read the guideline [here](../docs/UMS_CONFIG.md).
+
+After starting the Host app, the UMS will be available at `/ums`  or any custom route that has been configured for it (in step B.i above)
+
+
+
+### Testing
+
+To test, update the config/index.js file with the details required to connect to couch db then run the command
+```
+npm test
+```
+
+### Other files
+[Change log](../CHANGELOG.md)\
+[Configuring the UMS](../docs/UMS_CONFIG.md)\
+[Sorting and Filtering with couchdb-user-management-app](../docs/SORTING_AND_FILTERING.md)
+
+
+
+
 
